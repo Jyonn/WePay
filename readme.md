@@ -308,7 +308,7 @@
 {
 	'good_id': 商品ID
 	'number': 购买数量
-{
+}
 ```
 - response
 ```
@@ -442,12 +442,12 @@
 	'user_id': 用户ID,
 	'wifi_SSID': Wifi账号
 	'wifi_password': Wifi密码
-{
+}
 ```
 - response
 ```
 {
     'code': 错误代码，默认为0（OK）
-{
+}
 ```
 
