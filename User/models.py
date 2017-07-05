@@ -3,7 +3,6 @@ import re
 from django.db import models
 from django.utils.crypto import get_random_string
 
-from Card.models import Card
 from base.error import Error
 from base.response import ret
 
@@ -148,8 +147,9 @@ class User(models.Model):
     def get_card_list(self):
         """
         获取用户银行卡列表
-        :return:
+        :return: 银行卡列表
         """
+        from Card.models import Card
         cards = Card.objects.filter(owner=self)
         card_list = []
         for o_card in cards:

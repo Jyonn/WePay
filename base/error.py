@@ -1,4 +1,14 @@
 class Error:
+    ERROR_ORDER_CREATE = 2020
+    REQUIRE_ADD_DEFAULT_CARD = 2019
+    REQUIRE_COMPLETE_BUYER_INFO = 2018
+    LACK_STORE = 2017
+    REQUIRE_SET_BUTTON = 2016
+    BUY_NUM = 2015
+    ERROR_BUTTON_CREATE = 2014
+    REQUIRE_BUYER = 2013
+    DELETED_GOOD = 2012
+    NOT_FOUND_GOOD = 2011
     ERROR_CARD_CREATE = 2010
     ERROR_GOOD_CREATE = 2009
     ERROR_USER_CREATE = 2008
@@ -17,6 +27,16 @@ class Error:
     OK = 0
 
     ERROR_TUPLE = (
+        (ERROR_ORDER_CREATE, '创建订单失败'),
+        (REQUIRE_ADD_DEFAULT_CARD, '需要设置默认银行卡'),
+        (REQUIRE_COMPLETE_BUYER_INFO, '需要完善用户收货信息'),
+        (LACK_STORE, '库存不足'),
+        (REQUIRE_SET_BUTTON, '需要设置购买商品'),
+        (BUY_NUM, '购买数量必须是正整数'),
+        (ERROR_BUTTON_CREATE, '创建按钮设置错误'),
+        (REQUIRE_BUYER, '需要买家用户'),
+        (DELETED_GOOD, '商品被删除'),
+        (NOT_FOUND_GOOD, '不存在的商品'),
         (ERROR_CARD_CREATE, '创建银行卡失败'),
         (ERROR_GOOD_CREATE, '创建商品失败'),
         (ERROR_USER_CREATE, '创建用户失败'),

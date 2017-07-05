@@ -49,6 +49,24 @@ class Category(models.Model):
             ))
         return category_list
 
+    def get_good_list(self):
+        """
+        获取一个类别的所有商品
+        :return: 商品列表
+        """
+        goods = Good.objects.filter(category=self)
+        good_list = []
+        for o_good in goods:
+            good_list.append(dict(
+                good_id=o_good.pk,
+                brand=o_good.seller.brand,
+                good_name=o_good.good_name,
+                store=o_good.store,
+                price=o_good.price,
+                pic=o_good.pic,
+            ))
+        return good_list
+
 
 class Good(models.Model):
     """
@@ -140,3 +158,65 @@ class Good(models.Model):
         """
         self.is_deleted = True
         self.save()
+
+
+class Button(models.Model):
+    owner = models.ForeignKey(
+        'User.User',
+        verbose_name='关联用户',
+    )
+    category = models.ForeignKey(
+        'Good.Category',
+        verbose_name='关联商品类别',
+    )
+    default_good = models.ForeignKey(
+        'Good.Good',
+        verbose_name='默认购买商品'
+    )
+    buy_num = models.IntegerField(
+        verbose_name='默认购买数量',
+    )
+
+    @classmethod
+    def create(cls, o_user, good_id, buy_num):
+        """
+        创建按钮默认购买设置
+        :param o_user: 买方
+        :param good_id: 默认商品ID
+        :param buy_num: 默认购买数量
+        :return: 创建成功则返回设置类，否则返回错误代码
+        """
+        try:
+            buy_num = int(buy_num)
+            assert buy_num > 0
+        except:
+            return ret(Error.BUY_NUM)
+        try:
+            o_good = Good.objects.get(pk=good_id)
+            if o_good.is_deleted:
+                return ret(Error.DELETED_GOOD)
+        except:
+            return ret(Error.NOT_FOUND_GOOD)
+
+        from User.models import User
+        if o_user.user_type == User.TYPE_SELLER:
+            return ret(Error.REQUIRE_BUYER)
+
+        try:
+            o = Button.objects.get(owner=o_user, category_id=o_good.category_id)
+        except:
+            o = cls(
+                owner=o_user,
+                category_id=o_good.category_id,
+                good_id=good_id,
+                buy_num=buy_num,
+            )
+            try:
+                o.save()
+                return ret(Error.OK, o)
+            except:
+                return ret(Error.ERROR_BUTTON_CREATE)
+        o.default_good = o_good
+        o.buy_num = buy_num
+        o.save()
+        return ret(Error.OK, o)
