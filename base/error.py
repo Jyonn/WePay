@@ -1,7 +1,6 @@
-from User.models import User
-
-
 class Error:
+    ERROR_CARD_CREATE = 2010
+    ERROR_GOOD_CREATE = 2009
     ERROR_USER_CREATE = 2008
     PHONE_FORMAT = 2007
     USERNAME_LENGTH = 2006
@@ -18,10 +17,12 @@ class Error:
     OK = 0
 
     ERROR_TUPLE = (
+        (ERROR_CARD_CREATE, '创建银行卡失败'),
+        (ERROR_GOOD_CREATE, '创建商品失败'),
         (ERROR_USER_CREATE, '创建用户失败'),
         (PHONE_FORMAT, '手机号输入不准确'),
-        (USERNAME_LENGTH, '用户名应在4-%s个字符之间' % User.L['username']),
-        (BRAND_LENGTH, '品牌名称应在2-%s个字符之间' % User.L['brand']),
+        (USERNAME_LENGTH, '用户名应在4-20个字符之间'),
+        (BRAND_LENGTH, '品牌名称应在2-32个字符之间'),
         (ERROR_PHONE_CAPTCHA, "手机验证码错误"),
         (EXIST_USERNAME, "已存在的用户名"),
         (NOT_FOUND_USERNAME, "不存在的用户名"),

@@ -3,6 +3,7 @@ import re
 from django.db import models
 from django.utils.crypto import get_random_string
 
+from Card.models import Card
 from base.error import Error
 from base.response import ret
 
@@ -23,6 +24,7 @@ class User(models.Model):
         'user_id': 32,
         'username': 20,
         'password': 32,
+        'real_name': 64,
         'address': 512,
         'brand': 32,
     }
@@ -46,6 +48,13 @@ class User(models.Model):
         verbose_name='MD5密码',
         max_length=L['password'],
     )
+    real_name = models.CharField(
+        verbose_name='真实姓名',
+        max_length=L['real_name'],
+        default=None,
+        null=True,
+        blank=True,
+    )
     address = models.CharField(
         verbose_name='住址或仓库地址',
         max_length=L['address'],
@@ -56,6 +65,13 @@ class User(models.Model):
     brand = models.CharField(
         verbose_name='卖家商家品牌',
         max_length=L['brand'],
+    )
+    default_card = models.ForeignKey(
+        'Card.Card',
+        verbose_name='默认银行卡',
+        default=None,
+        null=True,
+        blank=True,
     )
 
     @staticmethod
@@ -118,3 +134,28 @@ class User(models.Model):
         if o.password != User.get_md5(raw_pwd):
             return ret(Error.ERROR_PASSWORD)
         return ret(Error.OK, o)
+
+    def edit_info(self, address, real_name):
+        """
+        编辑信息
+        :param address: 地址
+        :param real_name: 真实姓名
+        """
+        self.address = address
+        self.real_name = real_name
+        self.save()
+
+    def get_card_list(self):
+        """
+        获取用户银行卡列表
+        :return:
+        """
+        cards = Card.objects.filter(owner=self)
+        card_list = []
+        for o_card in cards:
+            card_list.append(dict(
+                card_id=o_card.pk,
+                card=o_card.card,
+                is_default=o_card == self.default_card
+            ))
+        return card_list

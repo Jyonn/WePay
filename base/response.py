@@ -28,7 +28,7 @@ def response(code=0, msg="ok", body=None):
 
 
 def error_response(error_id, append_msg=""):
-    for error in Error.ERROR_DICT:
+    for error in Error.ERROR_TUPLE:
         if error_id == error[0]:
             return response(code=error_id, msg=error[1]+append_msg)
     return error_response(Error.NOT_FOUND_ERROR)
