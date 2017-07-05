@@ -347,7 +347,7 @@
 - request
 ```
 {
-	'user_id': 	用户ID
+	'user_id': 用户ID
 	'category_id': 商品类别ID
 }
 ```
