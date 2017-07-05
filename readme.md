@@ -7,9 +7,9 @@
 
 - request
 ```
-    {
-        'username': 手机号
-    {
+{
+    'username': 手机号
+}
 ```
 - response
 ```
@@ -17,7 +17,7 @@
 	'code': 错误代码，默认为0（OK）
 	'msg': OK ／ 发送失败 ／ 手机号格式错误
 	'body': []
-{
+}
 ```
 
 ### 用户注册
@@ -31,7 +31,7 @@
 	'brand': 商家品牌（当is_seller=true时有效）
 	'username': 用户名（当is_seller=true时有效）
 	'captcha': 手机验证码（当is_seller=false时有效）
-{
+}
 ```
 - response
 ```
@@ -39,7 +39,7 @@
 	'code': 错误代码，默认为0（OK）
 	'msg': OK ／ 已存在的用户名 ／ 验证码错误 ／ 验证码过期 ／ 用户注册错误 ／ 品牌字符串长度错误 ／ 用户名字符串长度错误
 	'body': 用户ID
-{
+}
 ```
 
 ### 用户登录
@@ -50,7 +50,7 @@
 {
 	'username': 用户名
 	'password': 密码
-{
+}
 ```
 - response
 ```
@@ -58,7 +58,7 @@
 	'code': 错误代码，默认为0（OK）
 	'msg': OK ／ 不存在的用户名 ／ 错误的用户名或密码
 	'body': 用户ID
-{
+}
 ```
 
 ### 用户退出
