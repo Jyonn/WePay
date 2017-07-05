@@ -39,18 +39,24 @@ class Card(models.Model):
             o.owner.save()
         return ret(Error.OK, o)
 
-    def set_default(self):
+    def set_default(self, o_user):
         """
         设为默认银行卡
         """
+        if self.owner != o_user:
+            return ret(Error.NOT_YOUR_CARD)
         self.owner.default_card = self
         self.owner.save()
+        return ret(Error.OK)
 
-    def safe_delete(self):
+    def safe_delete(self, o_user):
         """
         安全删除银行卡
         """
+        if self.owner != o_user:
+            return ret(Error.NOT_YOUR_CARD)
         if self.owner.default_card == self:
             self.owner.default_card = None
             self.owner.save()
         self.delete()
+        return ret(Error.OK)
