@@ -1,4 +1,5 @@
 class Error:
+    REQUIRE_SELLER = 2025
     NOT_YOUR_CARD = 2024
     ERROR_ORDER_STATUS = 2023
     NOT_YOUR_GOOD = 2022
@@ -31,6 +32,7 @@ class Error:
     OK = 0
 
     ERROR_TUPLE = (
+        (REQUIRE_BUYER, '需要登录商家用户'),
         (NOT_YOUR_CARD, '不是你的银行卡'),
         (ERROR_ORDER_STATUS, '订单状态无法变更'),
         (NOT_YOUR_GOOD, '不是你的订单'),
@@ -42,7 +44,7 @@ class Error:
         (REQUIRE_SET_BUTTON, '需要设置购买商品'),
         (BUY_NUM, '购买数量必须是正整数'),
         (ERROR_BUTTON_CREATE, '创建按钮设置错误'),
-        (REQUIRE_BUYER, '需要买家用户'),
+        (REQUIRE_BUYER, '需要登录买家用户'),
         (DELETED_GOOD, '商品被删除'),
         (NOT_FOUND_GOOD, '不存在的商品'),
         (ERROR_CARD_CREATE, '创建银行卡失败'),

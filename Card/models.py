@@ -29,6 +29,9 @@ class Card(models.Model):
         :param is_default: 是否设为默认
         :return:
         """
+        if o_user.user_type != User.TYPE_BUYER:
+            return ret(Error.REQUIRE_BUYER)
+
         o = cls(user=o_user, card=card)
         try:
             o.save()
@@ -47,7 +50,7 @@ class Card(models.Model):
             return ret(Error.NOT_YOUR_CARD)
         self.owner.default_card = self
         self.owner.save()
-        return ret(Error.OK)
+        return ret()
 
     def safe_delete(self, o_user):
         """
@@ -59,4 +62,4 @@ class Card(models.Model):
             self.owner.default_card = None
             self.owner.save()
         self.delete()
-        return ret(Error.OK)
+        return ret()

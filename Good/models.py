@@ -44,17 +44,17 @@ class Category(models.Model):
         category_list = []
         for o_category in Category.objects.all():
             category_list.append(dict(
-                name=o_category.category_name,
+                category_name=o_category.category_name,
                 category_id=o_category.pk,
             ))
-        return category_list
+        return ret(Error.OK, category_list)
 
     def get_good_list(self):
         """
         获取一个类别的所有商品
         :return: 商品列表
         """
-        goods = Good.objects.filter(category=self)
+        goods = Good.objects.filter(category=self, is_deleted=False)
         good_list = []
         for o_good in goods:
             good_list.append(dict(
@@ -65,7 +65,7 @@ class Category(models.Model):
                 price=o_good.price,
                 pic=o_good.pic,
             ))
-        return good_list
+        return ret(Error.OK, good_list)
 
 
 class Good(models.Model):
@@ -131,33 +131,36 @@ class Good(models.Model):
         except:
             return ret(Error.ERROR_GOOD_CREATE)
 
-    def edit_info(self, name, price, store):
-        """
-        编辑商品属性
-        :param name: 商品名
-        :param price: 商品价格
-        :param store: 商品库存
-        :return:
-        """
-        self.good_name = name
-        self.price = price
-        self.store = store
-        self.save()
+    # def edit_info(self, name, price, store):
+    #     """
+    #     编辑商品属性
+    #     :param name: 商品名
+    #     :param price: 商品价格
+    #     :param store: 商品库存
+    #     :return:
+    #     """
+    #     self.good_name = name
+    #     self.price = price
+    #     self.store = store
+    #     self.save()
+    #
+    # def change_pic(self, pic):
+    #     """
+    #     更换商品图片
+    #     :param pic: 商品图片
+    #     """
+    #     self.pic = pic
+    #     self.save()
 
-    def change_pic(self, pic):
-        """
-        更换商品图片
-        :param pic: 商品图片
-        """
-        self.pic = pic
-        self.save()
-
-    def lazy_remove(self):
+    def lazy_remove(self, o_user):
         """
         删除商品
         """
+        if self.seller != o_user:
+            return ret(Error.NOT_FOUND_GOOD)
         self.is_deleted = True
         self.save()
+        return ret()
 
 
 class Button(models.Model):

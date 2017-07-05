@@ -140,15 +140,30 @@ class User(models.Model):
         :param address: 地址
         :param real_name: 真实姓名
         """
+        if self.user_type != User.TYPE_BUYER:
+            return ret(Error.REQUIRE_BUYER)
         self.address = address
         self.real_name = real_name
         self.save()
+        return ret()
+
+    def get_info(self):
+        """
+        获取信息
+        :return: 地址 真实姓名
+        """
+        if self.user_type != User.TYPE_BUYER:
+            return ret(Error.REQUIRE_BUYER)
+        return ret(Error.OK, dict(address=self.address, real_name=self.real_name))
 
     def get_card_list(self):
         """
         获取用户银行卡列表
         :return: 银行卡列表
         """
+        if self.user_type != User.TYPE_BUYER:
+            return ret(Error.REQUIRE_BUYER)
+
         from Card.models import Card
         cards = Card.objects.filter(owner=self)
         card_list = []
@@ -158,4 +173,80 @@ class User(models.Model):
                 card=o_card.card,
                 is_default=o_card == self.default_card
             ))
-        return card_list
+        return ret(Error.OK, card_list)
+
+    def get_good_list(self):
+        """
+        获取商家商品列表
+        :return: 商品列表
+        """
+        if self.user_type != User.TYPE_SELLER:
+            return ret(Error.REQUIRE_SELLER)
+
+        from Good.models import Good
+        goods = Good.objects.filter(seller=self, is_deleted=False)
+        good_list = []
+        for o_good in goods:
+            good_list.append(dict(
+                good_id=o_good.pk,
+                brand=o_good.seller.brand,
+                good_name=o_good.good_name,
+                store=o_good.store,
+                price=o_good.price,
+                pic=o_good.pic,
+            ))
+        return ret(Error.OK, good_list)
+
+    def get_button_list(self):
+        """
+        获取买家设置列表
+        :return: 设置列表
+        """
+        if self.user_type != User.TYPE_BUYER:
+            return ret(Error.REQUIRE_BUYER)
+
+        from Good.models import Button
+        buttons = Button.objects.filter(owner=self)
+        button_list = []
+        for button in buttons:
+            button_list.append(dict(
+                button_id=button.pk,
+                category_id=button.category_id,
+                category_name=button.category.category_name,
+                good_id=button.default_good_id,
+                good_name=button.default_good.good_name,
+                number=button.buy_num,
+            ))
+        return ret(Error.OK, button_list)
+
+    def get_list(self, order_status, page):
+        """
+        获取订单列表
+        :param order_status: 订单筛选
+        :param page: 返回结果的第几页
+        :return: 订单列表及是否到达末尾
+        """
+        try:
+            page = int(page)
+            assert page >= 0
+        except:
+            return ret(Error.ERROR_PAGE)  # 错误的页码
+
+        from Order.models import Order
+        if self.user_type == User.TYPE_BUYER:
+            orders = Order.objects.filter(buyer=self, status=order_status).order_by('-pk')
+        else:
+            orders = Order.objects.filter(good__seller=self, status=order_status).order_by('-pk')
+        is_over = len(orders) <= (page+1) * 10
+        orders = orders[page*10: (page+1)*10]
+        order_list = []
+        for o_order in orders:
+            order_list.append(dict(
+                order_id=o_order.pk,
+                good_name=o_order.good_name,
+                real_name=o_order.real_name,
+                phone=o_order.buyer.username,
+                address=o_order.address,
+                number=o_order.buy_num,
+            ))
+        return ret(Error.OK, dict(order_list=order_list, is_over=is_over))

@@ -115,38 +115,6 @@ class Order(models.Model):
         o_button.default_good.save()
         return ret(Error.OK, o)
 
-    @staticmethod
-    def get_list(o_user, order_status, page):
-        """
-        获取订单列表
-        :param o_user: 用户类
-        :param order_status: 订单筛选
-        :param page: 返回结果的第几页
-        :return: 订单列表及是否到达末尾
-        """
-        try:
-            page = int(page)
-            assert page >= 0
-        except:
-            return ret(Error.ERROR_PAGE)
-        if o_user.user_type == User.TYPE_BUYER:
-            orders = Order.objects.filter(buyer=o_user, status=order_status).order_by('-pk')
-        else:
-            orders = Order.objects.filter(good__seller=o_user, status=order_status).order_by('-pk')
-        is_over = len(orders) <= (page+1) * 10
-        orders = orders[page*10: (page+1)*10]
-        order_list = []
-        for o_order in orders:
-            order_list.append(dict(
-                order_id=o_order.pk,
-                good_name=o_order.good_name,
-                real_name=o_order.real_name,
-                phone=o_order.buyer.username,
-                address=o_order.address,
-                number=o_order.buy_num,
-            ))
-        return ret(Error.OK, dict(order_list=order_list, is_over=is_over))
-
     def confirm_send(self, o_user):
         """
         商家确认发货
