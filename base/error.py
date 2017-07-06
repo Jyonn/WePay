@@ -1,4 +1,8 @@
 class Error:
+    STORE = 2033
+    PRICE = 2032
+    DESCRIPTION_LENGTH = 2031
+    GOOD_NAME_LENGTH = 2030
     ERROR_CATEGORY_CREATE = 2029
     CATEGORY_NAME_LENGTH = 2028
     REAL_NAME_LENGTH = 2027
@@ -36,6 +40,10 @@ class Error:
     OK = 0
 
     ERROR_TUPLE = (
+        (STORE, '错误的商品库存'),
+        (PRICE, '错误的商品价格'),
+        (DESCRIPTION_LENGTH, '商品描述长度应在512个字符之内'),
+        (GOOD_NAME_LENGTH, '商品名应在1-20个字符之间'),
         (ERROR_CATEGORY_CREATE, '创建类别失败'),
         (CATEGORY_NAME_LENGTH, '类别名应在2-20个字符之间'),
         (REAL_NAME_LENGTH, '真实姓名长度应在32个字符之内'),
@@ -44,7 +52,7 @@ class Error:
         (NOT_YOUR_CARD, '不是你的银行卡'),
         (ERROR_ORDER_STATUS, '订单状态无法变更'),
         (NOT_YOUR_GOOD, '不是你的订单'),
-        (ERROR_PAGE, '错误的页数'),
+        (ERROR_PAGE, '错误的订单页数'),
         (ERROR_ORDER_CREATE, '创建订单失败'),
         (REQUIRE_ADD_DEFAULT_CARD, '需要设置默认银行卡'),
         (REQUIRE_COMPLETE_BUYER_INFO, '需要完善用户收货信息'),

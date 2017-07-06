@@ -3,12 +3,13 @@
 ## 用户登录
 
 ### 发送验证码
-> /user/phone
+> POST /user
 
 - request
 ```
 {
-    'username': 手机号
+    'method': 'captcha'
+    'phone': 手机号
 }
 ```
 - response
@@ -21,11 +22,12 @@
 ```
 
 ### 用户注册
-> /user/register
+> POST /user
 
 - request
 ```
 {
+    'method': 'register'
 	'password': 密码
 	'is_seller': 是否是商家
 	'brand': 商家品牌（当is_seller=true时有效）
@@ -43,11 +45,12 @@
 ```
 
 ### 用户登录
-> /user/login
+> GET /user
 
 - request
 ```
 {
+    'method': 'login'
 	'username': 用户名
 	'password': 密码
 }
@@ -62,11 +65,13 @@
 ```
 
 ### 用户退出
-> /user/logout
+> GET /user
 
 - request
 ```
-{}
+{
+    'method': 'logout'
+}
 ```
 - response
 ```
@@ -80,7 +85,7 @@
 ## 信息管理
 
 ### 编辑收货信息
-> /buyer/address/edit
+> PUT /user/address
 
 - request
 ```
@@ -99,7 +104,7 @@
 ```
 
 ### 获取收货信息
-> /buyer/address/get
+> GET /user/address
 
 - response
 ```
@@ -118,7 +123,7 @@
 ```
 
 ### 添加银行卡
-> /user/card/add
+> POST /card
 
 - request
 ```
@@ -137,13 +142,11 @@
 ```
 
 ### 设置默认银行卡
-> /user/card/default
+> PUT /user/default_card/<card_id>
 
 - request
 ```
-{
-	'card_id': 银行卡ID
-}
+{}
 ```
 - response
 ```
@@ -154,13 +157,11 @@
 ```
 
 ### 删除银行卡
-> /user/card/remove
+> DELETE /card/<card_id>
 
 - request
 ```
-{
-	'card_id': 银行卡ID
-}
+{}
 ```
 - response
 ```
@@ -171,7 +172,7 @@
 ```
 
 ### 获取银行卡
-> /user/card/get
+> GET /card
 
 - request
 ```
@@ -193,7 +194,7 @@
 ## 商品
 
 ### 获取商品类别
-> /category/list
+> GET /category
 
 - request
 ```
@@ -212,13 +213,11 @@
 ```
 
 ### 获取一个类别的所有商品
-> /category/good-list
+> GET /category/<category_id>/good
 
 - request
 ```
-{
-	'category_id': 类别ID
-}
+{}
 ```
 - response
 ```
@@ -237,7 +236,7 @@
 ```
 
 ### 卖家添加商品
-> /seller/good/add
+> POST /good
 
 - request
 ```
@@ -247,25 +246,47 @@
 	'price': 商品价格
 	'store': 商品库存
 	'pic': 商品图片
+	'description': 商品描述
 }
 ```
 - response
 ```
 {
 	'code': 错误代码，默认为0（OK）
-	'msg': OK / 添加错误
+	'msg': OK / 商品名长度错误 / 商品描述长度错误 / 商品价格错误 / 商品库存错误 / 添加错误
 	'body': 商品ID
 }
 ```
 
-### 卖家删除商品
-> /seller/good/remove
+### 卖家编辑商品
+> PUT /good/<good_id>
 
 - request
 ```
 {
-	'good_id': 商品ID
+	'category_id': 商品类别ID
+	'name': 商品名
+	'price': 商品价格
+	'store': 商品库存
+	'pic': 商品图片
+	'description': 商品描述
 }
+```
+- response
+```
+{
+	'code': 错误代码，默认为0（OK）
+	'msg': OK / 商品名长度错误 / 商品描述长度错误 / 商品价格错误 / 商品库存错误 / 添加错误
+	'body': []
+}
+```
+
+### 卖家删除商品
+> DELETE /good/<good_id>
+
+- request
+```
+{}
 ```
 - response
 ```
@@ -277,7 +298,7 @@
 ```
 
 ### 卖家商品列表
-> /seller/good/list
+> GET /good
 
 - request
 ```
@@ -300,8 +321,8 @@
 
 ## 按钮
 
-### 买家设置按钮
-> /buyer/button/set
+### 买家新增设置按钮
+> POST /button
 
 - request
 ```
@@ -314,13 +335,48 @@
 ```
 {
 	'code': 错误代码，默认为0（OK）
-	'msg': 购买数量错误 / 不存在的商品ID / 商品已下架 / 当前用户不是买家 / 设置错误
-	'body': []
+	'msg': OK / 购买数量错误 / 不存在的商品ID / 商品已下架 / 当前用户不是买家 / 设置错误
+	'body': 按钮ID
+}
+```
+
+### 买家编辑设置按钮
+> PUT /button/<button_id>
+
+- request
+```
+{
+	'good_id': 商品ID
+	'number': 购买数量
+}
+```
+- response
+```
+{
+	'code': 错误代码，默认为0（OK）
+	'msg': OK / 购买数量错误 / 不存在的商品ID / 商品已下架 / 当前用户不是买家 / 设置错误
+	'body': 按钮ID
+}
+```
+
+### 买家删除设置按钮
+> DELETE /button/<button_id>
+
+- request
+```
+{}
+```
+- response
+```
+{
+	'code': 错误代码，默认为0（OK）
+	'msg': OK / 不是你的按钮
+	'body': 按钮ID
 }
 ```
 
 ### 买家获取设置按钮列表
-> /buyer/button/list
+> GET /button
 
 - request
 ```
@@ -332,6 +388,7 @@
 	'code': 错误代码，默认为0（OK）
 	'msg': OK / 不是买家用户
 	'body': [{
+	    'button_id': 按钮ID
 		'category_id': 商品类别ID
 		'category_name': 商品类别名称
 		'good_id': 商品ID
@@ -342,7 +399,7 @@
 ```
 
 ### 按钮新增订单
-> /order/add
+> POST /order
 
 - request
 ```
@@ -363,7 +420,7 @@
 ## 订单
 
 ### 用户获取订单
-> /order/list
+> GET /order
 
 - hint
 ```
@@ -372,8 +429,8 @@
 - request
 ```
 {
-	'status': 'unsent' / 'unreceived'
-	'page': 查看页码
+    'status': 'unsent' / 'unreceived'
+    'page': 页码
 }
 ```
 - response
@@ -398,12 +455,12 @@
 ```
 
 ### 卖家确认发货
-> /order/send
+> PUT /order/<order_id>/status
 
 - request
 ```
 {
-	'order_id': 订单ID
+    'status': 'sent'
 }
 ```
 - response
@@ -416,12 +473,12 @@
 ```
 
 ### 买家确认收货
-> /order/receive
+> PUT /order/<order_id>/status
 
 - request
 ```
 {
-	'order_id':  订单ID
+    'status': 'received'
 }
 ```
 - response

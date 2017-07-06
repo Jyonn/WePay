@@ -4,6 +4,7 @@ from base.error import Error
 from base.response import ret
 
 
+
 class Category(models.Model):
     """
     商品类别类
@@ -114,7 +115,7 @@ class Good(models.Model):
     )
 
     @classmethod
-    def create(cls, seller, category_id, name, price, store, pic):
+    def create(cls, seller, category_id, name, price, store, pic, description):
         """
         创建商品类
         :param seller: 卖家类
@@ -123,8 +124,23 @@ class Good(models.Model):
         :param price: 商品价格
         :param store: 商品库存
         :param pic: 商品图片
+        :param description: 商品描述
         :return: 成功创建返回商品类，失败返回错误原因
         """
+        if not Good.L['good_name'] >= len(name) >= 1:  # 商品名长度错误
+            return ret(Error.GOOD_NAME_LENGTH)
+        if not Good.L['description'] > len(description):  # 商品描述长度错误
+            return ret(Error.DESCRIPTION_LENGTH)
+        try:
+            price = float(price)
+            assert price > 0
+        except:
+            return ret(Error.PRICE)  # 商品价格错误
+        try:
+            store = int(store)
+            assert store > 0
+        except:
+            return ret(Error.STORE)  # 商品库存错误
         o = cls(
             category_id=category_id,
             good_name=name,
@@ -139,27 +155,34 @@ class Good(models.Model):
         except:
             return ret(Error.ERROR_GOOD_CREATE)
 
-    #TODO:
-    def edit_info(self, name, price, store, description):
+    def edit_info(self, name, price, store, description, pic):
         """
         编辑商品属性
         :param name: 商品名
         :param price: 商品价格
         :param store: 商品库存
         :param description: 商品描述
+        :param pic: 商品图片
         :return:
         """
+        if not Good.L['good_name'] >= len(name) >= 1:  # 商品名长度错误
+            return ret(Error.GOOD_NAME_LENGTH)
+        if not Good.L['description'] > len(description):  # 商品描述长度错误
+            return ret(Error.DESCRIPTION_LENGTH)
+        try:
+            price = float(price)
+            assert price > 0
+        except:
+            return ret(Error.PRICE)  # 商品价格错误
+        try:
+            store = int(store)
+            assert store > 0
+        except:
+            return ret(Error.STORE)  # 商品库存错误
         self.good_name = name
         self.price = price
         self.store = store
         self.description = description
-        self.save()
-
-    def change_pic(self, pic):
-        """
-        更换商品图片
-        :param pic: 商品图片
-        """
         self.pic = pic
         self.save()
 
