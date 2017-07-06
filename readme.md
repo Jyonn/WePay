@@ -93,7 +93,7 @@
 ```
 {
 	'code': 错误代码，默认为0（OK）
-	'msg': OK / 不是买家用户
+	'msg': OK / 不是买家用户 / 真实姓名长度错误 / 地址长度错误
 	'body': []
 }
 ```
@@ -372,7 +372,7 @@
 - request
 ```
 {
-	'status': 'unsend' / 'unreceive'
+	'status': 'unsent' / 'unreceived'
 	'page': 查看页码
 }
 ```
@@ -390,6 +390,8 @@
 			'phone': 买家手机
 			'address': 买家地址
 			'number': 商品数量
+			'price': 订单总价
+			'pic': 商品图片
 		}]
 	}
 }

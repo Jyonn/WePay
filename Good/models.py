@@ -23,11 +23,14 @@ class Category(models.Model):
         创建商品类别
         :param name: 类别名称
         """
+        if not Category.L['category_name'] >= len(name) >= 2:
+            return ret(Error.CATEGORY_NAME_LENGTH)
         o = cls(category_name=name)
         try:
             o.save()
         except:
-            pass
+            return ret(Error.ERROR_CATEGORY_CREATE)
+        return ret()
 
     @staticmethod
     def init():
@@ -73,6 +76,7 @@ class Good(models.Model):
     商品类
     """
     L = {
+        'description': 512,
         'good_name': 20,
         'pic': 128,
     }
@@ -91,6 +95,10 @@ class Good(models.Model):
     store = models.IntegerField(
         verbose_name='库存',
         default=0,
+    )
+    description = models.CharField(
+        verbose_name='商品介绍',
+        max_length=L['description'],
     )
     pic = models.CharField(
         verbose_name='商品图片',
@@ -131,26 +139,29 @@ class Good(models.Model):
         except:
             return ret(Error.ERROR_GOOD_CREATE)
 
-    # def edit_info(self, name, price, store):
-    #     """
-    #     编辑商品属性
-    #     :param name: 商品名
-    #     :param price: 商品价格
-    #     :param store: 商品库存
-    #     :return:
-    #     """
-    #     self.good_name = name
-    #     self.price = price
-    #     self.store = store
-    #     self.save()
-    #
-    # def change_pic(self, pic):
-    #     """
-    #     更换商品图片
-    #     :param pic: 商品图片
-    #     """
-    #     self.pic = pic
-    #     self.save()
+    #TODO:
+    def edit_info(self, name, price, store, description):
+        """
+        编辑商品属性
+        :param name: 商品名
+        :param price: 商品价格
+        :param store: 商品库存
+        :param description: 商品描述
+        :return:
+        """
+        self.good_name = name
+        self.price = price
+        self.store = store
+        self.description = description
+        self.save()
+
+    def change_pic(self, pic):
+        """
+        更换商品图片
+        :param pic: 商品图片
+        """
+        self.pic = pic
+        self.save()
 
     def lazy_remove(self, o_user):
         """

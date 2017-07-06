@@ -90,9 +90,9 @@ class User(models.Model):
         :return: 创建成功返回用户类，不成功返回错误代码
         """
         if user_type == User.TYPE_SELLER:
-            if not User.L['brand'] > len(brand) > 2:
+            if not User.L['brand'] >= len(brand) >= 2:
                 return ret(Error.BRAND_LENGTH)
-            if not User.L['username'] > len(username) > 4:
+            if not User.L['username'] >= len(username) >= 4:
                 return ret(Error.USERNAME_LENGTH)
         else:
             phone_regex = '^1[3458]\d{9}$'
@@ -142,6 +142,10 @@ class User(models.Model):
         """
         if self.user_type != User.TYPE_BUYER:
             return ret(Error.REQUIRE_BUYER)
+        if User.L['address'] < len(address):
+            return ret(Error.ADDRESS_LENGTH)
+        if User.L['real_name'] < len(real_name):
+            return ret(Error.REAL_NAME_LENGTH)
         self.address = address
         self.real_name = real_name
         self.save()
@@ -248,5 +252,7 @@ class User(models.Model):
                 phone=o_order.buyer.username,
                 address=o_order.address,
                 number=o_order.buy_num,
+                price=o_order.price,
+                pic=o_order.good.pic,
             ))
         return ret(Error.OK, dict(order_list=order_list, is_over=is_over))
