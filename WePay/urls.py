@@ -19,5 +19,5 @@ from . import front_views
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
-    url(r'^index$', front_views.get_index_html)
+    url(r'^try$', front_views.try_request)
 ]

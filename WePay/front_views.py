@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.core.handlers.wsgi import WSGIRequest
+
+from base.response import response
 
 
-def get_index_html(request):
-    return render(request, 'index.html')
+def try_request(request):
+    print(request.read().decode())
+    return response(body=request.method)

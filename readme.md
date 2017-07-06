@@ -1,14 +1,13 @@
-# AKS接口文档 0706 v2.0
+# AKS接口文档 0706 v2.1
 
 ## 用户登录
 
 ### 发送验证码
-> POST /user
+> PUT /session
 
 - request
 ```
 {
-    'method': 'captcha'
     'phone': 手机号
 }
 ```
@@ -27,7 +26,6 @@
 - request
 ```
 {
-    'method': 'register'
 	'password': 密码
 	'is_seller': 是否是商家
 	'brand': 商家品牌（当is_seller=true时有效）
@@ -45,14 +43,13 @@
 ```
 
 ### 用户登录
-> GET /user
+> POST /session
 
 - request
 ```
 {
-    'method': 'login'
-	'username': 用户名
-	'password': 密码
+    'username': 用户名
+    'password': 密码
 }
 ```
 - response
@@ -65,13 +62,11 @@
 ```
 
 ### 用户退出
-> GET /user
+> DELETE /session
 
 - request
 ```
-{
-    'method': 'logout'
-}
+{}
 ```
 - response
 ```

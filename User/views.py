@@ -1,3 +1,6 @@
+from django.core.handlers.wsgi import WSGIRequest
 from django.shortcuts import render
 
-# Create your views here.
+
+
+# def send_captcha(request):

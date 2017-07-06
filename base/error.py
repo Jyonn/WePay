@@ -33,7 +33,7 @@ class Error:
     EXIST_USERNAME = 2003
     NOT_FOUND_USERNAME = 2001
     ERROR_PASSWORD = 2000
-    NEED_LOGIN = 1003
+    REQUIRE_LOGIN = 1003
     REQUIRE_JSON = 1002
     REQUIRE_PARAM = 1001
     NOT_FOUND_ERROR = 1000
@@ -74,7 +74,7 @@ class Error:
         (NOT_FOUND_USERNAME, "不存在的用户名"),
         (ERROR_PASSWORD, "错误的用户名或密码"),
 
-        (NEED_LOGIN, "需要登录"),
+        (REQUIRE_LOGIN, "需要登录"),
         (REQUIRE_JSON, "需要JSON数据"),
         (REQUIRE_PARAM, "缺少参数"),
         (NOT_FOUND_ERROR, "不存在的错误"),
