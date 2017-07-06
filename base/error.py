@@ -1,4 +1,7 @@
 class Error:
+    """
+    错误代码类
+    """
     NOT_FOUND_ORDER = 2046
     ERROR_STATUS = 2045
     NOT_FOUND_USER = 2044
@@ -46,12 +49,15 @@ class Error:
     EXIST_USERNAME = 2003
     NOT_FOUND_USERNAME = 2001
     ERROR_PASSWORD = 2000
+
+    ERROR_METHOD = 1004
     REQUIRE_LOGIN = 1003
     REQUIRE_JSON = 1002
     REQUIRE_PARAM = 1001
     NOT_FOUND_ERROR = 1000
     OK = 0
 
+    # 错误说明
     ERROR_TUPLE = (
         (NOT_FOUND_ORDER, '不存在的订单'),
         (ERROR_STATUS, '错误的订单状态'),
@@ -100,6 +106,7 @@ class Error:
         (NOT_FOUND_USERNAME, "不存在的用户名"),
         (ERROR_PASSWORD, "错误的用户名或密码"),
 
+        (ERROR_METHOD, '错误的HTTP请求方法'),
         (REQUIRE_LOGIN, "需要登录"),
         (REQUIRE_JSON, "需要JSON数据"),
         (REQUIRE_PARAM, "缺少参数"),

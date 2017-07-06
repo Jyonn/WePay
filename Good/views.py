@@ -7,11 +7,17 @@ from base.response import response, error_response
 
 
 def get_category_list(request):
+    """
+    获取商品类别列表
+    """
     ret = Category.get_list()
     return response(body=ret.body) if ret.error == Error.OK else error_response(ret.error)
 
 
 def get_good_of_category(request, category_id):
+    """
+    获取一个类别的所有商品
+    """
     o_category = Category.get(category_id)
     ret = o_category.get_good_list()
     return response(body=ret.body) if ret.error == Error.OK else error_response(ret.error)
@@ -21,6 +27,9 @@ def get_good_of_category(request, category_id):
 @require_params(['category_id', 'name', 'price', 'store', 'description', 'pic', 'gzipped'])
 @require_seller
 def add_good(request):
+    """
+    商家添加商品
+    """
     category_id = request.POST['category_id']
     name = request.POST['name']
     price = request.POST['price']
@@ -51,6 +60,9 @@ def add_good(request):
 @require_params(['name', 'price', 'store', 'description', 'pic', 'gzipped'])
 @require_seller
 def edit_good(request, good_id):
+    """
+    商家编辑商品
+    """
     ret = Good.get(good_id)
     if ret.error != Error.OK:
         return error_response(ret.error)
@@ -75,6 +87,9 @@ def edit_good(request, good_id):
 
 @require_seller
 def delete_good(request, good_id):
+    """
+    商家删除商品
+    """
     ret = Good.get(good_id)
     if ret.error != Error.OK:
         return error_response(ret.error)
@@ -87,6 +102,9 @@ def delete_good(request, good_id):
 
 @require_seller
 def get_good_list(request):
+    """
+    商家获取商品列表
+    """
     o_user = get_user_from_session(request)
     ret = o_user.get_good_list()
     return response(body=ret.body) if ret.error == Error.OK else error_response(ret.error)
@@ -96,6 +114,9 @@ def get_good_list(request):
 @require_params(['good_id', 'number'])
 @require_buyer
 def add_button(request):
+    """
+    买家添加设置按钮
+    """
     good_id = request.POST['good_id']
     number = request.POST['number']
 
@@ -114,6 +135,9 @@ def add_button(request):
 @require_params(['good_id', 'number'])
 @require_buyer
 def edit_button(request, button_id):
+    """
+    买家编辑设置按钮
+    """
     good_id = request.POST['good_id']
     number = request.POST['number']
 
@@ -135,6 +159,9 @@ def edit_button(request, button_id):
 
 @require_buyer
 def delete_button(request, button_id):
+    """
+    买家删除设置按钮
+    """
     ret = Button.get(button_id)
     if ret.error != Error.OK:
         return error_response(ret.error)
@@ -148,6 +175,9 @@ def delete_button(request, button_id):
 
 @require_buyer
 def get_button_list(request):
+    """
+    买家获取设置按钮列表
+    """
     o_user = get_user_from_session(request)
     ret = o_user.get_button_list()
     return response(body=ret.body) if ret.error == Error.OK else error_response(ret.error)

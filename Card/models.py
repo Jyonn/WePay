@@ -62,9 +62,9 @@ class Card(models.Model):
         self.owner.save()
         return Ret()
 
-    def safe_delete(self, o_user):
+    def remove(self, o_user):
         """
-        安全删除银行卡
+        删除银行卡
         """
         if self.owner != o_user:
             return Ret(Error.NOT_YOUR_CARD)

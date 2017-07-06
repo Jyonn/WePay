@@ -137,7 +137,7 @@
 ```
 
 ### 设置默认银行卡
-> PUT /user/default_card
+> PUT /user/default-card
 
 - request
 ```
@@ -419,7 +419,7 @@
 ## 订单
 
 ### 用户获取订单
-> GET /order/?status=<status>&page=<page>
+> GET /order?status=<status>&page=<page>
 
 - hint
 ```
@@ -452,7 +452,7 @@ page: 订单页码
 ```
 
 ### 卖家确认发货
-> PUT /order/<order_id>/status
+> PATCH /order/<order_id>/status
 
 - request
 ```
@@ -468,7 +468,7 @@ page: 订单页码
 ```
 
 ### 买家确认收货
-> PUT /order/<order_id>/status
+> PATCH /order/<order_id>/status
 
 - request
 ```

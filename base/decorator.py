@@ -60,16 +60,25 @@ def decorator_generator(verify_func, error_id):
 
 
 def require_login_func(request):
+    """
+    需要登录装饰器
+    """
     o_user = get_user_from_session(request)
     return o_user is not None
 
 
 def require_buyer_func(request):
+    """
+    需要买家登录装饰器
+    """
     o_user = get_user_from_session(request)
     return o_user is not None and o_user.user_type == User.TYPE_BUYER
 
 
 def require_seller_func(request):
+    """
+    需要商家登录装饰器
+    """
     o_user = get_user_from_session(request)
     return o_user is not None and o_user.user_type == User.TYPE_SELLER
 

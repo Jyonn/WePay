@@ -4,7 +4,6 @@ from base.error import Error
 from base.response import Ret
 
 
-
 class Category(models.Model):
     """
     商品类别类
@@ -113,6 +112,7 @@ class Good(models.Model):
     description = models.CharField(
         verbose_name='商品介绍',
         max_length=L['description'],
+        default=None,
     )
     pic = models.CharField(
         verbose_name='商品图片',
@@ -170,6 +170,11 @@ class Good(models.Model):
 
     @staticmethod
     def get(good_id):
+        """
+        根据商品ID获取商品类
+        :param good_id: 商品ID
+        :return: 商品类
+        """
         try:
             o = Good.objects.get(pk=good_id)
         except:
@@ -289,6 +294,11 @@ class Button(models.Model):
 
     @staticmethod
     def get(button_id):
+        """
+        根据按钮ID获取按钮类
+        :param button_id: 按钮ID
+        :return: 按钮类
+        """
         try:
             o = Button.objects.get(pk=button_id)
         except:

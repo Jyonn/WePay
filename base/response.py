@@ -6,6 +6,9 @@ from base.error import Error
 
 
 class Ret:
+    """
+    函数返回类
+    """
     def __init__(self, error=Error.OK, body=None):
         self.error = error
         self.body = body or []
@@ -27,6 +30,12 @@ def response(code=0, msg="ok", body=None):
 
 
 def error_response(error_id, append_msg=""):
+    """
+    HTTP错误返回类
+    :param error_id: 错误代码
+    :param append_msg: 附加消息
+    :return:
+    """
     for error in Error.ERROR_TUPLE:
         if error_id == error[0]:
             return response(code=error_id, msg=error[1]+append_msg)

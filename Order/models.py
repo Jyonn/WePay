@@ -117,6 +117,11 @@ class Order(models.Model):
 
     @staticmethod
     def get(order_id):
+        """
+        根据订单ID获取订单类
+        :param order_id: 订单ID
+        :return: 订单类
+        """
         try:
             o = Order.objects.get(pk=order_id)
         except:

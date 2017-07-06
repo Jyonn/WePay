@@ -10,6 +10,9 @@ from base.response import error_response, response
 @require_json
 @require_params(['user_id', 'category_id'])
 def add_order(request):
+    """
+    按钮新增订单
+    """
     user_id = request.POST['user_id']
     category_id = request.POST['category_id']
 
@@ -29,6 +32,9 @@ def add_order(request):
 
 @require_login
 def get_order_list(request, status, page):
+    """
+    用户获取订单列表
+    """
     if status not in ['unsent', 'unreceived']:
         return error_response(Error.ERROR_STATUS)
     status = Order.STATUS_CONFIRM_ORDER_BY_SELLER if status == 'unsent' else Order.STATUS_CONFIRM_DELIVER
@@ -40,6 +46,9 @@ def get_order_list(request, status, page):
 
 @require_seller
 def confirm_send(request, order_id):
+    """
+    商家确认发货
+    """
     ret = Order.get(order_id)
     if ret.error != Error.OK:
         return error_response(ret.error)
@@ -52,6 +61,9 @@ def confirm_send(request, order_id):
 
 @require_buyer
 def confirm_receive(request, order_id):
+    """
+    买家确认收获
+    """
     ret = Order.get(order_id)
     if ret.error != Error.OK:
         return error_response(ret.error)

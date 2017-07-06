@@ -8,8 +8,16 @@ from base.base_settings import yunpian_appkey
 
 
 class SendMobile:
+    """
+    手机验证码发送类
+    """
     @staticmethod
     def send_captcha(mobile):
+        """
+        发送验证码
+        :param mobile: 手机号
+        :return: 发送是否成功
+        """
         text = "【浙江大学智能按钮】您的验证码是#code#。有效时间为5分钟"
         phone_code = get_random_string(length=6, allowed_chars="1234567890")
         text = text.replace("#code#", phone_code)
@@ -23,7 +31,7 @@ class SendMobile:
         :param apikey: 云片应用密钥
         :param text: 发送明文
         :param mobile: 11位手机号
-        :return:
+        :return: 发送是否成功
         """
         # 服务地址
         url = "https://sms.yunpian.com/v2/sms/single_send.json"

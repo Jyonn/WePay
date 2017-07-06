@@ -120,6 +120,11 @@ class User(models.Model):
 
     @staticmethod
     def get(user_id):
+        """
+        根据用户ID获取用户类
+        :param user_id: 用户ID
+        :return: 用户类
+        """
         try:
             o = User.objects.get(pk=user_id)
         except:
