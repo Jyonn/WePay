@@ -5,11 +5,10 @@ from django.http import HttpResponse
 from base.error import Error
 
 
-def ret(error_id=Error.OK, body=None):
-    return {
-        'error': error_id,
-        'body': body or [],
-    }
+class Ret:
+    def __init__(self, error=Error.OK, body=None):
+        self.error = error
+        self.body = body or []
 
 
 def response(code=0, msg="ok", body=None):

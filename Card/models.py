@@ -2,7 +2,7 @@ from django.db import models
 
 from User.models import User
 from base.error import Error
-from base.response import ret
+from base.response import Ret
 
 
 class Card(models.Model):
@@ -29,37 +29,47 @@ class Card(models.Model):
         :param is_default: 是否设为默认
         :return:
         """
-        if o_user.user_type != User.TYPE_BUYER:
-            return ret(Error.REQUIRE_BUYER)
-
         o = cls(user=o_user, card=card)
         try:
             o.save()
         except:
-            return ret(Error.ERROR_CARD_CREATE)
+            return Ret(Error.ERROR_CARD_CREATE)
         if is_default:
             o.owner.default_card = o
             o.owner.save()
-        return ret(Error.OK, o)
+        return Ret(Error.OK, o)
+
+    @staticmethod
+    def get(card_id):
+        """
+        根据银行卡ID获取银行卡类
+        :param card_id: 银行卡ID
+        :return: 银行卡类
+        """
+        try:
+            o = Card.objects.get(pk=card_id)
+        except:
+            return Ret(Error.NOT_FOUND_CARD)
+        return Ret(Error.OK, o)
 
     def set_default(self, o_user):
         """
         设为默认银行卡
         """
         if self.owner != o_user:
-            return ret(Error.NOT_YOUR_CARD)
+            return Ret(Error.NOT_YOUR_CARD)
         self.owner.default_card = self
         self.owner.save()
-        return ret()
+        return Ret()
 
     def safe_delete(self, o_user):
         """
         安全删除银行卡
         """
         if self.owner != o_user:
-            return ret(Error.NOT_YOUR_CARD)
+            return Ret(Error.NOT_YOUR_CARD)
         if self.owner.default_card == self:
             self.owner.default_card = None
             self.owner.save()
         self.delete()
-        return ret()
+        return Ret()

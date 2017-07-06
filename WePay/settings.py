@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import platform
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -113,16 +115,28 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SESSION_COOKIE_AGE = 60 * 60 * 24
+PIC_MAX_SIZE = 1048576 * 5  # 5M
+
+if 'Linux' == platform.system():
+    MEDIA_ROOT = '/home/ubuntu/Resource/WePay'
+elif 'Darwin' == platform.system():
+    MEDIA_ROOT = '/Users/adelliu/WebSource/WePay'
+else:
+    MEDIA_ROOT = 'D:\\Program\\web\\WePay'
+
+PIC_PATH = os.path.join(MEDIA_ROOT, 'pic')

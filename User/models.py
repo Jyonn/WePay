@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.crypto import get_random_string
 
 from base.error import Error
-from base.response import ret
+from base.response import Ret
 
 
 class User(models.Model):
@@ -80,7 +80,7 @@ class User(models.Model):
         return md5.hexdigest()
 
     @classmethod
-    def create(cls, username, raw_pwd, user_type, brand):
+    def create(cls, username, raw_pwd, user_type, brand=''):
         """
         创建用户
         :param brand: 商家品牌（user_type=User.TYPE_SELLER时有效）
@@ -91,18 +91,18 @@ class User(models.Model):
         """
         if user_type == User.TYPE_SELLER:
             if not User.L['brand'] >= len(brand) >= 2:
-                return ret(Error.BRAND_LENGTH)
+                return Ret(Error.BRAND_LENGTH)
             if not User.L['username'] >= len(username) >= 4:
-                return ret(Error.USERNAME_LENGTH)
+                return Ret(Error.USERNAME_LENGTH)
         else:
             phone_regex = '^1[3458]\d{9}$'
             if re.search(phone_regex, username) is None:
-                return ret(Error.PHONE_FORMAT)
+                return Ret(Error.PHONE_FORMAT)
         password = User.get_md5(raw_pwd)
         user_id = User.get_md5(username+get_random_string(length=8))
         try:
             cls.objects.get(username=username)
-            return ret(Error.EXIST_USERNAME)
+            return Ret(Error.EXIST_USERNAME)
         except:
             pass
         o = cls(
@@ -114,9 +114,17 @@ class User(models.Model):
         )
         try:
             o.save()
-            return ret(Error.OK, o)
+            return Ret(Error.OK, o)
         except:
-            return ret(Error.ERROR_USER_CREATE)
+            return Ret(Error.ERROR_USER_CREATE)
+
+    @staticmethod
+    def get(user_id):
+        try:
+            o = User.objects.get(pk=user_id)
+        except:
+            return Ret(Error.NOT_FOUND_USER)
+        return Ret(Error.OK, o)
 
     @staticmethod
     def check_password(username, raw_pwd):
@@ -129,10 +137,10 @@ class User(models.Model):
         try:
             o = User.objects.get(username=username)
         except:
-            return ret(Error.NOT_FOUND_USERNAME)
+            return Ret(Error.NOT_FOUND_USERNAME)
         if o.password != User.get_md5(raw_pwd):
-            return ret(Error.ERROR_PASSWORD)
-        return ret(Error.OK, o)
+            return Ret(Error.ERROR_PASSWORD)
+        return Ret(Error.OK, o)
 
     def edit_info(self, address, real_name):
         """
@@ -141,15 +149,15 @@ class User(models.Model):
         :param real_name: 真实姓名
         """
         if self.user_type != User.TYPE_BUYER:
-            return ret(Error.REQUIRE_BUYER)
+            return Ret(Error.REQUIRE_BUYER)
         if User.L['address'] < len(address):
-            return ret(Error.ADDRESS_LENGTH)
+            return Ret(Error.ADDRESS_LENGTH)
         if User.L['real_name'] < len(real_name):
-            return ret(Error.REAL_NAME_LENGTH)
+            return Ret(Error.REAL_NAME_LENGTH)
         self.address = address
         self.real_name = real_name
         self.save()
-        return ret()
+        return Ret()
 
     def get_info(self):
         """
@@ -157,17 +165,14 @@ class User(models.Model):
         :return: 地址 真实姓名
         """
         if self.user_type != User.TYPE_BUYER:
-            return ret(Error.REQUIRE_BUYER)
-        return ret(Error.OK, dict(address=self.address, real_name=self.real_name))
+            return Ret(Error.REQUIRE_BUYER)
+        return Ret(Error.OK, dict(address=self.address, real_name=self.real_name))
 
     def get_card_list(self):
         """
         获取用户银行卡列表
         :return: 银行卡列表
         """
-        if self.user_type != User.TYPE_BUYER:
-            return ret(Error.REQUIRE_BUYER)
-
         from Card.models import Card
         cards = Card.objects.filter(owner=self)
         card_list = []
@@ -177,7 +182,7 @@ class User(models.Model):
                 card=o_card.card,
                 is_default=o_card == self.default_card
             ))
-        return ret(Error.OK, card_list)
+        return Ret(Error.OK, card_list)
 
     def get_good_list(self):
         """
@@ -185,7 +190,7 @@ class User(models.Model):
         :return: 商品列表
         """
         if self.user_type != User.TYPE_SELLER:
-            return ret(Error.REQUIRE_SELLER)
+            return Ret(Error.REQUIRE_SELLER)
 
         from Good.models import Good
         goods = Good.objects.filter(seller=self, is_deleted=False)
@@ -197,9 +202,9 @@ class User(models.Model):
                 good_name=o_good.good_name,
                 store=o_good.store,
                 price=o_good.price,
-                pic=o_good.pic,
+                pic=o_good.get_pic(),
             ))
-        return ret(Error.OK, good_list)
+        return Ret(Error.OK, good_list)
 
     def get_button_list(self):
         """
@@ -207,7 +212,7 @@ class User(models.Model):
         :return: 设置列表
         """
         if self.user_type != User.TYPE_BUYER:
-            return ret(Error.REQUIRE_BUYER)
+            return Ret(Error.REQUIRE_BUYER)
 
         from Good.models import Button
         buttons = Button.objects.filter(owner=self)
@@ -221,9 +226,9 @@ class User(models.Model):
                 good_name=button.default_good.good_name,
                 number=button.buy_num,
             ))
-        return ret(Error.OK, button_list)
+        return Ret(Error.OK, button_list)
 
-    def get_list(self, order_status, page):
+    def get_order_list(self, order_status, page):
         """
         获取订单列表
         :param order_status: 订单筛选
@@ -234,7 +239,7 @@ class User(models.Model):
             page = int(page)
             assert page >= 0
         except:
-            return ret(Error.ERROR_PAGE)  # 错误的页码
+            return Ret(Error.ERROR_PAGE)  # 错误的页码
 
         from Order.models import Order
         if self.user_type == User.TYPE_BUYER:
@@ -255,4 +260,4 @@ class User(models.Model):
                 price=o_order.price,
                 pic=o_order.good.pic,
             ))
-        return ret(Error.OK, dict(order_list=order_list, is_over=is_over))
+        return Ret(Error.OK, dict(order_list=order_list, is_over=is_over))

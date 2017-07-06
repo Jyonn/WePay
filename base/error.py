@@ -1,4 +1,17 @@
 class Error:
+    NOT_FOUND_ORDER = 2046
+    ERROR_STATUS = 2045
+    NOT_FOUND_USER = 2044
+    NOT_YOUR_BUTTON = 2043
+    NOT_BELONG_CATEGORY = 2042
+    NOT_FOUND_BUTTON = 2041
+    EXIST_BUTTON = 2040
+    FAILED_UPLOAD = 2039
+    ILLEGAL_PIC = 2038
+    PIC_SIZE = 2037
+    NOT_FOUND_CATEGORY = 2036
+    NOT_FOUND_CARD = 2035
+    ERROR_SEND_PHONE_CAPTCHA = 2034
     STORE = 2033
     PRICE = 2032
     DESCRIPTION_LENGTH = 2031
@@ -40,6 +53,19 @@ class Error:
     OK = 0
 
     ERROR_TUPLE = (
+        (NOT_FOUND_ORDER, '不存在的订单'),
+        (ERROR_STATUS, '错误的订单状态'),
+        (NOT_FOUND_USER, '不存在的用户'),
+        (NOT_YOUR_BUTTON, '不是你的按钮'),
+        (NOT_BELONG_CATEGORY, '当前商品不属于此类别'),
+        (NOT_FOUND_BUTTON, '不存在的按钮设置'),
+        (EXIST_BUTTON, '已存在的按钮设置'),
+        (FAILED_UPLOAD, '图片上传失败'),
+        (ILLEGAL_PIC, '图片解析错误'),
+        (PIC_SIZE, '图片过大'),
+        (NOT_FOUND_CATEGORY, '不存在的类别'),
+        (NOT_FOUND_CARD, '不存在的银行卡'),
+        (ERROR_SEND_PHONE_CAPTCHA, '手机验证码发送失败'),
         (STORE, '错误的商品库存'),
         (PRICE, '错误的商品价格'),
         (DESCRIPTION_LENGTH, '商品描述长度应在512个字符之内'),

@@ -3,7 +3,7 @@ from django.db import models
 from Good.models import Good, Button
 from User.models import User
 from base.error import Error
-from base.response import ret
+from base.response import Ret
 
 
 class Order(models.Model):
@@ -82,20 +82,20 @@ class Order(models.Model):
         :return: 创建成功则返回订单类，否则返回错误代码
         """
         if o_user.user_type == User.TYPE_SELLER:
-            return ret(Error.REQUIRE_BUYER)
+            return Ret(Error.REQUIRE_BUYER)
 
         try:
             o_button = Button.objects.get(owner=o_user, category=o_category)
         except:
-            return ret(Error.REQUIRE_SET_BUTTON)
+            return Ret(Error.REQUIRE_SET_BUTTON)
         if None in [o_user.address, o_user.real_name]:  # 未完善收货信息
-            return ret(Error.REQUIRE_COMPLETE_BUYER_INFO)
+            return Ret(Error.REQUIRE_COMPLETE_BUYER_INFO)
         if o_button.default_good.is_deleted:  # 商品被删除（下架）
-            return ret(Error.DELETED_GOOD)
+            return Ret(Error.DELETED_GOOD)
         if o_user.default_card is None:  # 未设置默认银行卡
-            return ret(Error.REQUIRE_ADD_DEFAULT_CARD)
+            return Ret(Error.REQUIRE_ADD_DEFAULT_CARD)
         if o_button.buy_num > o_button.default_good.store:  # 库存不足
-            return ret(Error.LACK_STORE)
+            return Ret(Error.LACK_STORE)
 
         o = cls(
             buyer=o_user,
@@ -109,11 +109,19 @@ class Order(models.Model):
         try:
             o.save()
         except:
-            return ret(Error.ERROR_ORDER_CREATE)
+            return Ret(Error.ERROR_ORDER_CREATE)
 
         o_button.default_good.store -= o_button.buy_num
         o_button.default_good.save()
-        return ret(Error.OK, o)
+        return Ret(Error.OK, o)
+
+    @staticmethod
+    def get(order_id):
+        try:
+            o = Order.objects.get(pk=order_id)
+        except:
+            return Ret(Error.NOT_FOUND_ORDER)
+        return Ret(Error.OK, o)
 
     def confirm_send(self, o_user):
         """
@@ -121,11 +129,11 @@ class Order(models.Model):
         :param o_user: 商家用户类
         """
         if self.good.seller != o_user:
-            return ret(Error.NOT_YOUR_GOOD)
+            return Ret(Error.NOT_YOUR_GOOD)
         if self.status != Order.STATUS_CONFIRM_ORDER_BY_SELLER:
-            return ret(Error.ERROR_ORDER_STATUS)
+            return Ret(Error.ERROR_ORDER_STATUS)
         self.status = Order.STATUS_CONFIRM_DELIVER
-        return ret(Error.OK)
+        return Ret(Error.OK)
 
     def confirm_receive(self, o_user):
         """
@@ -133,8 +141,8 @@ class Order(models.Model):
         :param o_user: 买家用户类
         """
         if self.buyer != o_user:
-            return ret(Error.NOT_FOUND_GOOD)
+            return Ret(Error.NOT_FOUND_GOOD)
         if self.status != Order.STATUS_CONFIRM_DELIVER:
-            return ret(Error.ERROR_ORDER_STATUS)
+            return Ret(Error.ERROR_ORDER_STATUS)
         self.status = Order.STATUS_CONFIRM_RECEIVE
-        return ret(Error.OK)
+        return Ret(Error.OK)

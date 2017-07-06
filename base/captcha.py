@@ -4,17 +4,17 @@ from urllib.parse import urlencode
 import requests
 from django.utils.crypto import get_random_string
 
-yunpian_appkey = '9a834d16cdd60ffa3a606c7c55dad5ab'
+from base.base_settings import yunpian_appkey
 
 
 class SendMobile:
     @staticmethod
     def send_captcha(mobile):
         text = "【浙江大学智能按钮】您的验证码是#code#。有效时间为5分钟"
-        code = get_random_string(length=6, allowed_chars="1234567890")
-        text = text.replace("#code#", code)
-        SendMobile.send_sms(yunpian_appkey, text, mobile)
-        return code
+        phone_code = get_random_string(length=6, allowed_chars="1234567890")
+        text = text.replace("#code#", phone_code)
+        ret_code = SendMobile.send_sms(yunpian_appkey, text, mobile)
+        return ret_code, phone_code
 
     @staticmethod
     def send_sms(apikey, text, mobile):
@@ -32,7 +32,8 @@ class SendMobile:
         response = requests.post(url, params, headers=headers)
         response_str = response.text
         response.close()
-        # print(response_str)
-        return json.loads(response_str)
-
-# print(SendMobile.send_captcha("17816871961"))
+        try:
+            ret_code = json.loads(response_str)['code']
+        except:
+            return -1
+        return ret_code

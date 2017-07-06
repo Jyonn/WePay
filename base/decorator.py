@@ -11,7 +11,7 @@ require_post = http.require_POST
 require_get = http.require_GET
 
 
-def require_params(need_params, decode=True):
+def require_params(need_params, decode=False):
     """
     需要获取的参数是否在request.POST中存在
     """

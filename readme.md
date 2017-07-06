@@ -1,4 +1,4 @@
-# AKS接口文档 0706 v2.1
+# AKS接口文档 0706 v2.2
 
 ## 用户登录
 
@@ -28,9 +28,9 @@
 {
 	'password': 密码
 	'is_seller': 是否是商家
-	'brand': 商家品牌（当is_seller=true时有效）
-	'username': 用户名（当is_seller=true时有效）
-	'captcha': 手机验证码（当is_seller=false时有效）
+	'brand': 商家品牌（当is_seller=1时有效）
+	'username': 用户名（当is_seller=1）
+	'captcha': 手机验证码（当is_seller=0）
 }
 ```
 - response
@@ -131,17 +131,19 @@
 ```
 {
 	'code': 错误代码，默认为0（OK）
-	'msg': OK / 不是买家用户 / 添加错误
+	'msg': OK / 添加错误
 	'body': 银行卡ID
 }
 ```
 
 ### 设置默认银行卡
-> PUT /user/default_card/<card_id>
+> PUT /user/default_card
 
 - request
 ```
-{}
+{
+    'card_id': 银行卡ID
+}
 ```
 - response
 ```
@@ -240,15 +242,16 @@
 	'name': 商品名
 	'price': 商品价格
 	'store': 商品库存
-	'pic': 商品图片
+	'pic': 商品图片(->gZip)->Base64
 	'description': 商品描述
+	'gzipped': 是否使用gzip压缩图片 0/1
 }
 ```
 - response
 ```
 {
 	'code': 错误代码，默认为0（OK）
-	'msg': OK / 商品名长度错误 / 商品描述长度错误 / 商品价格错误 / 商品库存错误 / 添加错误
+	'msg': OK / 商品名长度错误 / 商品描述长度错误 / 商品价格错误 / 商品库存错误 / 添加错误 / 图片解析错误 / 图片过大 / 图片上传失败
 	'body': 商品ID
 }
 ```
@@ -263,15 +266,16 @@
 	'name': 商品名
 	'price': 商品价格
 	'store': 商品库存
-	'pic': 商品图片
+	'pic': 商品图片(->gZip)->Base64
 	'description': 商品描述
+	'gzipped': 是否使用gzip压缩图片 0/1
 }
 ```
 - response
 ```
 {
 	'code': 错误代码，默认为0（OK）
-	'msg': OK / 商品名长度错误 / 商品描述长度错误 / 商品价格错误 / 商品库存错误 / 添加错误
+	'msg': OK / 商品名长度错误 / 商品描述长度错误 / 商品价格错误 / 商品库存错误 / 添加错误 / 图片解析错误 / 图片过大 / 图片上传失败
 	'body': []
 }
 ```
@@ -349,7 +353,7 @@
 ```
 {
 	'code': 错误代码，默认为0（OK）
-	'msg': OK / 购买数量错误 / 不存在的商品ID / 商品已下架 / 当前用户不是买家 / 设置错误
+	'msg': OK / 购买数量错误 / 不存在的商品ID / 商品已下架 / 当前用户不是买家 / 设置错误 / 商品不属于此分类
 	'body': 按钮ID
 }
 ```
@@ -415,7 +419,7 @@
 ## 订单
 
 ### 用户获取订单
-> GET /order
+> GET /order/?status=<status>&page=<page>
 
 - hint
 ```
@@ -423,10 +427,8 @@
 ```
 - request
 ```
-{
-    'status': 'unsent' / 'unreceived'
-    'page': 页码
-}
+status: unsent / unreceived
+page: 订单页码
 ```
 - response
 ```
@@ -454,9 +456,7 @@
 
 - request
 ```
-{
-    'status': 'sent'
-}
+{}
 ```
 - response
 ```
@@ -472,9 +472,7 @@
 
 - request
 ```
-{
-    'status': 'received'
-}
+{}
 ```
 - response
 ```
@@ -504,4 +502,3 @@
     'code': 错误代码，默认为0（OK）
 }
 ```
-
