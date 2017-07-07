@@ -1,8 +1,20 @@
-# AKS接口文档 0707 v2.4
+# AKS系统说明书0707 v3.0
 
-## 用户登录
+## 环境配置
 
-### 发送验证码
+- Python 3.5.3
+- Django 1.11.0
+- requests
+- quniu
+- pymysql
+- gzip
+
+
+## 接口文档
+
+### 用户登录
+
+#### 发送验证码
 > PUT /session
 
 - request
@@ -20,7 +32,7 @@
 }
 ```
 
-### 用户注册
+#### 用户注册
 > POST /user
 
 - request
@@ -42,7 +54,7 @@
 }
 ```
 
-### 用户登录
+#### 用户登录
 > POST /session
 
 - request
@@ -61,7 +73,7 @@
 }
 ```
 
-### 用户退出
+#### 用户退出
 > DELETE /session
 
 - request
@@ -79,7 +91,7 @@
 
 ## 信息管理
 
-### 编辑收货信息
+#### 编辑收货信息
 > PUT /user/address
 
 - request
@@ -98,7 +110,7 @@
 }
 ```
 
-### 获取收货信息
+#### 获取收货信息
 > GET /user/address
 
 - response
@@ -117,7 +129,7 @@
 }
 ```
 
-### 添加银行卡
+#### 添加银行卡
 > POST /card
 
 - request
@@ -136,7 +148,7 @@
 }
 ```
 
-### 设置默认银行卡
+#### 设置默认银行卡
 > PUT /user/default-card
 
 - request
@@ -153,7 +165,7 @@
 }
 ```
 
-### 删除银行卡
+#### 删除银行卡
 > DELETE /card/<card_id>
 
 - request
@@ -168,7 +180,7 @@
 }
 ```
 
-### 获取银行卡
+#### 获取银行卡
 > GET /card
 
 - request
@@ -190,7 +202,7 @@
 
 ## 商品
 
-### 获取商品类别
+#### 获取商品类别
 > GET /category
 
 - request
@@ -209,7 +221,7 @@
 }
 ```
 
-### 获取一个类别的所有商品
+#### 获取一个类别的所有商品
 > GET /category/<category_id>/good
 
 - request
@@ -232,7 +244,7 @@
 }
 ```
 
-### 卖家添加商品
+#### 卖家添加商品
 > POST /good
 
 - request
@@ -256,7 +268,7 @@
 }
 ```
 
-### 卖家编辑商品
+#### 卖家编辑商品
 > PUT /good/<good_id>
 
 - request
@@ -280,7 +292,7 @@
 }
 ```
 
-### 卖家删除商品
+#### 卖家删除商品
 > DELETE /good/<good_id>
 
 - request
@@ -296,7 +308,7 @@
 }
 ```
 
-### 卖家商品列表
+#### 卖家商品列表
 > GET /good
 
 - request
@@ -320,7 +332,7 @@
 
 ## 按钮
 
-### 买家新增设置按钮
+#### 买家新增设置按钮
 > POST /button
 
 - request
@@ -339,7 +351,7 @@
 }
 ```
 
-### 买家编辑设置按钮
+#### 买家编辑设置按钮
 > PUT /button/<button_id>
 
 - request
@@ -358,7 +370,7 @@
 }
 ```
 
-### 买家删除设置按钮
+#### 买家删除设置按钮
 > DELETE /button/<button_id>
 
 - request
@@ -374,7 +386,7 @@
 }
 ```
 
-### 买家获取设置按钮列表
+#### 买家获取设置按钮列表
 > GET /button
 
 - request
@@ -397,7 +409,7 @@
 }
 ```
 
-### 按钮新增订单
+#### 按钮新增订单
 > POST /order
 
 - request
@@ -418,7 +430,7 @@
 
 ## 订单
 
-### 用户获取订单
+#### 用户获取订单
 > GET /order?status=<status>&page=<page>&count=<count>
 
 - hint
@@ -452,7 +464,7 @@ count: 每页显示条数
 }
 ```
 
-### 卖家确认发货
+#### 卖家确认发货
 > PUT /order/<order_id>/status
 
 - request
@@ -468,7 +480,7 @@ count: 每页显示条数
 }
 ```
 
-### 买家确认收货
+#### 买家确认收货
 > PUT /order/<order_id>/status
 
 - request
@@ -487,7 +499,7 @@ count: 每页显示条数
 
 ## 其他
 
-### 用户初始化按钮
+#### 用户初始化按钮
 
 - request
 ```
