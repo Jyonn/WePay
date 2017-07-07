@@ -127,7 +127,7 @@ def order_status_page_count(request, status, page, count):
 @require_login
 def order_order_id_status(request, order_id):
     o_user = get_user_from_session(request)
-    if request.method == 'PATCH':  # 确认收发商品
+    if request.method == 'PUT':  # 确认收发商品
         if o_user.user_type == User.TYPE_SELLER:
             return confirm_send(request, order_id)
         else:

@@ -1,4 +1,4 @@
-# AKS接口文档 0707 v2.3
+# AKS接口文档 0707 v2.4
 
 ## 用户登录
 
@@ -453,7 +453,7 @@ count: 每页显示条数
 ```
 
 ### 卖家确认发货
-> PATCH /order/<order_id>/status
+> PUT /order/<order_id>/status
 
 - request
 ```
@@ -469,7 +469,7 @@ count: 每页显示条数
 ```
 
 ### 买家确认收货
-> PATCH /order/<order_id>/status
+> PUT /order/<order_id>/status
 
 - request
 ```
