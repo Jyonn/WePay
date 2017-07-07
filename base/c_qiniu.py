@@ -18,6 +18,7 @@ class QiNiu:
         上传文件
         :param key: 键值
         :param local_file: 文件
+        0.
         :return: 上传是否成功
         """
         token = QiNiu.q.upload_token(QiNiu.bucket_name, key, 3600)

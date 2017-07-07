@@ -72,6 +72,10 @@ class User(models.Model):
         null=True,
         blank=True,
     )
+    avatar = models.IntegerField(
+        verbose_name='头像编号',
+        default=0,
+    )
 
     @staticmethod
     def get_md5(raw_pwd):
@@ -91,14 +95,17 @@ class User(models.Model):
         """
         if not len(raw_pwd) >= 6:
             return Ret(Error.PASSWORD_LENGTH)
+        phone_regex = '^1[34578]\d{9}$'
+        regex_ret = re.search(phone_regex, username)
         if user_type == User.TYPE_SELLER:
+            if regex_ret is not None:
+                return Ret(Error.SELLER_PHONE_DENY)
             if not User.L['brand'] >= len(brand) >= 2:
                 return Ret(Error.BRAND_LENGTH)
             if not User.L['username'] >= len(username) >= 4:
                 return Ret(Error.USERNAME_LENGTH)
         else:
-            phone_regex = '^1[34578]\d{9}$'
-            if re.search(phone_regex, username) is None:
+            if regex_ret is None:
                 return Ret(Error.PHONE_FORMAT)
         password = User.get_md5(raw_pwd)
         user_id = User.get_md5(username+get_random_string(length=8))
@@ -107,18 +114,30 @@ class User(models.Model):
             return Ret(Error.EXIST_USERNAME)
         except:
             pass
+        from random import randint
         o = cls(
             user_id=user_id,
             user_type=user_type,
             username=username,
             password=password,
             brand=brand,
+            avatar=randint(0, 42),
         )
         try:
             o.save()
             return Ret(Error.OK, o)
         except:
             return Ret(Error.ERROR_USER_CREATE)
+
+    def get_avatar(self):
+        """
+        获取头像链接
+        """
+        from base.c_qiniu import QiNiu
+        avatar_str = str(self.avatar)
+        if self.avatar < 10:
+            avatar_str = '0' + avatar_str
+        return QiNiu.host + 'aks/user/avatar/' + avatar_str + '.jpg'
 
     @staticmethod
     def get(user_id):

@@ -49,7 +49,6 @@ def decorator_generator(verify_func, error_id):
     """
     装饰器生成器
     """
-
     def decorator(func):
         def wrapper(request, *args, **kwargs):
             if verify_func(request):

@@ -29,7 +29,7 @@ class Card(models.Model):
         :param is_default: 是否设为默认
         :return:
         """
-        o = cls(user=o_user, card=card)
+        o = cls(owner=o_user, card=card)
         try:
             o.save()
         except:

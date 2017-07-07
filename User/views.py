@@ -6,7 +6,7 @@ from base.common import login_to_session, logout_user_from_session, get_user_fro
 from base.decorator import require_json, require_params, require_buyer, require_login
 from base.error import Error
 from base.response import error_response, response
-from base.session import save_captcha, save_session, check_captcha
+from base.session import save_captcha, save_session, check_captcha, load_session
 
 
 @require_json
@@ -34,18 +34,21 @@ def register(request):
     注册
     """
     password = request.POST['password']
-    is_seller = request.POST['is_seller'] == '1'
+    is_seller = str(request.POST['is_seller']) == '1'
     if is_seller:  # 商家
         brand = request.POST['brand']
         username = request.POST['username']
         ret = User.create(username, password, User.TYPE_SELLER, brand)
     else:  # 买家
         captcha = request.POST['captcha']
-        phone = request.POST['phone']
+        phone = load_session(request, 'phone')
         if not check_captcha(request, 'phone', captcha):
             return error_response(Error.ERROR_PHONE_CAPTCHA)  # 验证码错误
         ret = User.create(phone, password, User.TYPE_BUYER)
-    return response(body=ret.body.pk) if ret.error == Error.OK else error_response(ret.error)
+    return response(body=dict(
+        user_id=ret.body.pk,
+        avatar=ret.body.get_avatar(),
+    )) if ret.error == Error.OK else error_response(ret.error)
 
 
 @require_json
@@ -55,11 +58,15 @@ def login(request):
     登录
     """
     username = request.POST['username']
-    password = request.path['password']
+    password = request.POST['password']
     ret = User.check_password(username, password)
     if ret.error == Error.OK:
         login_to_session(request, ret.body)
-    return response(body=ret.body.pk) if ret.error == Error.OK else error_response(ret.error)
+    return response(body=dict(
+        user_id=ret.body.pk,
+        avatar=ret.body.get_avatar(),
+        brand=ret.body.brand,
+    )) if ret.error == Error.OK else error_response(ret.error)
 
 
 @require_login
