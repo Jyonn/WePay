@@ -31,7 +31,7 @@ def add_order(request):
 
 
 @require_login
-def get_order_list(request, status, page):
+def get_order_list(request, status, page, count):
     """
     用户获取订单列表
     """
@@ -40,7 +40,7 @@ def get_order_list(request, status, page):
     status = Order.STATUS_CONFIRM_ORDER_BY_SELLER if status == 'unsent' else Order.STATUS_CONFIRM_DELIVER
 
     o_user = get_user_from_session(request)
-    ret = o_user.get_order_list(status, page)
+    ret = o_user.get_order_list(status, page, count)
     return response(body=ret.body) if ret.error == Error.OK else error_response(ret.error)
 
 

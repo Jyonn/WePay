@@ -2,6 +2,8 @@ class Error:
     """
     错误代码类
     """
+    ERROR_COUNT = 2048
+    PASSWORD_LENGTH = 2047
     NOT_FOUND_ORDER = 2046
     ERROR_STATUS = 2045
     NOT_FOUND_USER = 2044
@@ -59,6 +61,8 @@ class Error:
 
     # 错误说明
     ERROR_TUPLE = (
+        (ERROR_COUNT, '错误的每页条数'),
+        (PASSWORD_LENGTH, '密码应长于6个字符'),
         (NOT_FOUND_ORDER, '不存在的订单'),
         (ERROR_STATUS, '错误的订单状态'),
         (NOT_FOUND_USER, '不存在的用户'),

@@ -38,7 +38,7 @@ urlpatterns = [
     url(r'^button$', router.button),
     url(r'^button/(?P<button_id>\d+)$', router.button_button_id),
     url(r'^order$', router.order),
-    url(r'^order?status=(?P<status>\w+)&page=(?P<page>\d+)$', router.order_status_page),
+    url(r'^order?status=(?P<status>\w+)&page=(?P<page>\d+)&count=(?P<count>\d+)$', router.order_status_page_count),
     url(r'^order/(?P<order_id>\d+)/status$', router.order_order_id_status),
 ]
 

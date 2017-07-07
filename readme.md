@@ -1,4 +1,4 @@
-# AKS接口文档 0706 v2.2
+# AKS接口文档 0707 v2.3
 
 ## 用户登录
 
@@ -35,9 +35,9 @@
 ```
 - response
 ```
-{
+{s't
 	'code': 错误代码，默认为0（OK）
-	'msg': OK / 已存在的用户名 / 验证码错误 / 验证码过期 / 用户注册错误 / 品牌字符串长度错误 / 用户名字符串长度错误
+	'msg': OK / 已存在的用户名 / 验证码错误 / 验证码过期 / 用户注册错误 / 品牌字符串长度错误 / 用户名字符串长度错误 / 密码太短
 	'body': 用户ID
 }
 ```
@@ -419,7 +419,7 @@
 ## 订单
 
 ### 用户获取订单
-> GET /order?status=<status>&page=<page>
+> GET /order?status=<status>&page=<page>&count=<count>
 
 - hint
 ```
@@ -429,6 +429,7 @@
 ```
 status: unsent / unreceived
 page: 订单页码
+count: 每页显示条数
 ```
 - response
 ```

@@ -89,6 +89,8 @@ class User(models.Model):
         :param raw_pwd: 未加密密码
         :return: 创建成功返回用户类，不成功返回错误代码
         """
+        if not len(raw_pwd) >= 6:
+            return Ret(Error.PASSWORD_LENGTH)
         if user_type == User.TYPE_SELLER:
             if not User.L['brand'] >= len(brand) >= 2:
                 return Ret(Error.BRAND_LENGTH)
@@ -233,11 +235,12 @@ class User(models.Model):
             ))
         return Ret(Error.OK, button_list)
 
-    def get_order_list(self, order_status, page):
+    def get_order_list(self, order_status, page, count):
         """
         获取订单列表
         :param order_status: 订单筛选
         :param page: 返回结果的第几页
+        :param count: 每页显示条数
         :return: 订单列表及是否到达末尾
         """
         try:
@@ -245,14 +248,19 @@ class User(models.Model):
             assert page >= 0
         except:
             return Ret(Error.ERROR_PAGE)  # 错误的页码
+        try:
+            count = int(count)
+            assert count >= 0
+        except:
+            return Ret(Error.ERROR_COUNT)  # 错误的条数
 
         from Order.models import Order
         if self.user_type == User.TYPE_BUYER:
             orders = Order.objects.filter(buyer=self, status=order_status).order_by('-pk')
         else:
             orders = Order.objects.filter(good__seller=self, status=order_status).order_by('-pk')
-        is_over = len(orders) <= (page+1) * 10
-        orders = orders[page*10: (page+1)*10]
+        is_over = len(orders) <= (page+1) * count
+        orders = orders[page*count: (page+1)*count]
         order_list = []
         for o_order in orders:
             order_list.append(dict(

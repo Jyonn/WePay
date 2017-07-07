@@ -117,9 +117,9 @@ def order(request):
         return error_response(Error.ERROR_METHOD)
 
 
-def order_status_page(request, status, page):
+def order_status_page_count(request, status, page, count):
     if request.method == 'GET':  # 查看订单列表
-        return get_order_list(request, status, page)
+        return get_order_list(request, status, page, count)
     else:
         return error_response(Error.ERROR_METHOD)
 
