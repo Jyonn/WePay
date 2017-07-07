@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 
 from Good.models import Good, Button
@@ -138,6 +139,8 @@ class Order(models.Model):
         if self.status != Order.STATUS_CONFIRM_ORDER_BY_SELLER:
             return Ret(Error.ERROR_ORDER_STATUS)
         self.status = Order.STATUS_CONFIRM_DELIVER
+        self.deliver_time = datetime.datetime.now()
+        self.save()
         return Ret(Error.OK)
 
     def confirm_receive(self, o_user):
@@ -150,4 +153,5 @@ class Order(models.Model):
         if self.status != Order.STATUS_CONFIRM_DELIVER:
             return Ret(Error.ERROR_ORDER_STATUS)
         self.status = Order.STATUS_CONFIRM_RECEIVE
+        self.save()
         return Ret(Error.OK)

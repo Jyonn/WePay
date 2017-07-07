@@ -272,5 +272,7 @@ class User(models.Model):
                 number=o_order.buy_num,
                 price=o_order.price,
                 pic=o_order.good.pic,
+                create_time=int(o_order.create_time.timestamp()),
+                deliver_time=None if o_order.deliver_time is None else int(o_order.deliver_time.timestamp())
             ))
         return Ret(Error.OK, dict(order_list=order_list, is_over=is_over))
