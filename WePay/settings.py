@@ -130,6 +130,14 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
+STATIC_DIR_URL = os.path.join(BASE_DIR, "static_files")
+
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder"
+)
+
+
 SESSION_COOKIE_AGE = 60 * 60 * 24
 PIC_MAX_SIZE = 1048576 * 5  # 5M
 

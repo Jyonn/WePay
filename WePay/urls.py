@@ -13,11 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, static
 # from django.contrib import admin
+from django.views.generic import RedirectView
+from WePay.settings import STATIC_DIR_URL
+
 from . import router
 
+favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
+
 urlpatterns = [
+    url(r'^favicon\.ico$', favicon_view),
     # url(r'^admin/', admin.site.urls),
     url(r'^session$', router.session),
     url(r'^user$', router.user),
@@ -35,3 +41,5 @@ urlpatterns = [
     url(r'^order?status=(?P<status>\w+)&page=(?P<page>\d+)$', router.order_status_page),
     url(r'^order/(?P<order_id>\d+)/status$', router.order_order_id_status),
 ]
+
+urlpatterns += static.static('/', document_root=STATIC_DIR_URL)
