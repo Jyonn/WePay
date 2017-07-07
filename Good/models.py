@@ -50,6 +50,7 @@ class Category(models.Model):
         category_list = ['啤酒', '沐浴露', '洗发水']
         for category in category_list:
             Category.create(category)
+        return Ret(Error.OK, o)
 
     @staticmethod
     def get_list():

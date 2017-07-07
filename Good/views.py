@@ -6,6 +6,14 @@ from base.error import Error
 from base.response import response, error_response
 
 
+def init_category(request):
+    """
+    商品类别初始化
+    """
+    ret = Category.init()
+    return response() if ret.error == Error.OK else error_response(ret.error)
+
+
 def get_category_list(request):
     """
     获取商品类别列表

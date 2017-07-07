@@ -1,5 +1,5 @@
 from Card.views import add_card, get_card_list, set_default_card, delete_card
-from Good.views import get_category_list, get_good_of_category, add_good, edit_good, delete_good, get_good_list, \
+from Good.views import init_category, get_category_list, get_good_of_category, add_good, edit_good, delete_good, get_good_list, \
     add_button, edit_button, delete_button, get_button_list
 from Order.views import add_order, get_order_list, confirm_send, confirm_receive
 from User.models import User
@@ -63,6 +63,8 @@ def card_card_id(request, card_id):
 def category(request):
     if request.method == 'GET':  # 获取商品类别列表
         return get_category_list(request)
+    if request.method == 'POST':
+        return init_category(request)
     else:
         return error_response(Error.ERROR_METHOD)
 
