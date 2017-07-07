@@ -27,7 +27,7 @@ SECRET_KEY = 't-=hpscl(3((_=eydw-anl%o@k7lzf^#lmdiv8)dpy^nn*#iv4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
