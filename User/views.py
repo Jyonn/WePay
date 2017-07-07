@@ -16,7 +16,7 @@ def send_captcha(request):
     发送验证码
     """
     phone = request.POST['phone']
-    phone_regex = '^1[3458]\d{9}$'
+    phone_regex = '^1[34578]\d{9}$'
     if re.search(phone_regex, phone) is None:
         return error_response(Error.PHONE_FORMAT)  # 手机格式错误
     ret_code, phone_captcha = SendMobile.send_captcha(phone)

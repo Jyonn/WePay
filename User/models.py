@@ -95,7 +95,7 @@ class User(models.Model):
             if not User.L['username'] >= len(username) >= 4:
                 return Ret(Error.USERNAME_LENGTH)
         else:
-            phone_regex = '^1[3458]\d{9}$'
+            phone_regex = '^1[34578]\d{9}$'
             if re.search(phone_regex, username) is None:
                 return Ret(Error.PHONE_FORMAT)
         password = User.get_md5(raw_pwd)
