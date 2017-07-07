@@ -7,7 +7,6 @@
 - requests
 - quniu
 - pymysql
-- gzip
 
 
 ## 接口文档
