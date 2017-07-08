@@ -18,14 +18,14 @@ def session(request):
     elif request.method == 'DELETE':  # 用户退出
         return logout(request)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 
 
 def user(request):
     if request.method == 'POST':  # 用户注册
         return register(request)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 
 
 def user_address(request):
@@ -34,7 +34,7 @@ def user_address(request):
     elif request.method == 'GET':  # 获取收货信息
         return get_address(request)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 
 
 def card(request):
@@ -43,21 +43,21 @@ def card(request):
     elif request.method == 'GET':  # 获取银行卡列表
         return get_card_list(request)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 
 
 def user_default_card(request):
     if request.method == 'PUT':  # 设置默认银行卡
         return set_default_card(request)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 
 
 def card_card_id(request, card_id):
     if request.method == 'DELETE':  # 删除银行卡
         return delete_card(request, card_id)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 
 
 def category(request):
@@ -66,14 +66,14 @@ def category(request):
     if request.method == 'POST':
         return init_category(request)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 
 
 def category_category_id_good(request, category_id):
     if request.method == 'GET':  # 获取一个类别的所有商品
         return get_good_of_category(request, category_id)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 
 
 def good(request):
@@ -82,7 +82,7 @@ def good(request):
     elif request.method == 'GET':  # 商家获取商品列表
         return get_good_list(request)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 
 
 def good_good_id(request, good_id):
@@ -91,7 +91,7 @@ def good_good_id(request, good_id):
     elif request.method == 'DELETE':
         return delete_good(request, good_id)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 
 
 def button(request):
@@ -100,7 +100,7 @@ def button(request):
     elif request.method == 'GET':  # 获取按钮列表
         return get_button_list(request)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 
 
 def button_button_id(request, button_id):
@@ -109,21 +109,21 @@ def button_button_id(request, button_id):
     elif request.method == 'DELETE':
         return delete_button(request, button_id)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 
 
 def order(request):
     if request.method == 'POST':  # 新增订单
         return add_order(request)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 
 
 def order_status_page_count(request, status, page, count):
     if request.method == 'GET':  # 查看订单列表
         return get_order_list(request, status, page, count)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 
 
 @require_login
@@ -135,5 +135,5 @@ def order_order_id_status(request, order_id):
         else:
             return confirm_receive(request, order_id)
     else:
-        return error_response(Error.ERROR_METHOD)
+        return error_response(Error.ERROR_METHOD, request.method)
 

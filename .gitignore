@@ -40,3 +40,12 @@ sellerfrontend/e2e/*.map
 # System Files
 sellerfrontend/.DS_Store
 sellerfrontend/Thumbs.db
+Card/__pycache__/
+Card/migrations/__pycache__/
+Good/__pycache__/
+Good/migrations/__pycache__/
+User/__pycache__/
+User/migrations/__pycache__/
+WePay/__pycache__/
+base/__pycache__/
+mysql.conf
