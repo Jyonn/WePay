@@ -1,0 +1,42 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+sellerfrontend/dist
+sellerfrontend/tmp
+sellerfrontend/out-tsc
+
+# dependencies
+sellerfrontend/node_modules
+
+# IDEs and editors
+.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+sellerfrontend/.sass-cache
+sellerfrontend/connect.lock
+sellerfrontend/coverage
+sellerfrontend/libpeerconnection.log
+sellerfrontend/npm-debug.log
+sellerfrontend/testem.log
+sellerfrontend/typings
+
+# e2e
+sellerfrontend/e2e/*.js
+sellerfrontend/e2e/*.map
+
+# System Files
+sellerfrontend/.DS_Store
+sellerfrontend/Thumbs.db
