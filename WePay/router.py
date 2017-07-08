@@ -126,11 +126,12 @@ def order_status_page_count(request, status, page, count):
         return error_response(Error.ERROR_METHOD, request.method)
 
 
-@require_login
 def order_order_id_status(request, order_id):
-    o_user = get_user_from_session(request)
     if request.method == 'PUT':  # 确认收发商品
-        if o_user.user_type == User.TYPE_SELLER:
+        o_user = get_user_from_session(request)
+        if o_user is None:
+            return error_response(Error.REQUIRE_LOGIN)
+        elif o_user.user_type == User.TYPE_SELLER:
             return confirm_send(request, order_id)
         else:
             return confirm_receive(request, order_id)
