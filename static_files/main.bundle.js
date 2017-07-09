@@ -125,12 +125,16 @@ var AuthenticationService = (function () {
     function AuthenticationService(http) {
         this.http = http;
         this.loginURL = '/session';
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]();
+        this.headers.append('Content-Type', 'application/json');
+        this.headers.append('Accept', 'application/json');
+        this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
     }
     AuthenticationService.prototype.login = function (username, password) {
-        return this.http.post(this.loginURL, { username: username, password: password })
+        var user = JSON.stringify({ username: username, password: password });
+        return this.http.post(this.loginURL, user, this.options)
             .map(function (response) {
             var responseJson = response.json();
-            console.log(responseJson);
             if (responseJson.code == 0) {
                 localStorage.setItem('currentUser', responseJson.body.user_id);
             }
@@ -142,31 +146,17 @@ var AuthenticationService = (function () {
         localStorage.removeItem('currentUser');
         return this.http.delete(this.loginURL)
             .map(function (response) {
-            /*
-
-            {
-                'code': 0
-                'msg': OK
-                'body': []
+            var responseJson = response.json();
+            if (responseJson.code == 0) {
+                localStorage.removeItem('currentUser');
             }
-            
-            */
-            // login successful if there's a jwt token in the response
-            /*
-            let user = response.json();
-            if (user && user.token) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify(user));
-            }
-
-            return user;
-            */
+            return responseJson;
         });
     };
     AuthenticationService.prototype.handleError = function (error) {
         // In a real world app, you might use a remote logging infrastructure
         var errMsg;
-        if (error instanceof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Response */]) {
+        if (error instanceof __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Response */]) {
             var body = error.json() || '';
             var err = body.error || JSON.stringify(body);
             errMsg = error.status + " - " + (error.statusText || '') + " " + err;
@@ -179,7 +169,7 @@ var AuthenticationService = (function () {
     };
     AuthenticationService = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* Http */]) === "function" && _a || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */]) === "function" && _a || Object])
     ], AuthenticationService);
     return AuthenticationService;
     var _a;
@@ -545,11 +535,11 @@ var AppComponent = (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__("../../../../.4.2.5@@angular/platform-browser/@angular/platform-browser.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../../.4.2.5@@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_hammerjs__ = __webpack_require__("../../../../.2.0.8@hammerjs/hammer.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_hammerjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_hammerjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_hammerjs__ = __webpack_require__("../../../../.2.0.8@hammerjs/hammer.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_hammerjs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_hammerjs__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__("../../../../.4.2.5@@angular/platform-browser/@angular/platform-browser.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__("../../../../.4.2.5@@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__login_login_component__ = __webpack_require__("../../../../../src/app/login/login.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__register_register_component__ = __webpack_require__("../../../../../src/app/register/register.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__administration_administration_component__ = __webpack_require__("../../../../../src/app/administration/administration.component.ts");
@@ -563,6 +553,8 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__app_routing__ = __webpack_require__("../../../../../src/app/app.routing.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__services_index__ = __webpack_require__("../../../../../src/app/_services/index.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__angular_http__ = __webpack_require__("../../../../.4.2.5@@angular/http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__register_directives_equal_validator_directive__ = __webpack_require__("../../../../../src/app/register/directives/equal-validator.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_app_register_register_service__ = __webpack_require__("../../../../../src/app/register/register.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -591,22 +583,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
+
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */])({
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__angular_core__["b" /* NgModule */])({
             declarations: [
-                __WEBPACK_IMPORTED_MODULE_2__app_component__["a" /* AppComponent */],
+                __WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */],
                 __WEBPACK_IMPORTED_MODULE_4__login_login_component__["a" /* LoginComponent */],
                 __WEBPACK_IMPORTED_MODULE_5__register_register_component__["a" /* RegisterComponent */],
                 __WEBPACK_IMPORTED_MODULE_6__administration_administration_component__["a" /* AdministrationComponent */],
                 __WEBPACK_IMPORTED_MODULE_7__administration_seller_administration_seller_component__["a" /* AdministrationSellerComponent */],
                 __WEBPACK_IMPORTED_MODULE_8__administration_good_administration_good_component__["a" /* AdministrationGoodComponent */],
                 __WEBPACK_IMPORTED_MODULE_9__administration_order_administration_order_component__["a" /* AdministrationOrderComponent */],
+                __WEBPACK_IMPORTED_MODULE_17__register_directives_equal_validator_directive__["a" /* EqualValidator */]
             ],
             imports: [
-                __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
+                __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_10__angular_material__["a" /* MdToolbarModule */],
                 __WEBPACK_IMPORTED_MODULE_10__angular_material__["b" /* MdInputModule */],
                 __WEBPACK_IMPORTED_MODULE_11__angular_forms__["a" /* FormsModule */],
@@ -619,8 +614,9 @@ var AppModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_16__angular_http__["a" /* HttpModule */]
             ],
             providers: [__WEBPACK_IMPORTED_MODULE_13__guards_auth_guard__["a" /* AuthGuard */],
-                __WEBPACK_IMPORTED_MODULE_15__services_index__["a" /* AuthenticationService */]],
-            bootstrap: [__WEBPACK_IMPORTED_MODULE_2__app_component__["a" /* AppComponent */]]
+                __WEBPACK_IMPORTED_MODULE_15__services_index__["a" /* AuthenticationService */],
+                __WEBPACK_IMPORTED_MODULE_18_app_register_register_service__["a" /* RegisterService */]],
+            bootstrap: [__WEBPACK_IMPORTED_MODULE_3__app_component__["a" /* AppComponent */]]
         })
     ], AppModule);
     return AppModule;
@@ -689,7 +685,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<md-toolbar color=\"primary\">AKS</md-toolbar>\r\n<md-card color=\"primary\">\r\n  <md-card-title style=\"text-align: center;\">登录</md-card-title>\r\n  <md-card-content>\r\n    <form class=\"form\">\r\n      <md-input-container class=\"full-width\">\r\n        <input mdInput type=\"text\" [(ngModel)]=\"seller.username\" placeholder=\"用户名\" [formControl]=\"usernameFormControl\">\r\n        <md-error *ngIf=\"usernameFormControl.hasError('required')\">\r\n          <strong>必需</strong>\r\n        </md-error>\r\n      </md-input-container>\r\n      <br><br>\r\n      <md-input-container class=\"full-width\">\r\n        <input mdInput type=\"password\" [(ngModel)]=\"seller.password\" placeholder=\"密码\" [formControl]=\"passwordFormControl\">\r\n        <md-error *ngIf=\"passwordFormControl.hasError('required')\">\r\n          <strong>必需</strong>\r\n        </md-error>\r\n      </md-input-container>\r\n      <br><br>\r\n      <md-slide-toggle color=\"primary\"><small>请记住我！</small></md-slide-toggle>\r\n      <button (click)=\"doRegister()\" class=\"register\" md-raised-button color=\"primary\">注册</button><br><br><br>\r\n      <p *ngIf=\"errorMsg\">{{errorMsg}}</p>\r\n      <button (click)=\"doLogin()\" class=\"login\" md-raised-button color=\"primary\" type=\"submit\">登录</button>\r\n    </form>\r\n  </md-card-content>\r\n</md-card>"
+module.exports = "<md-toolbar color=\"primary\">AKS</md-toolbar>\r\n<md-card color=\"primary\">\r\n  <md-card-title style=\"text-align: center;\">登录</md-card-title>\r\n  <md-card-content>\r\n    <form class=\"form\" [formGroup]=\"loginForm\" novalidate>\r\n      <md-input-container class=\"full-width\">\r\n        <input mdInput type=\"text\" [(ngModel)]=\"seller.username\" placeholder=\"用户名\" formControlName=\"username\">\r\n        <md-error *ngIf=\"loginForm.controls.username.hasError('minlength')\">\r\n          <strong>最小输入4个字符</strong>\r\n        </md-error>\r\n        <md-error *ngIf=\"loginForm.controls.username.hasError('maxlength')\">\r\n          <strong>最多输入20个字符</strong>\r\n        </md-error>\r\n        <md-error *ngIf=\"loginForm.controls.username.hasError('required')\">\r\n          <strong>必需</strong>\r\n        </md-error>\r\n      </md-input-container>\r\n      <br><br>\r\n      <md-input-container class=\"full-width\">\r\n        <input mdInput type=\"password\" [(ngModel)]=\"seller.password\" placeholder=\"密码\" formControlName=\"password\">\r\n        <md-error *ngIf=\"loginForm.controls.password.hasError('minlength')\">\r\n          <strong>最小输入6个字符</strong>\r\n        </md-error>\r\n        <md-error *ngIf=\"loginForm.controls.password.hasError('required')\">\r\n          <strong>必需</strong>\r\n        </md-error>\r\n      </md-input-container>\r\n      <br><br>\r\n      <md-slide-toggle color=\"primary\"><small>请记住我！</small></md-slide-toggle>\r\n      <button (click)=\"doRegister()\" class=\"register\" md-raised-button color=\"primary\">注册</button><br><br><br>\r\n      <p *ngIf=\"errorMsg\">{{errorMsg}}</p>\r\n      <button (click)=\"doLogin()\" class=\"login\" md-raised-button color=\"primary\" type=\"submit\" [disabled]=\"!loginForm.valid\">登录</button>\r\n    </form>\r\n    <p>Form value: {{ loginForm.value | json }}</p>\r\n  </md-card-content>\r\n</md-card>"
 
 /***/ }),
 
@@ -718,29 +714,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var LoginComponent = (function () {
-    function LoginComponent(router, activatedRoute, authenticationService) {
+    function LoginComponent(router, activatedRoute, authenticationService, fb) {
         this.router = router;
         this.activatedRoute = activatedRoute;
         this.authenticationService = authenticationService;
-        this.usernameFormControl = new __WEBPACK_IMPORTED_MODULE_4__angular_forms__["i" /* FormControl */]('', [
-            __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].required
-        ]);
-        this.passwordFormControl = new __WEBPACK_IMPORTED_MODULE_4__angular_forms__["i" /* FormControl */]('', [
-            __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].required
-        ]);
+        this.fb = fb;
         this.seller = new __WEBPACK_IMPORTED_MODULE_3__model_index__["a" /* Seller */]();
-        console.log(this.authenticationService);
     }
     LoginComponent.prototype.ngOnInit = function () {
-        console.log("--- user-login-component ---");
-        console.log(this.router);
-        console.log(this.activatedRoute);
         var activatedRouteSnapshot = this.activatedRoute.snapshot;
         var routerState = this.router.routerState;
         var routerStateSnapshot = routerState.snapshot;
-        console.log(activatedRouteSnapshot);
-        console.log(routerState);
-        console.log(routerStateSnapshot);
+        this.createForm();
+    };
+    LoginComponent.prototype.createForm = function () {
+        this.loginForm = this.fb.group({
+            "username": [
+                "",
+                [
+                    __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].required,
+                    __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].minLength(4),
+                    __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].maxLength(20)
+                ]
+            ],
+            "password": [
+                "",
+                [
+                    __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].required,
+                    __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].minLength(6),
+                ]
+            ]
+        });
     };
     LoginComponent.prototype.doLogin = function () {
         var _this = this;
@@ -759,14 +763,18 @@ var LoginComponent = (function () {
             if (data.code > 0) {
                 _this.errorMsg = data.msg;
             }
+            else {
+                _this.router.navigateByUrl("");
+            }
         }, function (error) {
             console.error(error);
         });
     };
-    LoginComponent.prototype.doLogout = function () {
+    /*
+      public doLogout(): void {
         this.authenticationService.logout();
         this.router.navigateByUrl("");
-    };
+      }*/
     LoginComponent.prototype.doRegister = function () {
         this.router.navigateByUrl("register");
     };
@@ -776,13 +784,83 @@ var LoginComponent = (function () {
             template: __webpack_require__("../../../../../src/app/login/login.component.html"),
             styles: [__webpack_require__("../../../../../src/app/login/login.component.css")]
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_index__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_index__["a" /* AuthenticationService */]) === "function" && _c || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_index__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_index__["a" /* AuthenticationService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__angular_forms__["i" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_forms__["i" /* FormBuilder */]) === "function" && _d || Object])
     ], LoginComponent);
     return LoginComponent;
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=login.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/register/directives/equal-validator.directive.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../../.4.2.5@@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../../.4.2.5@@angular/forms/@angular/forms.es5.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EqualValidator; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var EqualValidator = (function () {
+    function EqualValidator() {
+    }
+    EqualValidator_1 = EqualValidator;
+    EqualValidator.prototype.validate = function (control) {
+        //当前控件的值
+        var selfValue = control.value;
+        // 需要比较的控件，根据属性名称获取
+        var targetControl = control.root.get(this.validateEqual);
+        // 值不相等
+        if (targetControl && selfValue !== targetControl.value) {
+            if (!this.reverse) {
+                return {
+                    validateEqual: false
+                };
+            }
+            else {
+                targetControl.setErrors({
+                    validateEqual: false
+                });
+            }
+        }
+        else {
+            targetControl.setErrors(null);
+        }
+        return null;
+    };
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["O" /* Input */])(),
+        __metadata("design:type", String)
+    ], EqualValidator.prototype, "validateEqual", void 0);
+    __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["O" /* Input */])(),
+        __metadata("design:type", Boolean)
+    ], EqualValidator.prototype, "reverse", void 0);
+    EqualValidator = EqualValidator_1 = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["J" /* Directive */])({
+            selector: '[validateEqual]',
+            providers: [
+                { provide: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["g" /* NG_VALIDATORS */], useExisting: EqualValidator_1, multi: true }
+            ]
+        }),
+        __metadata("design:paramtypes", [])
+    ], EqualValidator);
+    return EqualValidator;
+    var EqualValidator_1;
+}());
+
+//# sourceMappingURL=equal-validator.directive.js.map
 
 /***/ }),
 
@@ -818,7 +896,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/register/register.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<md-toolbar color=\"primary\">AKS</md-toolbar>\r\n<md-card color=\"primary\">\r\n  <md-card-title style=\"text-align: center;\">注册</md-card-title>\r\n  <md-card-content>\r\n    <form class=\"form\">\r\n      <md-input-container class=\"full-width\">\r\n        <input mdInput type=\"text\" placeholder=\"用户名\" [formControl]=\"usernameFormControl\">\r\n        <md-error *ngIf=\"usernameFormControl.hasError('required')\">\r\n          <strong>必需</strong>\r\n        </md-error>\r\n      </md-input-container>\r\n      <br><br>\r\n      <md-input-container class=\"full-width\">\r\n        <input mdInput type=\"text\" placeholder=\"品牌名\" [formControl]=\"brandFormControl\">\r\n        <md-error *ngIf=\"brandFormControl.hasError('required')\">\r\n          <strong>必需</strong>\r\n        </md-error>\r\n      </md-input-container>\r\n      <br><br>\r\n      <md-input-container class=\"full-width\">\r\n        <input mdInput type=\"password\" placeholder=\"密码\" [formControl]=\"passwordFormControl\">\r\n        <md-error *ngIf=\"passwordFormControl.hasError('required')\">\r\n          <strong>必需</strong>\r\n        </md-error>\r\n      </md-input-container>\r\n      <br><br>\r\n      <md-input-container class=\"full-width\">\r\n        <input mdInput type=\"password\" placeholder=\"重复密码\" [formControl]=\"repasswordFormControl\">\r\n        <md-error *ngIf=\"repasswordFormControl.hasError('required')\">\r\n          <strong>必需</strong>\r\n        </md-error>\r\n      </md-input-container>\r\n      <br><br>\r\n      <button md-raised-button color=\"primary\" type=\"submit\" name=\"action\">注册</button>\r\n    </form>\r\n  </md-card-content>\r\n</md-card>"
+module.exports = "<md-toolbar color=\"primary\">AKS</md-toolbar>\r\n<md-card color=\"primary\">\r\n  <md-card-title style=\"text-align: center;\">注册</md-card-title>\r\n  <md-card-content>\r\n    <form class=\"form\" [formGroup]=\"registerForm\" novalidate>\r\n      <md-input-container class=\"full-width\">\r\n        <input mdInput type=\"text\" [(ngModel)]=\"seller.username\" placeholder=\"用户名\" formControlName=\"username\">\r\n        <md-error *ngIf=\"registerForm.controls.username.hasError('minlength')\">\r\n          <strong>最小输入4个字符</strong>\r\n        </md-error>\r\n        <md-error *ngIf=\"registerForm.controls.username.hasError('maxlength')\">\r\n          <strong>最多输入20个字符</strong>\r\n        </md-error>\r\n        <md-error *ngIf=\"registerForm.controls.username.hasError('required')\">\r\n          <strong>必需</strong>\r\n        </md-error>\r\n      </md-input-container>\r\n      <br>\r\n      <md-input-container class=\"full-width\">\r\n        <input mdInput type=\"text\" [(ngModel)]=\"seller.brand\" placeholder=\"品牌名\" formControlName=\"brand\">\r\n        <md-error *ngIf=\"registerForm.controls.brand.hasError('minlength')\">\r\n          <strong>最小输入2个字符</strong>\r\n        </md-error>\r\n        <md-error *ngIf=\"registerForm.controls.brand.hasError('maxlength')\">\r\n          <strong>最多输入32个字符</strong>\r\n        </md-error>\r\n        <md-error *ngIf=\"registerForm.controls.brand.hasError('required')\">\r\n          <strong>必需</strong>\r\n        </md-error>\r\n      </md-input-container>\r\n      <br>\r\n      <md-input-container class=\"full-width\">\r\n        <input mdInput type=\"password\" [(ngModel)]=\"seller.password\" placeholder=\"密码\" formControlName=\"password\" validateEqual=\"confirmPassword\" reverse=true>\r\n        <md-error *ngIf=\"registerForm.controls.password.hasError('minlength')\">\r\n          <strong>最小输入6个字符</strong>\r\n        </md-error>\r\n        <md-error *ngIf=\"registerForm.controls.password.hasError('required')\">\r\n          <strong>必需</strong>\r\n        </md-error>\r\n      </md-input-container>\r\n      <br>\r\n      <md-input-container class=\"full-width\">\r\n        <input mdInput type=\"password\" placeholder=\"确认密码\" formControlName=\"confirmPassword\" validateEqual=\"password\" >\r\n        <md-error *ngIf=\"registerForm.controls.confirmPassword.invalid\">\r\n          <strong>两次密码输入不一致</strong>\r\n        </md-error>        \r\n      </md-input-container>\r\n      <br>\r\n      <p *ngIf=\"errorMsg\">{{errorMsg}}</p>\r\n      <button (click)=\"doRegister()\" md-raised-button color=\"primary\" type=\"submit\" name=\"action\" [disabled]=\"registerForm.invalid\">注册</button>\r\n    </form>\r\n    <p>Form value: {{ registerForm.value | json }}</p>\r\n  </md-card-content>\r\n</md-card>"
 
 /***/ }),
 
@@ -827,7 +905,11 @@ module.exports = "<md-toolbar color=\"primary\">AKS</md-toolbar>\r\n<md-card col
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../../.4.2.5@@angular/core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../../.4.2.5@@angular/forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../../.4.2.5@@angular/router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_index__ = __webpack_require__("../../../../../src/app/_services/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__model_index__ = __webpack_require__("../../../../../src/app/_model/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_forms__ = __webpack_require__("../../../../.4.2.5@@angular/forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_app_register_register_service__ = __webpack_require__("../../../../../src/app/register/register.service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RegisterComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -840,22 +922,68 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
+
+
+
 var RegisterComponent = (function () {
-    function RegisterComponent() {
-        this.usernameFormControl = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["i" /* FormControl */]('', [
-            __WEBPACK_IMPORTED_MODULE_1__angular_forms__["h" /* Validators */].required
-        ]);
-        this.passwordFormControl = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["i" /* FormControl */]('', [
-            __WEBPACK_IMPORTED_MODULE_1__angular_forms__["h" /* Validators */].required
-        ]);
-        this.brandFormControl = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["i" /* FormControl */]('', [
-            __WEBPACK_IMPORTED_MODULE_1__angular_forms__["h" /* Validators */].required
-        ]);
-        this.repasswordFormControl = new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["i" /* FormControl */]('', [
-            __WEBPACK_IMPORTED_MODULE_1__angular_forms__["h" /* Validators */].required
-        ]);
+    function RegisterComponent(router, activatedRoute, authenticationService, fb, registerService) {
+        this.router = router;
+        this.activatedRoute = activatedRoute;
+        this.authenticationService = authenticationService;
+        this.fb = fb;
+        this.registerService = registerService;
+        this.seller = new __WEBPACK_IMPORTED_MODULE_3__model_index__["a" /* Seller */]();
     }
     RegisterComponent.prototype.ngOnInit = function () {
+        var activatedRouteSnapshot = this.activatedRoute.snapshot;
+        var routerState = this.router.routerState;
+        var routerStateSnapshot = routerState.snapshot;
+        this.createForm();
+    };
+    RegisterComponent.prototype.createForm = function () {
+        this.registerForm = this.fb.group({
+            "username": [
+                "",
+                [
+                    __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].required,
+                    __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].minLength(4),
+                    __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].maxLength(20)
+                ]
+            ],
+            "brand": [
+                "",
+                [
+                    __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].required,
+                    __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].minLength(2),
+                    __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].maxLength(32)
+                ]
+            ],
+            "password": [
+                "",
+                [
+                    __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].required,
+                    __WEBPACK_IMPORTED_MODULE_4__angular_forms__["h" /* Validators */].minLength(6),
+                ]
+            ],
+            "confirmPassword": [
+                "",
+                []
+            ]
+        });
+    };
+    RegisterComponent.prototype.doRegister = function () {
+        var _this = this;
+        this.registerService.addSeller(this.seller.username, this.seller.brand, this.seller.password).subscribe(function (data) {
+            if (data.code > 0) {
+                _this.errorMsg = data.msg;
+            }
+            else {
+                _this.router.navigateByUrl("");
+            }
+        }, function (error) {
+            console.error(error);
+        });
     };
     RegisterComponent = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_11" /* Component */])({
@@ -863,12 +991,92 @@ var RegisterComponent = (function () {
             template: __webpack_require__("../../../../../src/app/register/register.component.html"),
             styles: [__webpack_require__("../../../../../src/app/register/register.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* ActivatedRoute */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_index__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_index__["a" /* AuthenticationService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__angular_forms__["i" /* FormBuilder */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__angular_forms__["i" /* FormBuilder */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_5_app_register_register_service__["a" /* RegisterService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5_app_register_register_service__["a" /* RegisterService */]) === "function" && _e || Object])
     ], RegisterComponent);
     return RegisterComponent;
+    var _a, _b, _c, _d, _e;
 }());
 
 //# sourceMappingURL=register.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/register/register.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../../.4.2.5@@angular/core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../../.4.2.5@@angular/http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__ = __webpack_require__("../../../../.5.4.2@rxjs/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__("../../../../.5.4.2@rxjs/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch__ = __webpack_require__("../../../../.5.4.2@rxjs/add/operator/catch.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RegisterService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var RegisterService = (function () {
+    function RegisterService(http) {
+        this.http = http;
+        this.URL = '/user';
+        this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]();
+        this.headers.append('Content-Type', 'application/json');
+        this.headers.append('Accept', 'application/json');
+        this.options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({ headers: this.headers });
+    }
+    RegisterService.prototype.addSeller = function (username, brand, password) {
+        var user = JSON.stringify({
+            password: password,
+            is_seller: 1,
+            brand: brand,
+            username: username,
+            captcha: 0
+        });
+        return this.http.post(this.URL, user, this.options)
+            .map(function (response) {
+            var responseJson = response.json();
+            if (responseJson.code == 0) {
+                localStorage.setItem('currentUser', responseJson.body.user_id);
+            }
+            return responseJson;
+        }).catch(this.handleError);
+    };
+    RegisterService.prototype.handleError = function (error) {
+        // In a real world app, you might use a remote logging infrastructure
+        var errMsg;
+        if (error instanceof __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* Response */]) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            errMsg = error.status + " - " + (error.statusText || '') + " " + err;
+        }
+        else {
+            errMsg = error.message ? error.message : error.toString();
+        }
+        console.error(errMsg);
+        return __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__["Observable"].throw(errMsg);
+    };
+    RegisterService = __decorate([
+        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["e" /* Http */]) === "function" && _a || Object])
+    ], RegisterService);
+    return RegisterService;
+    var _a;
+}());
+
+//# sourceMappingURL=register.service.js.map
 
 /***/ }),
 

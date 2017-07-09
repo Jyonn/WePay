@@ -5,23 +5,30 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/catch';
 
 @Injectable()
-export class AuthenticationService {
+export class RegisterService {
 
-    private loginURL: string;
+    private URL: string;
     private headers: Headers;
     private options: RequestOptions;
     constructor(private http: Http) {
-        this.loginURL = '/session'
+        this.URL = '/user'
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Accept', 'application/json');
-        this.options = new RequestOptions({headers:this.headers});
+        this.options = new RequestOptions({ headers: this.headers });
     }
 
-    login(username: string, password: string) {
-        let user = JSON.stringify({ username: username, password: password });
+    addSeller(username: string, brand: string, password: string) {
+        let user = JSON.stringify({
+            password: password,
+            is_seller: 1,
+            brand: brand,
+            username: username,
+            captcha: 0
+        }
+        );
 
-        return this.http.post(this.loginURL, user, this.options)
+        return this.http.post(this.URL, user, this.options)
             .map((response: Response) => {
                 let responseJson = response.json();
                 if (responseJson.code == 0) {
@@ -31,18 +38,6 @@ export class AuthenticationService {
             }).catch(this.handleError);
     }
 
-    logout() {
-        // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
-        return this.http.delete(this.loginURL)
-            .map((response: Response) => {
-                let responseJson = response.json();
-                if (responseJson.code == 0) {
-                    localStorage.removeItem('currentUser');
-                }
-                return responseJson;
-            });
-    }
     private handleError(error: Response | any) {
         // In a real world app, you might use a remote logging infrastructure
         let errMsg: string;

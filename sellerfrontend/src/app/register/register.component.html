@@ -2,36 +2,53 @@
 <md-card color="primary">
   <md-card-title style="text-align: center;">注册</md-card-title>
   <md-card-content>
-    <form class="form">
+    <form class="form" [formGroup]="registerForm" novalidate>
       <md-input-container class="full-width">
-        <input mdInput type="text" placeholder="用户名" [formControl]="usernameFormControl">
-        <md-error *ngIf="usernameFormControl.hasError('required')">
+        <input mdInput type="text" [(ngModel)]="seller.username" placeholder="用户名" formControlName="username">
+        <md-error *ngIf="registerForm.controls.username.hasError('minlength')">
+          <strong>最小输入4个字符</strong>
+        </md-error>
+        <md-error *ngIf="registerForm.controls.username.hasError('maxlength')">
+          <strong>最多输入20个字符</strong>
+        </md-error>
+        <md-error *ngIf="registerForm.controls.username.hasError('required')">
           <strong>必需</strong>
         </md-error>
       </md-input-container>
-      <br><br>
+      <br>
       <md-input-container class="full-width">
-        <input mdInput type="text" placeholder="品牌名" [formControl]="brandFormControl">
-        <md-error *ngIf="brandFormControl.hasError('required')">
+        <input mdInput type="text" [(ngModel)]="seller.brand" placeholder="品牌名" formControlName="brand">
+        <md-error *ngIf="registerForm.controls.brand.hasError('minlength')">
+          <strong>最小输入2个字符</strong>
+        </md-error>
+        <md-error *ngIf="registerForm.controls.brand.hasError('maxlength')">
+          <strong>最多输入32个字符</strong>
+        </md-error>
+        <md-error *ngIf="registerForm.controls.brand.hasError('required')">
           <strong>必需</strong>
         </md-error>
       </md-input-container>
-      <br><br>
+      <br>
       <md-input-container class="full-width">
-        <input mdInput type="password" placeholder="密码" [formControl]="passwordFormControl">
-        <md-error *ngIf="passwordFormControl.hasError('required')">
+        <input mdInput type="password" [(ngModel)]="seller.password" placeholder="密码" formControlName="password" validateEqual="confirmPassword" reverse=true>
+        <md-error *ngIf="registerForm.controls.password.hasError('minlength')">
+          <strong>最小输入6个字符</strong>
+        </md-error>
+        <md-error *ngIf="registerForm.controls.password.hasError('required')">
           <strong>必需</strong>
         </md-error>
       </md-input-container>
-      <br><br>
+      <br>
       <md-input-container class="full-width">
-        <input mdInput type="password" placeholder="重复密码" [formControl]="repasswordFormControl">
-        <md-error *ngIf="repasswordFormControl.hasError('required')">
-          <strong>必需</strong>
-        </md-error>
+        <input mdInput type="password" placeholder="确认密码" formControlName="confirmPassword" validateEqual="password" >
+        <md-error *ngIf="registerForm.controls.confirmPassword.invalid">
+          <strong>两次密码输入不一致</strong>
+        </md-error>        
       </md-input-container>
-      <br><br>
-      <button md-raised-button color="primary" type="submit" name="action">注册</button>
+      <br>
+      <p *ngIf="errorMsg">{{errorMsg}}</p>
+      <button (click)="doRegister()" md-raised-button color="primary" type="submit" name="action" [disabled]="registerForm.invalid">注册</button>
     </form>
+    <p>Form value: {{ registerForm.value | json }}</p>
   </md-card-content>
 </md-card>

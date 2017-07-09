@@ -1,8 +1,7 @@
+import 'hammerjs';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppComponent } from './app.component';
-import 'hammerjs';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AdministrationComponent } from './administration/administration.component';
@@ -22,6 +21,8 @@ import { AuthenticationService } from './_services/index'
 import { HttpModule } from '@angular/http';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService }  from './_services/index';
+import { EqualValidator } from "./register/directives/equal-validator.directive";
+import { RegisterService } from "app/register/register.service";
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +32,7 @@ import { InMemoryDataService }  from './_services/index';
     AdministrationSellerComponent,
     AdministrationGoodComponent,
     AdministrationOrderComponent,
+    EqualValidator
   ],
   imports: [
     BrowserModule,
@@ -46,7 +48,8 @@ import { InMemoryDataService }  from './_services/index';
     HttpModule
   ],
   providers: [AuthGuard,
-    AuthenticationService],
+    AuthenticationService,
+    RegisterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

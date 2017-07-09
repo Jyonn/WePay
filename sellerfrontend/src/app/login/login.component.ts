@@ -2,43 +2,54 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot, RouterState, RouterStateSnapshot } from '@angular/router';
 import { AuthenticationService } from '../_services/index';
 import { Observable } from 'rxjs/Observable';
-
 import { Seller } from '../_model/index';
+import { FormGroup , Validators, FormBuilder } from '@angular/forms';
 
-import { FormControl, Validators } from '@angular/forms';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  usernameFormControl = new FormControl('', [
-    Validators.required]);
-  passwordFormControl = new FormControl('', [
-    Validators.required]);
+  public loginForm: FormGroup;
   public seller: Seller = new Seller();
   public errorMsg: Error;
 
   constructor(
     public router: Router,
     public activatedRoute: ActivatedRoute,
-    public authenticationService: AuthenticationService
-  ) {
-    console.log(this.authenticationService);
-  }
+    public authenticationService: AuthenticationService,
+    private fb: FormBuilder
+  ) {}
+
+
 
   ngOnInit() {
-    console.log("--- user-login-component ---");
-    console.log(this.router);
-    console.log(this.activatedRoute);
-
     let activatedRouteSnapshot: ActivatedRouteSnapshot = this.activatedRoute.snapshot;
     let routerState: RouterState = this.router.routerState;
     let routerStateSnapshot: RouterStateSnapshot = routerState.snapshot;
+    this.createForm();
+  }
 
-    console.log(activatedRouteSnapshot);
-    console.log(routerState);
-    console.log(routerStateSnapshot);
+  private createForm():void{
+    this.loginForm = this.fb.group({
+      "username": [
+        "",
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(20)
+        ]
+      ],
+      "password": [
+        "",
+        [
+          Validators.required,
+          Validators.minLength(6),
+        ]
+      ]
+    });
+    
   }
 
   public doLogin(): void {
@@ -58,17 +69,20 @@ export class LoginComponent implements OnInit {
                 if(data.code > 0){
                   this.errorMsg = data.msg;
                 }
+                else{
+                  this.router.navigateByUrl("");
+                }
             },
             error => {
                 console.error(error);
             }
             );
   }
-
+/*
   public doLogout(): void {
     this.authenticationService.logout();
     this.router.navigateByUrl("");
-  }
+  }*/
 
   public doRegister() {
     this.router.navigateByUrl("register");

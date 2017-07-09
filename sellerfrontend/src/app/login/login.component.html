@@ -2,17 +2,26 @@
 <md-card color="primary">
   <md-card-title style="text-align: center;">登录</md-card-title>
   <md-card-content>
-    <form class="form">
+    <form class="form" [formGroup]="loginForm" novalidate>
       <md-input-container class="full-width">
-        <input mdInput type="text" [(ngModel)]="seller.username" placeholder="用户名" [formControl]="usernameFormControl">
-        <md-error *ngIf="usernameFormControl.hasError('required')">
+        <input mdInput type="text" [(ngModel)]="seller.username" placeholder="用户名" formControlName="username">
+        <md-error *ngIf="loginForm.controls.username.hasError('minlength')">
+          <strong>最小输入4个字符</strong>
+        </md-error>
+        <md-error *ngIf="loginForm.controls.username.hasError('maxlength')">
+          <strong>最多输入20个字符</strong>
+        </md-error>
+        <md-error *ngIf="loginForm.controls.username.hasError('required')">
           <strong>必需</strong>
         </md-error>
       </md-input-container>
       <br><br>
       <md-input-container class="full-width">
-        <input mdInput type="password" [(ngModel)]="seller.password" placeholder="密码" [formControl]="passwordFormControl">
-        <md-error *ngIf="passwordFormControl.hasError('required')">
+        <input mdInput type="password" [(ngModel)]="seller.password" placeholder="密码" formControlName="password">
+        <md-error *ngIf="loginForm.controls.password.hasError('minlength')">
+          <strong>最小输入6个字符</strong>
+        </md-error>
+        <md-error *ngIf="loginForm.controls.password.hasError('required')">
           <strong>必需</strong>
         </md-error>
       </md-input-container>
@@ -20,7 +29,8 @@
       <md-slide-toggle color="primary"><small>请记住我！</small></md-slide-toggle>
       <button (click)="doRegister()" class="register" md-raised-button color="primary">注册</button><br><br><br>
       <p *ngIf="errorMsg">{{errorMsg}}</p>
-      <button (click)="doLogin()" class="login" md-raised-button color="primary" type="submit">登录</button>
+      <button (click)="doLogin()" class="login" md-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">登录</button>
     </form>
+    <p>Form value: {{ loginForm.value | json }}</p>
   </md-card-content>
 </md-card>
