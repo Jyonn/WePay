@@ -20,10 +20,10 @@ from WePay.settings import STATIC_DIR_URL
 
 from . import router
 
-favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
+# favicon_view = RedirectView.as_view(url='/static/favicon.ico', permanent=True)
 
 urlpatterns = [
-    url(r'^favicon\.ico$', favicon_view),
+    # url(r'^favicon\.ico$', favicon_view),
     # url(r'^admin/', admin.site.urls),
     url(r'^session$', router.session),
     url(r'^user$', router.user),
