@@ -1,0 +1,26 @@
+<md-toolbar color="primary">AKS</md-toolbar>
+<md-card color="primary">
+  <md-card-title style="text-align: center;">登录</md-card-title>
+  <md-card-content>
+    <form class="form">
+      <md-input-container class="full-width">
+        <input mdInput type="text" [(ngModel)]="seller.username" placeholder="用户名" [formControl]="usernameFormControl">
+        <md-error *ngIf="usernameFormControl.hasError('required')">
+          <strong>必需</strong>
+        </md-error>
+      </md-input-container>
+      <br><br>
+      <md-input-container class="full-width">
+        <input mdInput type="password" [(ngModel)]="seller.password" placeholder="密码" [formControl]="passwordFormControl">
+        <md-error *ngIf="passwordFormControl.hasError('required')">
+          <strong>必需</strong>
+        </md-error>
+      </md-input-container>
+      <br><br>
+      <md-slide-toggle color="primary"><small>请记住我！</small></md-slide-toggle>
+      <button (click)="doRegister()" class="register" md-raised-button color="primary">注册</button><br><br><br>
+      <p *ngIf="errorMsg">{{errorMsg}}</p>
+      <button (click)="doLogin()" class="login" md-raised-button color="primary" type="submit">登录</button>
+    </form>
+  </md-card-content>
+</md-card>
