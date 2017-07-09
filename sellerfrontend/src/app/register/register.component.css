@@ -1,0 +1,13 @@
+md-card{
+  margin:0.5em auto;
+  width: 400px;
+}
+
+
+.full-width{
+  width: 100%;
+}
+
+button{
+  width: 100%;
+}
