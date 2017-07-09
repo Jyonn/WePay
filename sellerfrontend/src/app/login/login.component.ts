@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
     this.router.navigateByUrl("");
   }
 
-  private doRegister() {
+  public doRegister() {
     this.router.navigateByUrl("register");
   }
 
