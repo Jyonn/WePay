@@ -196,8 +196,8 @@
 - response
 ```
 {
-	'code': 错误代码，默认为0（OK）
-	'msg': OK / 不是买家用户
+	'code': 0
+	'msg': OK
 	'body': [{
 		'card_id': 银行卡ID
 		'card': 银行卡号
