@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+from django.conf import urls
 from django.conf.urls import url, static
 # from django.contrib import admin
 from django.views.generic import RedirectView
@@ -44,3 +45,4 @@ urlpatterns = [
 ]
 
 urlpatterns += static.static('/', document_root=STATIC_DIR_URL)
+urls.handler404 = index_view
