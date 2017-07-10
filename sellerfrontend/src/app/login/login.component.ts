@@ -78,11 +78,6 @@ export class LoginComponent implements OnInit {
             }
             );
   }
-/*
-  public doLogout(): void {
-    this.authenticationService.logout();
-    this.router.navigateByUrl("");
-  }*/
 
   public doRegister() {
     this.router.navigateByUrl("register");

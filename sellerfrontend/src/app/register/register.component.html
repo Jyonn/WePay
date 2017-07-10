@@ -49,6 +49,5 @@
       <p *ngIf="errorMsg">{{errorMsg}}</p>
       <button (click)="doRegister()" md-raised-button color="primary" type="submit" name="action" [disabled]="registerForm.invalid">注册</button>
     </form>
-    <p>Form value: {{ registerForm.value | json }}</p>
   </md-card-content>
 </md-card>

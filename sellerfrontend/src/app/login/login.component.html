@@ -31,6 +31,5 @@
       <p *ngIf="errorMsg">{{errorMsg}}</p>
       <button (click)="doLogin()" class="login" md-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">登录</button>
     </form>
-    <p>Form value: {{ loginForm.value | json }}</p>
   </md-card-content>
 </md-card>
