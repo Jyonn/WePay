@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+from django.conf import urls
 from django.conf.urls import url, static
 # from django.contrib import admin
 from django.views.generic import RedirectView
@@ -41,6 +42,8 @@ urlpatterns = [
     url(r'^order$', router.order),
     url(r'^order?status=(?P<status>\w+)&page=(?P<page>\d+)&count=(?P<count>\d+)$', router.order_status_page_count),
     url(r'^order/(?P<order_id>\d+)/status$', router.order_order_id_status),
+    url(r'^\w+$', index_view),
 ]
 
 urlpatterns += static.static('/', document_root=STATIC_DIR_URL)
+# urls.handler404 = index_view
