@@ -33,10 +33,10 @@ export class AuthenticationService {
 
     logout() {
         // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
         return this.http.delete(this.loginURL)
             .map((response: Response) => {
                 let responseJson = response.json();
+
                 if (responseJson.code == 0) {
                     localStorage.removeItem('currentUser');
                 }

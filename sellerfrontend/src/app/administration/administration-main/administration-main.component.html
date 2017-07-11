@@ -1,0 +1,35 @@
+<div>
+  <md-toolbar color="primary">
+    <button md-button (click)="sidenav.toggle()">
+    <md-icon>menu</md-icon>
+    </button> AKS商家管理后台
+    <span class="spacer"></span>
+    <img src={{imgSrc}} alt="user" style="width:30px;height:32px;">
+    <button md-button (click)="doLogout()">
+    <md-icon>exit_to_app</md-icon>
+    </button>
+  </md-toolbar>
+  <md-sidenav-container>
+    <md-sidenav #sidenav mode="side" opened="true">
+      <md-toolbar>
+        <span>管理列表</span>
+        <md-toolbar-row>
+          <md-icon>credit_card</md-icon>
+          <span><a md-button routerLink="seller"  routerLinkActive="disabled"> 商家信息</a></span>
+        </md-toolbar-row>
+        <md-toolbar-row>
+          <md-icon>card_giftcard</md-icon>
+          <span><a md-button routerLink="good"  routerLinkActive="disabled">商品信息</a></span>
+        </md-toolbar-row>
+        <md-toolbar-row>
+          <md-icon>receipt</md-icon>
+          <span><a md-button routerLink="order"  routerLinkActive="disabled">订单信息</a></span>
+        </md-toolbar-row>
+      </md-toolbar>
+    </md-sidenav>
+
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </md-sidenav-container>
+</div>

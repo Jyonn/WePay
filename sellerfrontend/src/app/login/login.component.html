@@ -31,6 +31,12 @@
       <p *ngIf="errorMsg">{{errorMsg}}</p>
       <button (click)="doLogin()" class="login" md-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">登录</button>
     </form>
-    <p>Form value: {{ loginForm.value | json }}</p>
   </md-card-content>
 </md-card>
+<footer style="text-align: center;">
+    <br />
+    <strong>Powered by AKS ?2017-2018.</strong>
+    <p>Contact information:
+        <a href="mailto:3140102283@zju.edu.cn">3140102283@zju.edu.cn</a>.
+    </p>
+</footer>

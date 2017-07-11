@@ -1,0 +1,21 @@
+<md-toolbar color="primary">
+  添加银行卡
+</md-toolbar>
+<md-card color="primary">
+  <md-card-content>
+    <form class="form" [formGroup]="cardForm" novalidate>
+      <md-input-container class="full-width">
+        <input mdInput type="text" placeholder="卡号" formControlName="cardname" >
+        <md-error *ngIf="cardForm.controls.cardname.hasError('required')">
+          <strong>必需</strong>
+        </md-error>
+      </md-input-container>
+      <br><br>
+      <md-checkbox formControlName="default">设为默认银行卡</md-checkbox>
+
+      <p *ngIf="errorMsg">{{errorMsg}}</p>
+      <button (click)="addCard()" class="add" md-raised-button color="primary" type="submit" [disabled]="!cardForm.valid">添加</button>
+      <button (click)="cancel()" class="cancel" md-raised-button color="primary">取消</button>
+    </form>
+  </md-card-content>
+</md-card>

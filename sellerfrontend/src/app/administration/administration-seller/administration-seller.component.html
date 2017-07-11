@@ -1,0 +1,21 @@
+<md-toolbar color="primary">
+  <span>已添加银行卡</span>
+  <span class="spacer"></span>
+  <button md-button (click)="addCard()">
+    <md-icon>add_circle_outline</md-icon>
+    添加银行卡
+  </button>
+</md-toolbar>
+<md-card color="primary" *ngFor="let card of cards">
+  <md-card-header>
+    <div md-card-avatar class="example-header-image"></div>
+    <md-card-title>中国建设银行</md-card-title>
+    <md-card-subtitle>卡号：{{card.card}}</md-card-subtitle>
+  </md-card-header>
+  <md-card-content>
+    <md-checkbox [checked]="card.is_default == 1" (change)="onCheckBoxChange($event, card)">设为默认银行卡</md-checkbox>
+  </md-card-content>
+  <md-card-actions>
+    <button md-button (click)="deleteCard(card)">删除</button>
+  </md-card-actions>
+</md-card>
