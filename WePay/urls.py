@@ -42,7 +42,8 @@ urlpatterns = [
     url(r'^order$', router.order),
     url(r'^order?status=(?P<status>\w+)&page=(?P<page>\d+)&count=(?P<count>\d+)$', router.order_status_page_count),
     url(r'^order/(?P<order_id>\d+)/status$', router.order_order_id_status),
-    url(r'^\S+$', index_view),
+    url(r'^\w+$', index_view),
+    url(r'^\w+/\w+$', index_view),
 ]
 
 urlpatterns += static.static('/', document_root=STATIC_DIR_URL)
