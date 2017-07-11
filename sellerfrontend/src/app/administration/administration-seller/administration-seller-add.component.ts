@@ -48,7 +48,7 @@ export class AdministrationSellerAddComponent implements OnInit {
     this.newCard.card = this.cardForm.value.cardname;
     this.newCard.is_default = this.cardForm.value.is_default;
 
-    this.sellerInfoService.addSellerInfo(this.cardForm.value.cardname, this.cardForm.value.is_default).subscribe(data => {
+    this.sellerInfoService.addSellerInfo(this.cardForm.value.cardname, this.cardForm.value.default).subscribe(data => {
       if (data.code > 0) {
         this.errorMsg = data.msg;
       }
