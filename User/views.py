@@ -19,6 +19,11 @@ def send_captcha(request):
     phone_regex = '^1[34578]\d{9}$'
     if re.search(phone_regex, phone) is None:
         return error_response(Error.PHONE_FORMAT)  # 手机格式错误
+
+    ret = User.get_by_username(phone)
+    if ret.error == Error.OK:
+        return error_response(Error.EXIST_USERNAME)
+
     ret_code, phone_captcha = SendMobile.send_captcha(phone)
     if ret_code != 0:
         return error_response(Error.ERROR_SEND_PHONE_CAPTCHA)  # 发送错误
