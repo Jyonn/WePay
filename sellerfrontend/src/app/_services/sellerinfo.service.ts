@@ -34,7 +34,7 @@ export class SellerInfoService {
     deleteSellerInfo(cardID: number) {
         this.URL = '/card';
         let deleteURL = this.URL + "/" + cardID;
-        return this.http.delete(this.URL)
+        return this.http.delete(deleteURL)
             .map((response: Response) => response.json()).catch(this.handleError);
     }
 
