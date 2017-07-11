@@ -229,6 +229,7 @@ class User(models.Model):
                 store=o_good.store,
                 price=o_good.price,
                 pic=o_good.get_pic(),
+                description=o_good.description,
             ))
         return Ret(Error.OK, good_list)
 

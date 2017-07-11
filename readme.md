@@ -246,6 +246,7 @@
 		'store': 商品库存
 		'price': 商品价格
 		'pic': 商品图片
+		'description': 商品描述
 	}]
 }
 ```
@@ -332,6 +333,7 @@
 		'store': 商品库存
 		'price': 商品价格
 		'pic': 商品图片
+		'description': 商品描述
 	}]
 }
 ```
