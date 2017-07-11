@@ -70,6 +70,7 @@ export class LoginComponent implements OnInit {
                   this.errorMsg = data.msg;
                 }
                 else{
+                  localStorage.setItem("avatar", data.body.avatar);
                   this.router.navigateByUrl("");
                 }
             },

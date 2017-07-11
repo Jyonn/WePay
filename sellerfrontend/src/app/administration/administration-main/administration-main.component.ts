@@ -8,13 +8,18 @@ import { ActivatedRoute, Router, ActivatedRouteSnapshot, RouterState, RouterStat
   styleUrls: ['./administration-main.component.css']
 })
 export class AdministrationMainComponent implements OnInit {
+  public imgSrc: string = "../../../assets/img/sp_girl.png";
 
   constructor(
-    private authenticationService:AuthenticationService,
+    private authenticationService: AuthenticationService,
     private router: Router
   ) { }
 
   ngOnInit() {
+    this.imgSrc = localStorage.getItem("avatar");
+    if (!this.imgSrc) {
+      this.imgSrc = "../../../assets/img/sp_girl.png";
+    }
   }
 
   public doLogout(): void {

@@ -1,2 +1,3 @@
 export * from './authentication.service';
-export * from './in-memory-data.service';
+export * from './sellerinfo.service';
+export * from './snackBar.service';

@@ -32,7 +32,6 @@ export class SellerInfoService {
 
     deleteSellerInfo(cardID: number) {
         let deleteURL = this.loginURL + "/" + cardID;
-        // remove user from local storage to log user out
         return this.http.delete(this.loginURL)
             .map((response: Response) => response.json()).catch(this.handleError);
     }

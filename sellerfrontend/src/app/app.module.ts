@@ -14,14 +14,25 @@ import { MdIconModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthGuard } from "./_guards/auth.guard";
-import { AuthenticationService } from './_services/index'
+import {
+  AuthenticationService,
+  SellerInfoService,
+  SnackBarService
+} from './_services/index'
 import { HttpModule } from '@angular/http';
 import { EqualValidator } from "./register/directives/equal-validator.directive";
 import { RegisterService } from "./register/register.service";
 import { appRoutes } from './app.routes';
 import { RouterModule } from '@angular/router';
-import { AdministrationSellerComponent, AdministrationGoodComponent, AdministrationOrderComponent, AdministrationMainComponent } from "./administration/index";
-
+import {
+  AdministrationSellerComponent,
+  AdministrationGoodComponent,
+  AdministrationOrderComponent,
+  AdministrationMainComponent,
+  AdministrationSellerAddComponent
+} from "./administration/index";
+import { MdCheckboxModule } from '@angular/material';
+import { MdSnackBarModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -32,7 +43,8 @@ import { AdministrationSellerComponent, AdministrationGoodComponent, Administrat
     AdministrationMainComponent,
     AdministrationSellerComponent,
     AdministrationGoodComponent,
-    AdministrationOrderComponent
+    AdministrationOrderComponent,
+    AdministrationSellerAddComponent
   ],
   imports: [
     BrowserModule,
@@ -47,11 +59,17 @@ import { AdministrationSellerComponent, AdministrationGoodComponent, Administrat
     HttpModule,
     MdSidenavModule,
     MdIconModule,
+    MdCheckboxModule,
+    MdSnackBarModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [AuthGuard,
+  providers: [
+    AuthGuard,
     AuthenticationService,
-    RegisterService],
+    RegisterService,
+    SellerInfoService,
+    SnackBarService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

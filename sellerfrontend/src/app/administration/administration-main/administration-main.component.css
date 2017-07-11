@@ -3,8 +3,16 @@
 }
 img{
     border-radius: 50%;
-    background-color: #ffffff
 }
 .icon {
   padding: 0 14px;
+}
+footer{
+   position:static
+}
+md-sidenav{
+    height:calc(100vh - 64px)
+}
+.content{
+    height:calc(100vh - 64px)
 }
