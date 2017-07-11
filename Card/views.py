@@ -36,7 +36,6 @@ def set_default_card(request):
     return response() if ret.error == Error.OK else error_response(ret.error)
 
 
-@require_json
 @require_login
 def delete_card(request, card_id):
     """
