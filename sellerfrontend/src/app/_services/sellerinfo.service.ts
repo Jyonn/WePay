@@ -7,11 +7,10 @@ import 'rxjs/add/operator/catch';
 @Injectable()
 export class SellerInfoService {
 
-    private loginURL: string;
+    private URL: string;
     private headers: Headers;
     private options: RequestOptions;
     constructor(private http: Http) {
-        this.loginURL = '/card'
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Accept', 'application/json');
@@ -19,27 +18,30 @@ export class SellerInfoService {
     }
 
     getSellerInfo() {
-        return this.http.get(this.loginURL)
+        this.URL = '/card';
+        return this.http.get(this.URL)
             .map((response: Response) => response.json()).catch(this.handleError);
     }
 
     addSellerInfo(card: string, is_default: number) {
+        this.URL = '/card';
         let sellerInfo = JSON.stringify({ card: card, is_default: is_default });
 
-        return this.http.post(this.loginURL, sellerInfo, this.options)
+        return this.http.post(this.URL, sellerInfo, this.options)
             .map((response: Response) => response.json()).catch(this.handleError);
     }
 
     deleteSellerInfo(cardID: number) {
-        let deleteURL = this.loginURL + "/" + cardID;
-        return this.http.delete(this.loginURL)
+        this.URL = '/card';
+        let deleteURL = this.URL + "/" + cardID;
+        return this.http.delete(this.URL)
             .map((response: Response) => response.json()).catch(this.handleError);
     }
 
     updateSellerInfo(cardID: number) {
+        this.URL = '/user/default-card';
         let sellerInfo = JSON.stringify({ card_id: cardID });
-
-        return this.http.put(this.loginURL, sellerInfo, this.options)
+        return this.http.put(this.URL, sellerInfo, this.options)
             .map((response: Response) => response.json()).catch(this.handleError);
     }
 
