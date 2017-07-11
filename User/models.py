@@ -230,6 +230,8 @@ class User(models.Model):
                 price=o_good.price,
                 pic=o_good.get_pic(),
                 description=o_good.description,
+                category_name=o_good.category.category_name,
+                category_id=o_good.category_id,
             ))
         return Ret(Error.OK, good_list)
 

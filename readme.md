@@ -247,6 +247,8 @@
 		'price': 商品价格
 		'pic': 商品图片
 		'description': 商品描述
+		'category_id': 商品类别ID
+		'category_name': 商品类别名
 	}]
 }
 ```
@@ -334,6 +336,8 @@
 		'price': 商品价格
 		'pic': 商品图片
 		'description': 商品描述
+		'category_id': 商品类别ID
+		'category_name': 商品类别名
 	}]
 }
 ```
