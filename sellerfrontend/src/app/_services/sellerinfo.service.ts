@@ -23,9 +23,12 @@ export class SellerInfoService {
             .map((response: Response) => response.json()).catch(this.handleError);
     }
 
-    addSellerInfo(card: string, is_default: number) {
+    addSellerInfo(card: string, is_default: boolean) {
+        let isDefault:number = (is_default == true)?1:0;
         this.URL = '/card';
-        let sellerInfo = JSON.stringify({ card: card, is_default: is_default });
+        let sellerInfo = JSON.stringify({ card: card, is_default: isDefault });
+        console.log(sellerInfo);
+        
 
         return this.http.post(this.URL, sellerInfo, this.options)
             .map((response: Response) => response.json()).catch(this.handleError);

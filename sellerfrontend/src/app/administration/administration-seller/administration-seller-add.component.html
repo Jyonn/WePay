@@ -14,6 +14,7 @@
       <md-checkbox formControlName="default">设为默认银行卡</md-checkbox>
 
       <p *ngIf="errorMsg">{{errorMsg}}</p>
+      <span class="spacer"></span>
       <button (click)="addCard()" class="add" md-raised-button color="primary" type="submit" [disabled]="!cardForm.valid">添加</button>
       <button (click)="cancel()" class="cancel" md-raised-button color="primary">取消</button>
     </form>
