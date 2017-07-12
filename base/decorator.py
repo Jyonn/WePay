@@ -1,4 +1,3 @@
-import base64
 from functools import wraps
 
 from django.views.decorators import http
@@ -60,10 +59,8 @@ def decorator_generator(verify_func, error_id):
     """
     def decorator(func):
         def wrapper(request, *args, **kwargs):
-            print("verify")
             if verify_func(request):
                 return func(request, *args, **kwargs)
-            print(error_id)
             return error_response(error_id)
         return wrapper
     return decorator
@@ -81,9 +78,7 @@ def require_buyer_func(request):
     """
     需要买家登录装饰器
     """
-    print("require")
     o_user = get_user_from_session(request)
-    print(o_user is None)
     return o_user is not None and o_user.user_type == User.TYPE_BUYER
 
 
