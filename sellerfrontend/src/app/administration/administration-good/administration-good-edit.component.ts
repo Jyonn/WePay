@@ -106,7 +106,7 @@ export class AdministrationGoodEditComponent implements OnInit {
       }
       else {
         this.errorMsg = "正在上传中...";
-        setTimeout(function () {
+        setTimeout(() => {
           this.errorMsg = "";
           this.snackBarService.openSnackBar("修改成功！");
           this.location.back();
