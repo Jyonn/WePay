@@ -4,21 +4,27 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { MdToolbarModule } from '@angular/material';
-import { MdInputModule } from '@angular/material';
-import { MdCardModule } from '@angular/material';
-import { MdButtonModule } from '@angular/material';
-import { MdSlideToggleModule } from '@angular/material';
-import { MdSidenavModule } from '@angular/material';
-import { MdIconModule } from '@angular/material';
+import {
+  MdToolbarModule,
+  MdInputModule,
+  MdCardModule,
+  MdButtonModule,
+  MdSlideToggleModule,
+  MdSidenavModule,
+  MdIconModule,
+  MdSelectModule,
+  MdSnackBarModule,
+  MdCheckboxModule
+} from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthGuard } from "./_guards/auth.guard";
 import {
   AuthenticationService,
   SellerInfoService,
-  SnackBarService
-} from './_services/index'
+  SnackBarService,
+  GoodService
+} from './_services'
 import { HttpModule } from '@angular/http';
 import { EqualValidator } from "./register/directives/equal-validator.directive";
 import { RegisterService } from "./register/register.service";
@@ -29,11 +35,9 @@ import {
   AdministrationGoodComponent,
   AdministrationOrderComponent,
   AdministrationMainComponent,
-  AdministrationSellerAddComponent
-} from "./administration/index";
-import { MdCheckboxModule } from '@angular/material';
-import { MdSnackBarModule } from '@angular/material';
-
+  AdministrationSellerAddComponent,
+  AdministrationGoodAddComponent
+} from "./administration";
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,7 +48,8 @@ import { MdSnackBarModule } from '@angular/material';
     AdministrationSellerComponent,
     AdministrationGoodComponent,
     AdministrationOrderComponent,
-    AdministrationSellerAddComponent
+    AdministrationSellerAddComponent,
+    AdministrationGoodAddComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +66,7 @@ import { MdSnackBarModule } from '@angular/material';
     MdIconModule,
     MdCheckboxModule,
     MdSnackBarModule,
+    MdSelectModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [
@@ -68,7 +74,8 @@ import { MdSnackBarModule } from '@angular/material';
     AuthenticationService,
     RegisterService,
     SellerInfoService,
-    SnackBarService
+    SnackBarService,
+    GoodService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,81 @@
+<md-toolbar color="primary">
+  添加商品
+</md-toolbar>
+<md-card color="primary">
+  <md-card-content>
+    <form class="form" [formGroup]="goodForm" novalidate>
+      <table class="full-width" cellspacing="25">
+        <tr>
+          <td>
+            <md-select placeholder="商品类别" formControlName="category_id">
+              <md-option *ngFor="let item of category" [value]="item.category_id">{{ item.category_name }}</md-option>
+            </md-select>
+            <md-error *ngIf="goodForm.controls.category_id.hasError('required')">
+              <strong>必需</strong>
+            </md-error>
+
+            <md-input-container class="full-width">
+              <input mdInput type="text" placeholder="商品名" formControlName="name">
+              <md-error *ngIf="goodForm.controls.name.hasError('required')">
+                <strong>必需</strong>
+              </md-error>
+              <md-error *ngIf="goodForm.controls.name.hasError('minlength')">
+                <strong>最小输入1个字符</strong>
+              </md-error>
+              <md-error *ngIf="goodForm.controls.name.hasError('maxlength')">
+                <strong>最多输入20个字符</strong>
+              </md-error>
+            </md-input-container>
+
+            <br><br>
+
+            <md-input-container class="full-width">
+              <input mdInput type="number" placeholder="价格" formControlName="price">
+              <md-error *ngIf="goodForm.controls.price.hasError('required')">
+                <strong>必需</strong>
+              </md-error>
+              <md-error *ngIf="goodForm.controls.price.hasError('min')">
+                <strong>价格不能小于0.01元</strong>
+              </md-error>
+            </md-input-container>
+
+            <md-input-container class="full-width">
+              <input mdInput type="number" placeholder="库存" formControlName="store">
+              <md-error *ngIf="goodForm.controls.store.hasError('required')">
+                <strong>必需</strong>
+              </md-error>
+              <md-error *ngIf="goodForm.controls.store.hasError('min')">
+                <strong>库存不能小于0</strong>
+              </md-error>
+            </md-input-container>
+
+            <br><br>
+
+            <md-input-container class="full-width">
+              <textarea minRows=1 maxRows=10 mdInput placeholder="详细介绍" formControlName="description"></textarea>
+              <md-error *ngIf="goodForm.controls.description.hasError('maxlength')">
+                <strong>最多输入512个字符</strong>
+              </md-error>
+            </md-input-container>
+          </td>
+          <td>
+            <button type="button" md-raised-button color="primary" (click)="imgFileInput.click()" class="full-width">导入图片</button>
+            <input hidden type="file" #imgFileInput (change)="previewImage($event)" />
+            <div class="full-width" style="text-align:center;margin:20px auto;">
+              <img alt="图片预览" [src]="imgSrc" style="width:200px;height:200px;">
+            </div>
+            <p *ngIf="errorMsg">{{errorMsg}}</p>
+            <br>
+            <button (click)="addGood()" class="full-width" md-raised-button color="primary" type="submit" [disabled]="!goodForm.valid">添加</button>
+            <br><br>
+            <button (click)="cancel()" class="full-width" md-raised-button color="primary">取消</button>
+          </td>
+        </tr>
+      </table>
+
+      <!--导入图片 上传商品 成功过导入-->
+
+      <p>{{goodForm.value | json}}</p>
+    </form>
+  </md-card-content>
+</md-card>

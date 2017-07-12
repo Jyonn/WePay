@@ -4,8 +4,9 @@ import {AdministrationGoodComponent} from './administration-good/administration-
 import {AdministrationOrderComponent} from './administration-order/administration-order.component';
 import {AdministrationMainComponent} from './administration-main/administration-main.component';
 import {AdministrationSellerAddComponent} from './administration-seller/administration-seller-add.component'
-import { AuthGuard } from "app/_guards";
+import {AdministrationGoodAddComponent} from './'
 
+import { AuthGuard } from "app/_guards";
 export const administrationRoutes: Routes =[
     {
         path: 'administration',
@@ -32,6 +33,9 @@ export const administrationRoutes: Routes =[
                 {
                     path: "addSeller",
                     component: AdministrationSellerAddComponent
+                },{
+                    path: "addGood",
+                    component: AdministrationGoodAddComponent
                 }
         ]
     }
