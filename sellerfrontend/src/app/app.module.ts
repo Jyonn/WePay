@@ -14,8 +14,12 @@ import {
   MdIconModule,
   MdSelectModule,
   MdSnackBarModule,
-  MdCheckboxModule
+  MdCheckboxModule,
+  MdTableModule,
+  MdPaginatorModule,
+  MdTabsModule
 } from '@angular/material';
+import { CdkTableModule } from '@angular/cdk'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthGuard } from "./_guards/auth.guard";
@@ -36,7 +40,8 @@ import {
   AdministrationOrderComponent,
   AdministrationMainComponent,
   AdministrationSellerAddComponent,
-  AdministrationGoodAddComponent
+  AdministrationGoodAddComponent,
+  AdministrationGoodEditComponent
 } from "./administration";
 @NgModule({
   declarations: [
@@ -49,7 +54,8 @@ import {
     AdministrationGoodComponent,
     AdministrationOrderComponent,
     AdministrationSellerAddComponent,
-    AdministrationGoodAddComponent
+    AdministrationGoodAddComponent,
+    AdministrationGoodEditComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +73,10 @@ import {
     MdCheckboxModule,
     MdSnackBarModule,
     MdSelectModule,
+    MdTableModule,
+    MdPaginatorModule,
+    CdkTableModule,
+    MdTabsModule,  
     RouterModule.forRoot(appRoutes)
   ],
   providers: [

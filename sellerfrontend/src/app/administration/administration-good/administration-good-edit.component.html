@@ -1,5 +1,5 @@
 <md-toolbar color="primary">
-  添加商品
+  编辑商品
 </md-toolbar>
 <md-card color="primary">
   <md-card-content>
@@ -7,12 +7,9 @@
       <table class="full-width" cellspacing="25">
         <tr>
           <td>
-            <md-select placeholder="商品类别" formControlName="category_id">
-              <md-option *ngFor="let item of category" [value]="item.category_id">{{ item.category_name }}</md-option>
-            </md-select>
-            <md-error *ngIf="goodForm.controls.category_id.hasError('required')">
-              <strong>必需</strong>
-            </md-error>
+            <md-input-container class="full-width" >
+              <input mdInput type="text" placeholder="商品类别" disabled value={{good.category_name}}>
+            </md-input-container>
 
             <md-input-container class="full-width">
               <input mdInput type="text" placeholder="商品名" formControlName="name">
@@ -62,11 +59,11 @@
             <button type="button" md-raised-button color="primary" (click)="imgFileInput.click()" class="full-width">导入图片</button>
             <input hidden type="file" #imgFileInput (change)="previewImage($event)" />
             <div class="full-width" style="text-align:center;margin:20px auto;">
-              <img alt="图片预览" [src]="imgSrc" style="width:200px;height:200px;">
+              <img alt="图片预览" [src]="good.pic" style="width:200px;height:200px;">
             </div>
             <p *ngIf="errorMsg">{{errorMsg}}</p>
             <br>
-            <button (click)="addGood()" class="full-width" md-raised-button color="primary" type="submit" [disabled]="!goodForm.valid">添加</button>
+            <button (click)="editGood()" class="full-width" md-raised-button color="primary" type="submit" [disabled]="!goodForm.valid">添加</button>
             <br><br>
             <button (click)="cancel()" class="full-width" md-raised-button color="primary">取消</button>
           </td>

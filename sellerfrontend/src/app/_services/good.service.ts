@@ -18,11 +18,18 @@ export class GoodService {
         this.options = new RequestOptions({ headers: this.headers });
     }
 
-    getGoodInfo() {
+    getGoodsInfo() {
         this.URL = '/good';
         return this.http.get(this.URL)
             .map((response: Response) => response.json()).catch(this.handleError);
     }
+
+    getGoodInfo(good_id:number) {
+        this.URL = '/good/' + good_id;
+        return this.http.get(this.URL)
+            .map((response: Response) => response.json()).catch(this.handleError);
+    }
+    
 
     getCategory() {
         this.URL = "/category?type=all";
@@ -52,11 +59,9 @@ export class GoodService {
             .map((response: Response) => response.json()).catch(this.handleError);
     }
 
-    updateGoodInfo(good: Good) {
-        this.URL = '/good';
-        let updateURL = this.URL + "/" + good.good_id;
+    editGoodInfo(good: Good) {
+        this.URL = "/good/" + good.good_id;
         let goodInfo = JSON.stringify({
-            category_id: good.category_id,
             name: good.name,
             price: good.price,
             store: good.store,
@@ -64,7 +69,9 @@ export class GoodService {
             description: good.description,
             gzipped: good.gzipped
         });
-        return this.http.put(updateURL, goodInfo, this.options)
+        console.log(goodInfo);
+        
+        return this.http.put(this.URL, goodInfo, this.options)
             .map((response: Response) => response.json()).catch(this.handleError);
     }
 
