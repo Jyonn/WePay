@@ -187,6 +187,7 @@ class Good(models.Model):
             store=store,
             pic=pic,
             seller=seller,
+            description=description,
         )
         try:
             o.save()
