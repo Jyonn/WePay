@@ -3,71 +3,63 @@ import { Good, Category } from 'app/_model'
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Location } from '@angular/common';
+import 'rxjs/add/operator/switchMap';
 
 @Component({
-  selector: 'app-administration-good-add',
-  templateUrl: './administration-good-add.component.html',
-  styleUrls: ['./administration-good-add.component.css']
+  selector: 'app-administration-good-edit',
+  templateUrl: './administration-good-edit.component.html',
+  styleUrls: ['./administration-good-edit.component.css']
 })
-export class AdministrationGoodAddComponent implements OnInit {
+export class AdministrationGoodEditComponent implements OnInit {
   public goodForm: FormGroup;
-  public category: Category[];
-  public newGood: Good = new Good();
+  public good: Good = new Good();
   public errorMsg: string;
-  public imgSrc: string;
   constructor(
     private goodService: GoodService,
     private snackBarService: SnackBarService,
-    public router: Router,
+    public route: ActivatedRoute,
     private fb: FormBuilder,
     private location: Location
   ) { }
 
   ngOnInit() {
-    this.category = [
-      {
-        category_id: 1,
-        category_name: "洗发水"
-      },
-      {
-        category_id: 2,
-        category_name: "沐浴露"
-      }
-    ]
-    this.getCategory();
+    this.good.category_name = "aaa";
+    this.good.description = "dddddddd";
+    this.good.gzipped = 0;
+    this.good.name = "ddddddddddd";
+    this.good.pic = "../../../assets/img/xifashui.jpg";
+    this.good.price = 11;
+    this.good.store = 12;
     this.createForm();
-
-  }
-
-  private getCategory() {
-    this.goodService.getCategory().subscribe(data => {
-      if (data.code == 0) {
-        this.snackBarService.openSnackBar("获取商品类别成功！");
-        this.category = data.body;
-      }
-    },
+    this.route.paramMap
+      .switchMap((params: ParamMap) => this.goodService.getGoodInfo(+params.get('id'))).subscribe(
+      data => {
+        if (data.code == 0) {
+          this.good.category_name = data.body.category_name;
+          this.good.description = data.body.description;
+          this.good.gzipped = data.body.gzipped;
+          this.good.name = data.body.name;
+          this.good.pic = data.body.pic;
+          this.good.price = data.body.price;
+          this.good.store = data.body.store;
+          this.snackBarService.openSnackBar("刷新数据成功！");
+        }
+      },
       error => {
         console.error(error);
       }
-    );
-  }
+      );
 
+  }
 
   private createForm(): void {
     this.goodForm = this.fb.group(
       {
-        "category_id":
-        [
-          "",
-          [
-            Validators.required
-          ]
-        ],
         "name":
         [
-          "",
+          this.good.name,
           [
             Validators.minLength(1),
             Validators.maxLength(20),
@@ -76,7 +68,7 @@ export class AdministrationGoodAddComponent implements OnInit {
         ],
         "price":
         [
-          "",
+          this.good.price,
           [
             Validators.min(0.01),
             Validators.required
@@ -84,7 +76,7 @@ export class AdministrationGoodAddComponent implements OnInit {
         ],
         "store":
         [
-          "",
+          this.good.store,
           [
             Validators.min(0),
             Validators.required
@@ -92,7 +84,7 @@ export class AdministrationGoodAddComponent implements OnInit {
         ],
         "description":
         [
-          "",
+          this.good.description,
           [
             Validators.maxLength(512)
           ]
@@ -101,19 +93,14 @@ export class AdministrationGoodAddComponent implements OnInit {
     );
   }
 
-  public addGood() {
-    this.newGood = {
-      good_id: null,
-      category_id: this.goodForm.value.category_id,
-      category_name: null,
-      name: this.goodForm.value.name,
-      price: this.goodForm.value.price,
-      store: this.goodForm.value.store,
-      pic: this.imgSrc,
-      description: this.goodForm.value.description,
-      gzipped: 0
-    }
-    this.goodService.addGoodInfo(this.newGood).subscribe(data => {
+  public editGood() {
+    this.good.name = this.goodForm.value.name;
+    this.good.description = this.goodForm.value.description;
+    this.good.price = this.goodForm.value.price;
+    this.good.pic = this.good.pic;
+    this.good.store = this.goodForm.value.store;
+
+    this.goodService.editGoodInfo(this.good).subscribe(data => {
       if (data.code > 0) {
         this.errorMsg = data.msg;
       }
@@ -121,7 +108,7 @@ export class AdministrationGoodAddComponent implements OnInit {
         this.errorMsg = "正在上传中...";
         setTimeout(function () {
           this.errorMsg = "";
-          this.snackBarService.openSnackBar("添加成功！");
+          this.snackBarService.openSnackBar("修改成功！");
           this.location.back();
         }, 1000);
       }
@@ -136,7 +123,7 @@ export class AdministrationGoodAddComponent implements OnInit {
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
       reader.onload = (e: any) => {
-        this.imgSrc = e.target.result;
+        this.good.pic = e.target.result;
       }
       reader.readAsDataURL(event.target.files[0]);
     }

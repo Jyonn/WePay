@@ -64,7 +64,7 @@ export class AdministrationGoodComponent implements OnInit {
           'category_name': 商品类别名
 	      }
      */
-    this.goodService.getGoodInfo().subscribe(
+    this.goodService.getGoodsInfo().subscribe(
       data => {
         if (data.code == 0) {
           this.goods = data.body;
@@ -81,7 +81,7 @@ export class AdministrationGoodComponent implements OnInit {
    * editGood
    */
   public editGood(good: Good) {
-
+    this.router.navigate(['administration/good/', good.good_id]);
   }
 
   /**

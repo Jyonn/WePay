@@ -4,4 +4,4 @@ export * from './administration-order/administration-order.component';
 export * from './administration-main/administration-main.component';
 export * from './administration-seller/administration-seller-add.component'
 export * from './administration-good/administration-good-add.component'
-
+export * from './administration-good/administration-good-edit.component'
