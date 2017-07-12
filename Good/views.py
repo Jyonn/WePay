@@ -96,10 +96,13 @@ def edit_good(request, good_id):
     pic = request.POST['pic']
     gzipped = request.POST['gzipped'] == '1'
 
-    ret = get_pic_url_from_request(pic, gzipped)
-    if ret.error != Error.OK:
-        return error_response(ret.error)
-    pic_key = ret.body
+    if pic == "":
+        pic_key = o_good.pic
+    else:
+        ret = get_pic_url_from_request(pic, gzipped)
+        if ret.error != Error.OK:
+            return error_response(ret.error)
+        pic_key = ret.body
 
     o_user = get_user_from_session(request)
     ret = o_good.edit_info(o_user, name, price, store, description, pic_key)
