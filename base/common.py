@@ -37,6 +37,8 @@ def upload_good_pic(raw_pic):
         os.remove(file_path)
         return Ret(Error.ILLEGAL_PIC)  # 不是正确的图片
     key = 'aks/good/image/' + random_string
+    print(key)
+    print(file_path)
     ret = QiNiu.upload(key, file_path)
     os.remove(file_path)  # 删除本地文件
     return Ret(Error.OK, key) if ret else Ret(Error.FAILED_UPLOAD)
