@@ -18,9 +18,7 @@ def save_file_to_local(save_file, file_path):
     :param file_path: 文件保存地址
     """
     with open(file_path, "wb+") as f:
-        for chunk in save_file.chunks():
-            f.write(chunk)
-        f.close()
+        f.write(save_file)
 
 
 def upload_good_pic(raw_pic):
