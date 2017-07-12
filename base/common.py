@@ -52,6 +52,7 @@ def get_pic_url_from_request(pic, gzipped):
     :return: 成功则返回键值，失败返回错误参数
     """
     try:
+        pic = pic[pic.find(',')+1:]
         pic = base64.decodebytes(bytes(pic, encoding='utf8'))  # base64解码
         if gzipped:  # 如果经过gZip压缩，解压缩
             import gzip

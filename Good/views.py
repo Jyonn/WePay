@@ -59,10 +59,13 @@ def add_good(request):
         return error_response(ret.error)
     o_category = ret.body
 
-    ret = get_pic_url_from_request(pic, gzipped)
-    if ret.error != Error.OK:
-        return error_response(ret.error)
-    pic_key = ret.body
+    if pic == '':
+        pic_key = ''
+    else:
+        ret = get_pic_url_from_request(pic, gzipped)
+        if ret.error != Error.OK:
+            return error_response(ret.error)
+        pic_key = ret.body
 
     o_user = get_user_from_session(request)
     ret = Good.create(o_user, o_category, name, price, store, pic_key, description)
