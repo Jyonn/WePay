@@ -21,10 +21,8 @@ class QiNiu:
         0.
         :return: 上传是否成功
         """
-        print('--upload--')
         token = QiNiu.q.upload_token(QiNiu.bucket_name, key, 3600)
         ret, info = put_file(token, key, local_file)
-        print(ret, info)
         return ret['key'] == key and ret['hash'] == etag(local_file)
 
     @staticmethod
