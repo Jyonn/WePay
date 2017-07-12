@@ -26,7 +26,7 @@ index_view = RedirectView.as_view(url='/index.html', permanent=True)
 urlpatterns = [
     # url(r'^favicon\.ico$', favicon_view),
     # url(r'^admin/', admin.site.urls),
-    url(r'^$', index_view),
+    # url(r'^$', index_view),
     url(r'^session$', router.session),
     url(r'^user$', router.user),
     url(r'^user/address$', router.user_address),
@@ -42,7 +42,7 @@ urlpatterns = [
     url(r'^order$', router.order),
     # url(r'^order\?status=(?P<status>\w+)&page=(?P<page>\d+)&count=(?P<count>\d+)$', router.order_status_page_count),
     url(r'^order/(?P<order_id>\d+)/status$', router.order_order_id_status),
-    url(r'^\w+$', index_view),
+    # url(r'^\w+$', index_view),
     # url(r'^\w+/\w+$', index_view),
 ]
 
