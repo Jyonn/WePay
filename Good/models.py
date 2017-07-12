@@ -273,7 +273,7 @@ class Good(models.Model):
 
     def get_pic(self):
         from base.c_qiniu import QiNiu
-        return QiNiu.host + self.pic
+        return QiNiu.host + self.pic + '-small'
 
 
 class Button(models.Model):
