@@ -203,6 +203,7 @@ class User(models.Model):
         获取信息
         :return: 地址 真实姓名
         """
+        print("in")
         if self.user_type != User.TYPE_BUYER:
             return Ret(Error.REQUIRE_BUYER)
         return Ret(Error.OK, dict(address=self.address, real_name=self.real_name))
