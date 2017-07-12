@@ -60,9 +60,9 @@ def card_card_id(request, card_id):
         return error_response(Error.ERROR_METHOD)
 
 
-def category(request, _type):
+def category(request):
     if request.method == 'GET':  # 获取商品类别列表
-        return get_category_list(request, _type)
+        return get_category_list(request)
     if request.method == 'POST':
         return init_category(request)
     else:
@@ -113,17 +113,19 @@ def button_button_id(request, button_id):
 
 
 def order(request):
+    if request.method == 'GET':  # 查看订单列表
+        return get_order_list(request)
     if request.method == 'POST':  # 新增订单
         return add_order(request)
     else:
         return error_response(Error.ERROR_METHOD)
 
 
-def order_status_page_count(request, status, page, count):
-    if request.method == 'GET':  # 查看订单列表
-        return get_order_list(request, status, page, count)
-    else:
-        return error_response(Error.ERROR_METHOD)
+# def order_status_page_count(request, status, page, count):
+#     if request.method == 'GET':  # 查看订单列表
+#         return get_order_list(request, status, page, count)
+#     else:
+#         return error_response(Error.ERROR_METHOD)
 
 
 @require_login

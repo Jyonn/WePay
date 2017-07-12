@@ -1,7 +1,7 @@
 from Good.models import Category, Good, Button
 from base.c_qiniu import QiNiu
 from base.common import get_user_from_session, get_pic_url_from_request
-from base.decorator import require_json, require_params, require_seller, require_buyer
+from base.decorator import require_json, require_params, require_seller, require_buyer, require_get_params
 from base.error import Error
 from base.response import response, error_response
 
@@ -14,10 +14,12 @@ def init_category(request):
     return response() if ret.error == Error.OK else error_response(ret.error)
 
 
-def get_category_list(request, _type):
+@require_get_params(['type'])
+def get_category_list(request):
     """
     获取商品类别列表
     """
+    _type = request.GET['type']
     if _type not in ['all', 'unset']:
         return error_response(Error.ERROR_TYPE)
     if _type == 'all':

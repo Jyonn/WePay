@@ -11,20 +11,29 @@ require_post = http.require_POST
 require_get = http.require_GET
 
 
-def require_params(need_params, decode=False):
+def require_params(r_params):
     """
     需要获取的参数是否在request.POST中存在
     """
     def decorator(func):
         def wrapper(request, *args, **kwargs):
-            for need_param in need_params:
-                if need_param in request.POST:
-                    if decode:
-                        x = request.POST[need_param]
-                        c = base64.decodebytes(bytes(x, encoding='utf8')).decode()
-                        request.POST[need_param] = c
-                else:
-                    return error_response(Error.REQUIRE_PARAM, append_msg=need_param)
+            for require_param in r_params:
+                if require_param not in request.POST:
+                    return error_response(Error.REQUIRE_PARAM, append_msg=require_param)
+            return func(request, *args, **kwargs)
+        return wrapper
+    return decorator
+
+
+def require_get_params(r_params):
+    """
+    需要获取的参数是否在request.GET中存在
+    """
+    def decorator(func):
+        def wrapper(request, *args, **kwargs):
+            for require_param in r_params:
+                if require_param not in request.GET:
+                    return error_response(Error.REQUIRE_PARAM, append_msg=require_param)
             return func(request, *args, **kwargs)
         return wrapper
     return decorator
