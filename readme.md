@@ -482,7 +482,7 @@ count: 每页显示条数
 	'code': 错误代码，默认为0（OK）
 	'msg': OK / 页码错误
 	'body': {
-		is_over: 是否查看全部
+		count: 订单总数
 		order_list: [{
 			'order_id': 订单ID
 			'good_name': 商品名

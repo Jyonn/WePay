@@ -294,7 +294,7 @@ class User(models.Model):
             orders = Order.objects.filter(buyer=self, status=order_status).order_by('-pk')
         else:
             orders = Order.objects.filter(good__seller=self, status=order_status).order_by('-pk')
-        is_over = len(orders) <= (page+1) * count
+        count = len(orders)
         orders = orders[page*count: (page+1)*count]
         order_list = []
         for o_order in orders:
@@ -310,4 +310,4 @@ class User(models.Model):
                 create_time=int(o_order.create_time.timestamp()),
                 deliver_time=None if o_order.deliver_time is None else int(o_order.deliver_time.timestamp())
             ))
-        return Ret(Error.OK, dict(order_list=order_list, is_over=is_over))
+        return Ret(Error.OK, dict(order_list=order_list, count=count))
