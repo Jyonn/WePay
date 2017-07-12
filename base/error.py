@@ -2,6 +2,7 @@ class Error:
     """
     错误代码类
     """
+    ERROR_TYPE = 2050
     SELLER_PHONE_DENY = 2049
     ERROR_COUNT = 2048
     PASSWORD_LENGTH = 2047
@@ -62,6 +63,7 @@ class Error:
 
     # 错误说明
     ERROR_TUPLE = (
+        (ERROR_TYPE, '错误的类别状态参数'),
         (SELLER_PHONE_DENY, '商家不允许使用手机号注册'),
         (ERROR_COUNT, '错误的每页条数'),
         (PASSWORD_LENGTH, '密码应长于6个字符'),

@@ -153,6 +153,19 @@ class User(models.Model):
         return Ret(Error.OK, o)
 
     @staticmethod
+    def get_by_username(username):
+        """
+        根据用户名获取用户类
+        :param username: 用户名
+        :return: 用户类
+        """
+        try:
+            o = User.objects.get(username=username)
+        except:
+            return Ret(Error.NOT_FOUND_USERNAME)
+        return Ret(Error.OK, o)
+
+    @staticmethod
     def check_password(username, raw_pwd):
         """
         登录
@@ -229,6 +242,9 @@ class User(models.Model):
                 store=o_good.store,
                 price=o_good.price,
                 pic=o_good.get_pic(),
+                description=o_good.description,
+                category_name=o_good.category.category_name,
+                category_id=o_good.category_id,
             ))
         return Ret(Error.OK, good_list)
 
