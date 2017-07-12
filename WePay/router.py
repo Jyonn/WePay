@@ -121,13 +121,6 @@ def order(request):
         return error_response(Error.ERROR_METHOD)
 
 
-# def order_status_page_count(request, status, page, count):
-#     if request.method == 'GET':  # 查看订单列表
-#         return get_order_list(request, status, page, count)
-#     else:
-#         return error_response(Error.ERROR_METHOD)
-
-
 @require_login
 def order_order_id_status(request, order_id):
     o_user = get_user_from_session(request)
