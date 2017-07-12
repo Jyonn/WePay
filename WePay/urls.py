@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^card$', router.card),
     url(r'^user/default-card$', router.user_default_card),
     url(r'^card/(?P<card_id>\d+)$', router.card_card_id),
-    url(r'^category/(?P<type>\w+)$', router.category),
+    url(r'^category?type=(?P<type>\w+)$', router.category),
     url(r'^category/(?P<category_id>\d+)/good$', router.category_category_id_good),
     url(r'^good$', router.good),
     url(r'^good/(?P<good_id>\d+)$', router.good_good_id),
