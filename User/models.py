@@ -237,14 +237,14 @@ class User(models.Model):
         for o_good in goods:
             good_list.append(dict(
                 good_id=o_good.pk,
-                brand=o_good.seller.brand,
+                # brand=o_good.seller.brand,
                 good_name=o_good.good_name,
                 store=o_good.store,
                 price=o_good.price,
                 pic=o_good.get_pic(),
-                description=o_good.description,
-                category_name=o_good.category.category_name,
-                category_id=o_good.category_id,
+                # description=o_good.description,
+                # category_name=o_good.category.category_name,
+                # category_id=o_good.category_id,
             ))
         return Ret(Error.OK, good_list)
 

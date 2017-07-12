@@ -317,7 +317,7 @@ type: all / unset
 }
 ```
 
-#### 卖家商品列表
+#### 卖家商品列表简要信息
 > GET /good
 
 - request
@@ -335,10 +335,32 @@ type: all / unset
 		'store': 商品库存
 		'price': 商品价格
 		'pic': 商品图片
+	}]
+}
+```
+
+#### 商家获取单一商品
+>GET /good/<good_id>
+
+- request
+```
+{}
+```
+- response
+```
+{
+    'code': 0
+    'msg': OK
+    'body': {
+        'good_id': 商品ID
+		'good_name': 商品名
+		'store': 商品库存
+		'price': 商品价格
+		'pic': 商品图片
 		'description': 商品描述
 		'category_id': 商品类别ID
 		'category_name': 商品类别名
-	}]
+    }
 }
 ```
 

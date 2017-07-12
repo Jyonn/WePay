@@ -131,6 +131,17 @@ def get_good_list(request):
     return response(body=ret.body) if ret.error == Error.OK else error_response(ret.error)
 
 
+def get_single_good(request, good_id):
+    """
+    获取单一商品信息
+    """
+    ret = Good.get(good_id)
+    if ret.error != Error.OK:
+        return error_response(ret.error)
+    o_good = ret.body
+    return response(body=o_good.get_info())
+
+
 @require_json
 @require_params(['good_id', 'number'])
 @require_buyer

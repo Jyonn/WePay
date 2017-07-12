@@ -207,6 +207,21 @@ class Good(models.Model):
             return Ret(Error.NOT_FOUND_GOOD)
         return Ret(Error.OK, o)
 
+    def get_info(self):
+        """
+        获取商品信息
+        :return: 商品信息
+        """
+        good_dict = dict(
+            good_name=self.good_name,
+            store=self.store,
+            price=self.price,
+            pic=self.get_pic(),
+            description=self.description,
+            category_name=self.category.category_name,
+        )
+        return Ret(Error.OK, good_dict)
+
     def edit_info(self, seller, name, price, store, description, pic):
         """
         编辑商品属性

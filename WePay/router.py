@@ -1,6 +1,7 @@
 from Card.views import add_card, get_card_list, set_default_card, delete_card
-from Good.views import init_category, get_category_list, get_good_of_category, add_good, edit_good, delete_good, get_good_list, \
-    add_button, edit_button, delete_button, get_button_list
+from Good.views import init_category, get_category_list, get_good_of_category, add_good, edit_good, delete_good, \
+    get_good_list, \
+    add_button, edit_button, delete_button, get_button_list, get_single_good
 from Order.views import add_order, get_order_list, confirm_send, confirm_receive
 from User.models import User
 from User.views import send_captcha, register, login, logout, edit_address, get_address
@@ -86,7 +87,9 @@ def good(request):
 
 
 def good_good_id(request, good_id):
-    if request.method == 'PUT':  # 编辑商品
+    if request.method == 'GET':
+        return get_single_good(request, good_id)
+    elif request.method == 'PUT':  # 编辑商品
         return edit_good(request, good_id)
     elif request.method == 'DELETE':
         return delete_good(request, good_id)
