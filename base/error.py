@@ -88,7 +88,7 @@ class Error:
         (CATEGORY_NAME_LENGTH, '类别名应在2-20个字符之间'),
         (REAL_NAME_LENGTH, '真实姓名长度应在32个字符之内'),
         (ADDRESS_LENGTH, '地址长度应在512个字符之内'),
-        (REQUIRE_BUYER, '需要登录商家用户'),
+        (REQUIRE_SELLER, '需要登录商家用户'),
         (NOT_YOUR_CARD, '不是你的银行卡'),
         (ERROR_ORDER_STATUS, '订单状态无法变更'),
         (NOT_YOUR_GOOD, '不是你的订单'),
