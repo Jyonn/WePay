@@ -60,8 +60,10 @@ def decorator_generator(verify_func, error_id):
     """
     def decorator(func):
         def wrapper(request, *args, **kwargs):
+            print("verify")
             if verify_func(request):
                 return func(request, *args, **kwargs)
+            print(error_id)
             return error_response(error_id)
         return wrapper
     return decorator
