@@ -19,7 +19,7 @@ export class AdministrationSellerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    /*
+    
     this.cards = [
       {
         card: "1111",
@@ -32,7 +32,7 @@ export class AdministrationSellerComponent implements OnInit {
         is_default: 0
       }
     ];
-    this.defaultCard = this.cards[0];*/
+    this.defaultCard = this.cards[0];
     this.getSellerInfo();
   }
 

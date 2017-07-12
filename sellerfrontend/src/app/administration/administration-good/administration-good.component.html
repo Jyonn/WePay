@@ -1,3 +1,29 @@
-<p>
-  administration-good works!
-</p>
+<md-toolbar color="primary">
+  <span>已添加商品</span>
+  <span class="spacer"></span>
+  <button md-button (click)="addGood()">
+    <md-icon>add_circle_outline</md-icon>
+    添加商品
+  </button>
+</md-toolbar>
+<md-card color="primary" *ngFor="let good of goods" align="end">
+  <md-card-header>
+      <img md-card-avatar src={{good.pic}}>
+      <md-card-title>类别：{{good.category_name}}</md-card-title>
+      <md-card-subtitle>商品名：{{good.name}}</md-card-subtitle>
+  
+    <md-card-title-group>
+      <md-card-title>价格：{{good.price}}</md-card-title>
+    </md-card-title-group>
+    <md-card-title-group>
+      <md-card-title>库存：{{good.store}}</md-card-title>
+    </md-card-title-group>
+    <md-card-title-group>
+      <md-card-title>详细介绍：{{good.description}}</md-card-title>
+    </md-card-title-group>
+  </md-card-header>
+  <md-card-actions>
+    <button md-button (click)="editGood(good)">编辑</button>
+    <button md-button (click)="deleteGood(good)">删除</button>
+  </md-card-actions>
+</md-card>
