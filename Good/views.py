@@ -143,7 +143,7 @@ def get_single_good(request, good_id):
         return error_response(ret.error)
     o_good = ret.body
     ret = o_good.get_info()
-    return response(body=ret.body) if ret.error != Error.OK else error_response(ret.error)
+    return response(body=ret.body) if ret.error == Error.OK else error_response(ret.error)
 
 
 @require_json
