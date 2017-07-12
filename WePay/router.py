@@ -30,7 +30,6 @@ def user(request):
 
 
 def user_address(request):
-    print(request.method)
     if request.method == 'PUT':  # 编辑收货信息
         return edit_address(request)
     elif request.method == 'GET':  # 获取收货信息
