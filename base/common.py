@@ -18,9 +18,7 @@ def save_file_to_local(save_file, file_path):
     :param file_path: 文件保存地址
     """
     with open(file_path, "wb+") as f:
-        for chunk in save_file.chunks():
-            f.write(chunk)
-        f.close()
+        f.write(save_file)
 
 
 def upload_good_pic(raw_pic):
@@ -39,6 +37,8 @@ def upload_good_pic(raw_pic):
         os.remove(file_path)
         return Ret(Error.ILLEGAL_PIC)  # 不是正确的图片
     key = 'aks/good/image/' + random_string
+    print(key)
+    print(file_path)
     ret = QiNiu.upload(key, file_path)
     os.remove(file_path)  # 删除本地文件
     return Ret(Error.OK, key) if ret else Ret(Error.FAILED_UPLOAD)
@@ -59,7 +59,6 @@ def get_pic_url_from_request(pic, gzipped):
             pic = gzip.decompress(pic)
         if len(pic) > PIC_MAX_SIZE:
             return Ret(Error.PIC_SIZE)  # 图片过大
-
         ret = upload_good_pic(pic)  # 上传图片
         if ret.error != Error.OK:
             return Ret(ret.error)

@@ -2,7 +2,8 @@ from Good.models import Category
 from Order.models import Order
 from User.models import User
 from base.common import get_user_from_session
-from base.decorator import require_json, require_params, require_login, require_seller, require_buyer
+from base.decorator import require_json, require_params, require_login, require_seller, require_buyer, \
+    require_get_params
 from base.error import Error
 from base.response import error_response, response
 
@@ -30,11 +31,15 @@ def add_order(request):
     return response(body=ret.body.pk) if ret.error == Error.OK else error_response(ret.error)
 
 
+@require_get_params(['status', 'page', 'count'])
 @require_login
-def get_order_list(request, status, page, count):
+def get_order_list(request):
     """
     用户获取订单列表
     """
+    status = request.GET['status']
+    page = request.GET['page']
+    count = request.GET['count']
     if status not in ['unsent', 'unreceived']:
         return error_response(Error.ERROR_STATUS)
     status = Order.STATUS_CONFIRM_ORDER_BY_SELLER if status == 'unsent' else Order.STATUS_CONFIRM_DELIVER

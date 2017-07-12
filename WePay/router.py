@@ -1,6 +1,7 @@
 from Card.views import add_card, get_card_list, set_default_card, delete_card
-from Good.views import init_category, get_category_list, get_good_of_category, add_good, edit_good, delete_good, get_good_list, \
-    add_button, edit_button, delete_button, get_button_list
+from Good.views import init_category, get_category_list, get_good_of_category, add_good, edit_good, delete_good, \
+    get_good_list, \
+    add_button, edit_button, delete_button, get_button_list, get_single_good
 from Order.views import add_order, get_order_list, confirm_send, confirm_receive
 from User.models import User
 from User.views import send_captcha, register, login, logout, edit_address, get_address
@@ -60,9 +61,9 @@ def card_card_id(request, card_id):
         return error_response(Error.ERROR_METHOD)
 
 
-def category(request, _type):
+def category(request):
     if request.method == 'GET':  # 获取商品类别列表
-        return get_category_list(request, _type)
+        return get_category_list(request)
     if request.method == 'POST':
         return init_category(request)
     else:
@@ -86,7 +87,9 @@ def good(request):
 
 
 def good_good_id(request, good_id):
-    if request.method == 'PUT':  # 编辑商品
+    if request.method == 'GET':
+        return get_single_good(request, good_id)
+    elif request.method == 'PUT':  # 编辑商品
         return edit_good(request, good_id)
     elif request.method == 'DELETE':
         return delete_good(request, good_id)
@@ -113,15 +116,10 @@ def button_button_id(request, button_id):
 
 
 def order(request):
+    if request.method == 'GET':  # 查看订单列表
+        return get_order_list(request)
     if request.method == 'POST':  # 新增订单
         return add_order(request)
-    else:
-        return error_response(Error.ERROR_METHOD)
-
-
-def order_status_page_count(request, status, page, count):
-    if request.method == 'GET':  # 查看订单列表
-        return get_order_list(request, status, page, count)
     else:
         return error_response(Error.ERROR_METHOD)
 

@@ -187,6 +187,7 @@ class Good(models.Model):
             store=store,
             pic=pic,
             seller=seller,
+            description=description,
         )
         try:
             o.save()
@@ -206,6 +207,21 @@ class Good(models.Model):
         except:
             return Ret(Error.NOT_FOUND_GOOD)
         return Ret(Error.OK, o)
+
+    def get_info(self):
+        """
+        获取商品信息
+        :return: 商品信息
+        """
+        good_dict = dict(
+            good_name=self.good_name,
+            store=self.store,
+            price=self.price,
+            pic=self.get_pic(),
+            description=self.description,
+            category_name=self.category.category_name,
+        )
+        return Ret(Error.OK, good_dict)
 
     def edit_info(self, seller, name, price, store, description, pic):
         """
@@ -257,7 +273,7 @@ class Good(models.Model):
 
     def get_pic(self):
         from base.c_qiniu import QiNiu
-        return QiNiu.host + self.pic
+        return QiNiu.host + self.pic + '-small'
 
 
 class Button(models.Model):
