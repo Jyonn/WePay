@@ -209,11 +209,11 @@
 ## 商品
 
 #### 获取商品类别
-> GET /category
+> GET /category?type=<type>
 
 - request
 ```
-{}
+type: all / unset
 ```
 - response
 ```

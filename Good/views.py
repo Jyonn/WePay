@@ -14,11 +14,19 @@ def init_category(request):
     return response() if ret.error == Error.OK else error_response(ret.error)
 
 
-def get_category_list(request):
+def get_category_list(request, _type):
     """
     获取商品类别列表
     """
-    ret = Category.get_list()
+    if _type not in ['all', 'unset']:
+        return error_response(Error.ERROR_TYPE)
+    if _type == 'all':
+        ret = Category.get_list()
+    else:
+        o_user = get_user_from_session(request)
+        if o_user is None:
+            return error_response(Error.REQUIRE_LOGIN)
+        ret = Category.get_unset_list(o_user)
     return response(body=ret.body) if ret.error == Error.OK else error_response(ret.error)
 
 

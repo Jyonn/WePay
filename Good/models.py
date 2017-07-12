@@ -66,6 +66,28 @@ class Category(models.Model):
             ))
         return Ret(Error.OK, category_list)
 
+    @staticmethod
+    def get_unset_list(o_user):
+        """
+        获取用户未设置按钮的类别
+        :return: 类别列表
+        """
+        ret = o_user.get_button_list()
+        if ret.error != Error.OK:
+            return Ret(ret.error)
+        button_list = ret.body
+        set_category_list = []
+        for button in button_list:
+            set_category_list.append(button.category_id)
+        unset_category_list = []
+        for o_category in Category.objects.all():
+            if o_category.pk not in set_category_list:
+                unset_category_list.append(dict(
+                    category_name=o_category.category_name,
+                    category_id=o_category.pk,
+                ))
+        return Ret(Error.OK, unset_category_list)
+
     def get_good_list(self):
         """
         获取一个类别的所有商品

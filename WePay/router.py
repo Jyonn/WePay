@@ -60,9 +60,9 @@ def card_card_id(request, card_id):
         return error_response(Error.ERROR_METHOD)
 
 
-def category(request):
+def category(request, _type):
     if request.method == 'GET':  # 获取商品类别列表
-        return get_category_list(request)
+        return get_category_list(request, _type)
     if request.method == 'POST':
         return init_category(request)
     else:
