@@ -83,7 +83,7 @@ def require_buyer_func(request):
     """
     print("require")
     o_user = get_user_from_session(request)
-    print(o_user.pk)
+    print(o_user is None)
     return o_user is not None and o_user.user_type == User.TYPE_BUYER
 
 
