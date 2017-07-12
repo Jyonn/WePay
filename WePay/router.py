@@ -119,8 +119,6 @@ def order(request):
         return add_order(request)
     else:
         return error_response(Error.ERROR_METHOD)
-
-
 @require_login
 def order_order_id_status(request, order_id):
     o_user = get_user_from_session(request)
