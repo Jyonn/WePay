@@ -22,7 +22,7 @@ export class AdministrationOrderUnsentComponent implements OnInit {
   @ViewChild(MdPaginator) paginator: MdPaginator;
 
   ngOnInit() {
-    this.displayedColumns = ['detail', 'real_name', 'phone', 'address', 'operation'];
+    this.displayedColumns = ['order_detail', 'buyer_real_name_phone', 'address', 'operation'];
     this.orderDatabase = new OrderDatabase(this.orderService, "unsent");
     this.dataSource = new OrderDataSource(this.orderDatabase, this.paginator);
     this.paginator.pageSize = 10;

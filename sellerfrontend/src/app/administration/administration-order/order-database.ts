@@ -13,9 +13,9 @@ import { TotalNum } from 'app/_model'
 export class OrderDatabase {
     /** Stream that emits whenever the data has been modified. */
     dataChange: BehaviorSubject<Order[]> = new BehaviorSubject<Order[]>([]);
-    status:string;
+    status: string;
 
-    constructor(private orderService: OrderService, status:string) {
+    constructor(private orderService: OrderService, status: string) {
         this.status = status;
     }
 
@@ -24,9 +24,8 @@ export class OrderDatabase {
     }
 
     flushOrdersInfo(page: number, count: number, totalNum: TotalNum) {
-        console.log(page + " " + count + " " + this.data.length);
         if ((page + 1) * count > this.data.length) {
-
+            
             return this.orderService.getOrdersInfo(this.data.length, count, this.status).subscribe(
                 data => {
                     if (data.code == 0) {
@@ -76,5 +75,16 @@ export class OrderDatabase {
                 console.error(error);
             }
         );
+    }
+
+    private newOrder(): Order {
+        return new Order(
+            "dd",
+            "edward",
+            "17816872348",
+            3,
+            "dsadas",
+            4
+        )
     }
 }
