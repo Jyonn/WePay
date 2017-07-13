@@ -28,7 +28,6 @@ export class AdministrationGoodEditComponent implements OnInit {
   ngOnInit() {
     this.is_modified = 0;
 
-    this.createForm();
     this.route.paramMap
       .switchMap((params: ParamMap) => this.goodService.getGoodInfo(+params.get('id'))).subscribe(
       data => {
@@ -40,6 +39,7 @@ export class AdministrationGoodEditComponent implements OnInit {
           this.good.price = data.body.price;
           this.good.store = data.body.store;
           this.good.good_id = data.body.good_id;
+           this.createForm();
           this.snackBarService.openSnackBar("刷新数据成功！");
         }
       },

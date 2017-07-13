@@ -867,7 +867,6 @@ var AdministrationGoodEditComponent = (function () {
     AdministrationGoodEditComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.is_modified = 0;
-        this.createForm();
         this.route.paramMap
             .switchMap(function (params) { return _this.goodService.getGoodInfo(+params.get('id')); }).subscribe(function (data) {
             if (data.code == 0) {
@@ -878,6 +877,7 @@ var AdministrationGoodEditComponent = (function () {
                 _this.good.price = data.body.price;
                 _this.good.store = data.body.store;
                 _this.good.good_id = data.body.good_id;
+                _this.createForm();
                 _this.snackBarService.openSnackBar("刷新数据成功！");
             }
         }, function (error) {
