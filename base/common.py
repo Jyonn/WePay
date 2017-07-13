@@ -51,20 +51,24 @@ def get_pic_url_from_request(pic, gzipped):
     :param gzipped: 是否经过gZip压缩
     :return: 成功则返回键值，失败返回错误参数
     """
-    try:
-        pic = pic[pic.find(',')+1:]
-        pic = base64.decodebytes(bytes(pic, encoding='utf8'))  # base64解码
-        if gzipped:  # 如果经过gZip压缩，解压缩
-            import gzip
-            pic = gzip.decompress(pic)
-        if len(pic) > PIC_MAX_SIZE:
-            return Ret(Error.PIC_SIZE)  # 图片过大
-        ret = upload_good_pic(pic)  # 上传图片
-        if ret.error != Error.OK:
-            return Ret(ret.error)
-        pic_key = ret.body
-    except:
-        return Ret(Error.ILLEGAL_PIC)
+    # try:
+    print('RAW', pic)
+    pic = pic[pic.find(',')+1:]
+    pic = base64.decodebytes(bytes(pic, encoding='utf8'))  # base64解码
+    print('DECODE', pic)
+    if gzipped:  # 如果经过gZip压缩，解压缩
+        import gzip
+        pic = gzip.decompress(pic)
+    if len(pic) > PIC_MAX_SIZE:
+        return Ret(Error.PIC_SIZE)  # 图片过大
+    print('upload...')
+    ret = upload_good_pic(pic)  # 上传图片
+    if ret.error != Error.OK:
+        return Ret(ret.error)
+    print('key', ret.body)
+    pic_key = ret.body
+    # except:
+    #     return Ret(Error.ILLEGAL_PIC)
     return Ret(Error.OK, pic_key)
 
 
