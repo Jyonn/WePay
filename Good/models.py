@@ -214,6 +214,7 @@ class Good(models.Model):
         :return: 商品信息
         """
         good_dict = dict(
+            good_id=self.pk,
             good_name=self.good_name,
             store=self.store,
             price=self.price,
