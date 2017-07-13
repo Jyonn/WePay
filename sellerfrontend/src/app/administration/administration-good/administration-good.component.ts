@@ -65,6 +65,8 @@ export class AdministrationGoodComponent implements OnInit {
       data => {
         if (data.code == 0) {
           this.goods = data.body;
+          console.log(this.goods);
+          
           this.snackBarService.openSnackBar("刷新数据成功！");
         }
       },

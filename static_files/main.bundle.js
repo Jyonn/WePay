@@ -368,7 +368,6 @@ var GoodService = (function () {
             description: good.description,
             gzipped: good.gzipped
         });
-        console.log(goodInfo);
         return this.http.put(this.URL, goodInfo, this.options)
             .map(function (response) { return response.json(); }).catch(this.handleError);
     };
@@ -868,12 +867,6 @@ var AdministrationGoodEditComponent = (function () {
     AdministrationGoodEditComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.is_modified = 0;
-        this.good.category_name = "aaa";
-        this.good.description = "dddddddd";
-        this.good.name = "ddddddddddd";
-        this.good.pic = "../../../assets/img/xifashui.jpg";
-        this.good.price = 11;
-        this.good.store = 12;
         this.createForm();
         this.route.paramMap
             .switchMap(function (params) { return _this.goodService.getGoodInfo(+params.get('id')); }).subscribe(function (data) {
@@ -884,6 +877,7 @@ var AdministrationGoodEditComponent = (function () {
                 _this.good.pic = data.body.pic;
                 _this.good.price = data.body.price;
                 _this.good.store = data.body.store;
+                _this.good.good_id = data.body.good_id;
                 _this.snackBarService.openSnackBar("刷新数据成功！");
             }
         }, function (error) {
@@ -1076,6 +1070,7 @@ var AdministrationGoodComponent = (function () {
         this.goodService.getGoodsInfo().subscribe(function (data) {
             if (data.code == 0) {
                 _this.goods = data.body;
+                console.log(_this.goods);
                 _this.snackBarService.openSnackBar("刷新数据成功！");
             }
         }, function (error) {
@@ -1473,14 +1468,6 @@ var UnsentOrderDatabase = (function () {
         var _this = this;
         console.log(page + " " + count + " " + this.data.length);
         if ((page + 1) * count > this.data.length) {
-            /*
-                        const copiedData = this.data.slice();
-                        for (let i = 1; i <= count; i++) {
-                            copiedData.push(this.createNewUser());
-                        }
-                        this.dataChange.next(copiedData);
-                        totalNum.totalNumber += 10;
-            */
             return this.orderService.getOrdersInfo(this.data.length, count, "unsent").subscribe(function (data) {
                 if (data.code == 0) {
                     var copiedData_1 = _this.data.slice();
@@ -1496,20 +1483,6 @@ var UnsentOrderDatabase = (function () {
         }
     };
     UnsentOrderDatabase.prototype.deleteOrderInfo = function (page, count, order_id, totalNum) {
-        /*
-                let start = page * count;
-                let end = (page + 1) * count > this.data.length ? this.data.length : (page + 1) * count;
-                let tempData = this.data.slice(start, end);
-                let deleteIndex = 0;
-                tempData.filter((value, index) => {
-                    if (value.order_id == order_id)
-                        deleteIndex = index;
-                })
-                this.data.splice(page * count + deleteIndex, 1);
-                this.dataChange.next(this.data);
-                totalNum.totalNumber--;
-                this.flushOrdersInfo(page, count, totalNum);
-                */
         var _this = this;
         this.orderService.delteOrderInfo(order_id).subscribe(function (data) {
             if (data.code == 0) {

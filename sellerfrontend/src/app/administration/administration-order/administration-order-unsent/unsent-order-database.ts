@@ -27,14 +27,7 @@ export class UnsentOrderDatabase {
     flushOrdersInfo(page: number, count: number, totalNum: TotalNum) {
         console.log(page + " " + count + " " + this.data.length);
         if ((page + 1) * count > this.data.length) {
-/*
-            const copiedData = this.data.slice();
-            for (let i = 1; i <= count; i++) {
-                copiedData.push(this.createNewUser());
-            }
-            this.dataChange.next(copiedData);
-            totalNum.totalNumber += 10;
-*/
+
             return this.orderService.getOrdersInfo(this.data.length, count, "unsent").subscribe(
                 data => {
                     if (data.code == 0) {
@@ -62,20 +55,6 @@ export class UnsentOrderDatabase {
     }
 
     deleteOrderInfo(page: number, count: number, order_id: number, totalNum: TotalNum) {
-/*
-        let start = page * count;
-        let end = (page + 1) * count > this.data.length ? this.data.length : (page + 1) * count;
-        let tempData = this.data.slice(start, end);
-        let deleteIndex = 0;
-        tempData.filter((value, index) => {
-            if (value.order_id == order_id)
-                deleteIndex = index;
-        })
-        this.data.splice(page * count + deleteIndex, 1);
-        this.dataChange.next(this.data);
-        totalNum.totalNumber--;
-        this.flushOrdersInfo(page, count, totalNum);
-        */
 
         this.orderService.delteOrderInfo(order_id).subscribe(
             data => {

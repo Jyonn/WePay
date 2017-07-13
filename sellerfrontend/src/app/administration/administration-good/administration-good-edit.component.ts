@@ -27,12 +27,7 @@ export class AdministrationGoodEditComponent implements OnInit {
 
   ngOnInit() {
     this.is_modified = 0;
-    this.good.category_name = "aaa";
-    this.good.description = "dddddddd";
-    this.good.name = "ddddddddddd";
-    this.good.pic = "../../../assets/img/xifashui.jpg";
-    this.good.price = 11;
-    this.good.store = 12;
+
     this.createForm();
     this.route.paramMap
       .switchMap((params: ParamMap) => this.goodService.getGoodInfo(+params.get('id'))).subscribe(
@@ -44,6 +39,7 @@ export class AdministrationGoodEditComponent implements OnInit {
           this.good.pic = data.body.pic;
           this.good.price = data.body.price;
           this.good.store = data.body.store;
+          this.good.good_id = data.body.good_id;
           this.snackBarService.openSnackBar("刷新数据成功！");
         }
       },

@@ -69,7 +69,6 @@ export class GoodService {
             description: good.description,
             gzipped: good.gzipped
         });
-        console.log(goodInfo);
         
         return this.http.put(this.URL, goodInfo, this.options)
             .map((response: Response) => response.json()).catch(this.handleError);
