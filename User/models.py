@@ -108,7 +108,7 @@ class User(models.Model):
             if regex_ret is None:
                 return Ret(Error.PHONE_FORMAT)
         password = User.get_md5(raw_pwd)
-        user_id = User.get_md5(username+get_random_string(length=8))
+        user_id = User.get_md5(username + get_random_string(length=8))
         try:
             cls.objects.get(username=username)
             return Ret(Error.EXIST_USERNAME)
@@ -270,19 +270,19 @@ class User(models.Model):
             ))
         return Ret(Error.OK, button_list)
 
-    def get_order_list(self, order_status, page, count):
+    def get_order_list(self, order_status, exist=0, count=0):
         """
         获取订单列表
         :param order_status: 订单筛选
-        :param page: 返回结果的第几页
+        :param exist: 已存在的订单数
         :param count: 每页显示条数
         :return: 订单列表及是否到达末尾
         """
         try:
-            page = int(page)
-            assert page >= 0
+            exist = int(exist)
+            assert exist >= 0
         except:
-            return Ret(Error.ERROR_PAGE)  # 错误的页码
+            return Ret(Error.ERROR_EXIST)  # 错误的已存在条数
         try:
             count = int(count)
             assert count >= 0
@@ -290,12 +290,16 @@ class User(models.Model):
             return Ret(Error.ERROR_COUNT)  # 错误的条数
 
         from Order.models import Order
-        if self.user_type == User.TYPE_BUYER:
-            orders = Order.objects.filter(buyer=self, status=order_status).order_by('-pk')
+        if self.user_type == User.TYPE_SELLER:
+            orders = Order.objects.filter(good__seller=self, status=order_status)
         else:
-            orders = Order.objects.filter(good__seller=self, status=order_status).order_by('-pk')
-        is_over = len(orders) <= (page+1) * count
-        orders = orders[page*count: (page+1)*count]
+            orders = Order.objects.filter(buyer=self, status=order_status)
+
+        length = len(orders)
+        orders = orders.order_by('pk')
+        if self.user_type == User.TYPE_SELLER:
+            orders = orders[exist + 1: exist + 1 + count]
+
         order_list = []
         for o_order in orders:
             order_list.append(dict(
@@ -310,4 +314,4 @@ class User(models.Model):
                 create_time=int(o_order.create_time.timestamp()),
                 deliver_time=None if o_order.deliver_time is None else int(o_order.deliver_time.timestamp())
             ))
-        return Ret(Error.OK, dict(order_list=order_list, is_over=is_over))
+        return Ret(Error.OK, dict(order_list=order_list, count=length))

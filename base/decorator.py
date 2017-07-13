@@ -1,4 +1,3 @@
-import base64
 from functools import wraps
 
 from django.views.decorators import http
