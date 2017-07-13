@@ -26,7 +26,7 @@ export class AdministrationMainComponent implements OnInit {
     this.authenticationService.logout().subscribe(
       data => {
         if (data.code == 0)
-          this.router.navigateByUrl("");
+          this.router.navigateByUrl("login");
       },
       error => {
         console.error(error);
