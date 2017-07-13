@@ -145,7 +145,7 @@ def dev(request):
     from Good.models import Category, Good, Button
     from random import randint
     button_list = []
-    for o_buyer_user in User.objects.all():
+    for o_buyer_user in User.objects.filter(user_type=User.TYPE_BUYER):
         for o_category in Category.objects.all():
             goods = Good.objects.filter(category=o_category)
             o_good = goods[randint(0, len(goods)-1)]
