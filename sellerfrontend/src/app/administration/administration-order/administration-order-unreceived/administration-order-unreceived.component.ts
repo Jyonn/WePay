@@ -1,9 +1,9 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { MdPaginator,PageEvent } from '@angular/material';
-import { Order } from 'app/_model'
-import {UnreceivedOrderDatabase} from './unreceived-order-database'
-import {OrderService} from 'app/_services'
-import {OrderDataSource} from '../order-datasource'
+import { MdPaginator, PageEvent } from '@angular/material';
+import { OrderService } from 'app/_services'
+import { OrderDataSource } from '../order-datasource'
+import { Order, TotalNum } from 'app/_model'
+import { OrderDatabase } from '../order-database'
 
 @Component({
   selector: 'app-administration-order-unreceived',
@@ -12,31 +12,30 @@ import {OrderDataSource} from '../order-datasource'
 })
 
 export class AdministrationOrderUnreceivedComponent implements OnInit {
-  displayedColumns:string[];
-  orderDatabase :UnreceivedOrderDatabase;
+  displayedColumns: string[];
+  orderDatabase: OrderDatabase;
   dataSource: OrderDataSource | null;
-  totalNumber:number;
+  totalNum: TotalNum;
 
-  constructor(private orderService:OrderService){
+  constructor(private orderService: OrderService) {
 
   }
 
   @ViewChild(MdPaginator) paginator: MdPaginator;
 
   ngOnInit() {
-    this.displayedColumns = ['detail', 'real_name', 'phone', 'address', 'operation'];
-    this.orderDatabase = new UnreceivedOrderDatabase(this.orderService);
-    this.totalNumber = 20;
+    this.displayedColumns = ['detail', 'real_name', 'phone', 'address'];
+    this.orderDatabase = new OrderDatabase(this.orderService, "unreceived");
     this.dataSource = new OrderDataSource(this.orderDatabase, this.paginator);
-    this.orderDatabase.flushOrdersInfo(0, this.paginator.pageSize);
+    this.paginator.pageSize = 10;
+    this.totalNum = {
+      totalNumber: 0
+    }
+    this.orderDatabase.flushOrdersInfo(0, this.paginator.pageSize, this.totalNum);
   }
 
-  public sent(order_id: number) {
-    console.log(order_id);
+  public onPageChange(event: PageEvent) {
+    this.orderDatabase.flushOrdersInfo(event.pageIndex, event.pageSize, this.totalNum);
   }
 
-  public onPageChange(event:PageEvent){
-    console.log(event);
-    this.orderDatabase.flushOrdersInfo(event.pageIndex,event.pageSize);
-  }
 }

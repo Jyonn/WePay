@@ -5,11 +5,10 @@ import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/map';
 import { DataSource } from '@angular/cdk';
 import { Order } from 'app/_model'
-import { UnreceivedOrderDatabase } from './administration-order-unreceived/unreceived-order-database'
-import { UnsentOrderDatabase } from './administration-order-unsent/unsent-order-database'
+import { OrderDatabase } from "./order-database";
 
 export class OrderDataSource extends DataSource<any> {
-    constructor(private _orderDatabaseService: UnreceivedOrderDatabase | UnsentOrderDatabase,
+    constructor(private _orderDatabaseService: OrderDatabase,
         private _paginator: MdPaginator) {
         super();
     }

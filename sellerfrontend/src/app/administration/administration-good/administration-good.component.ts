@@ -23,7 +23,7 @@ export class AdministrationGoodComponent implements OnInit {
         category_name: "洗发露",
         category_id: 1,
         good_id: 1,
-        name: "沙宣轻柔型洗发露",
+        good_name: "沙宣轻柔型洗发露",
         price: 15,
         store: 1000,
         pic: "../../../assets/img/xifashui.jpg",
@@ -34,7 +34,7 @@ export class AdministrationGoodComponent implements OnInit {
         category_name: "洗发露",
         category_id: 1,
         good_id: 2,
-        name: "沙宣轻柔型洗发露1",
+        good_name: "沙宣轻柔型洗发露1",
         price: 22,
         store: 2200,
         pic: "../../../assets/img/xifashui.jpg",
@@ -65,6 +65,8 @@ export class AdministrationGoodComponent implements OnInit {
       data => {
         if (data.code == 0) {
           this.goods = data.body;
+          console.log(this.goods);
+          
           this.snackBarService.openSnackBar("刷新数据成功！");
         }
       },

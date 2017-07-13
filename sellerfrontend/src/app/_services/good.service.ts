@@ -41,7 +41,7 @@ export class GoodService {
         this.URL = '/good';
         let goodInfo = JSON.stringify({
             category_id: good.category_id,
-            name: good.name,
+            name: good.good_name,
             price: good.price,
             store: good.store,
             pic: good.pic,
@@ -62,14 +62,13 @@ export class GoodService {
     editGoodInfo(good: Good, is_modified:number) {
         this.URL = "/good/" + good.good_id;
         let goodInfo = JSON.stringify({
-            name: good.name,
+            name: good.good_name,
             price: good.price,
             store: good.store,
             pic: is_modified == 1?good.pic:"",
             description: good.description,
             gzipped: good.gzipped
         });
-        console.log(goodInfo);
         
         return this.http.put(this.URL, goodInfo, this.options)
             .map((response: Response) => response.json()).catch(this.handleError);

@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { MdPaginator, PageEvent } from '@angular/material';
-import { Order } from 'app/_model'
-import { UnsentOrderDatabase } from './unsent-order-database'
+import { Order, TotalNum } from 'app/_model'
+import { OrderDatabase } from '../order-database'
 import { OrderService } from 'app/_services'
 import { OrderDataSource } from '../order-datasource'
 @Component({
@@ -11,9 +11,9 @@ import { OrderDataSource } from '../order-datasource'
 })
 export class AdministrationOrderUnsentComponent implements OnInit {
   displayedColumns: string[];
-  orderDatabase: UnsentOrderDatabase;
+  orderDatabase: OrderDatabase;
   dataSource: OrderDataSource | null;
-  totalNum:TotalNum;
+  totalNum: TotalNum;
 
   constructor(private orderService: OrderService) {
 
@@ -23,27 +23,21 @@ export class AdministrationOrderUnsentComponent implements OnInit {
 
   ngOnInit() {
     this.displayedColumns = ['detail', 'real_name', 'phone', 'address', 'operation'];
-    this.orderDatabase = new UnsentOrderDatabase(this.orderService);
+    this.orderDatabase = new OrderDatabase(this.orderService, "unsent");
     this.dataSource = new OrderDataSource(this.orderDatabase, this.paginator);
     this.paginator.pageSize = 10;
     this.totalNum = {
-      totalNumber:20
+      totalNumber: 0
     }
     this.orderDatabase.flushOrdersInfo(0, this.paginator.pageSize, this.totalNum);
   }
 
   public sent(order_id: number) {
     this.orderDatabase.deleteOrderInfo(this.paginator.pageIndex, this.paginator.pageSize, order_id, this.totalNum);
-    //to do delete order
   }
 
   public onPageChange(event: PageEvent) {
-    console.log(event);
     this.orderDatabase.flushOrdersInfo(event.pageIndex, event.pageSize, this.totalNum);
   }
 
-}
-
-export interface TotalNum{
-  totalNumber:number;
 }
