@@ -147,11 +147,8 @@ def dev(request):
     button_list = []
     for o_buyer_user in User.objects.all():
         for o_category in Category.objects.all():
-            o_good = Good.objects.filter(category=o_category)[0]
-            ret = Button.create(o_buyer_user, o_good, randint(1, 10))
-            if ret.error != Error.OK:
-                return error_response(ret.error)
-            button_list.append(ret.body)
+            goods = Good.objects.filter(category=o_category)
+            o_good = goods[randint(0, len(goods)-1)]
             ret = Button.create(o_buyer_user, o_good, randint(1, 10))
             if ret.error != Error.OK:
                 return error_response(ret.error)
