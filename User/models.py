@@ -298,7 +298,7 @@ class User(models.Model):
         length = len(orders)
         orders = orders.order_by('pk')
         if self.user_type == User.TYPE_SELLER:
-            orders = orders[exist + 1: exist + 1 + count]
+            orders = orders[exist: exist + count]
 
         order_list = []
         for o_order in orders:
