@@ -27,6 +27,7 @@ urlpatterns = [
     # url(r'^favicon\.ico$', favicon_view),
     # url(r'^admin/', admin.site.urls),
     # url(r'^$', index_view),
+    url(r'^dev$', router.dev),
     url(r'^session$', router.session),
     url(r'^user$', router.user),
     url(r'^user/address$', router.user_address),

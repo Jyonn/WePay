@@ -106,6 +106,7 @@ class Order(models.Model):
             buy_num=o_button.buy_num,
             price=o_button.default_good.price * o_button.buy_num,
             status=Order.STATUS_CONFIRM_ORDER_BY_SELLER,
+            real_name=o_user.real_name,
         )
         try:
             o.save()

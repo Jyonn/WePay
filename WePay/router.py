@@ -8,7 +8,7 @@ from User.views import send_captcha, register, login, logout, edit_address, get_
 from base.common import get_user_from_session
 from base.decorator import require_login
 from base.error import Error
-from base.response import error_response
+from base.response import error_response, response
 
 
 def session(request):
@@ -140,3 +140,23 @@ def order_order_id_status(request, order_id):
     else:
         return error_response(Error.ERROR_METHOD)
 
+
+def dev(request):
+    from Good.models import Category, Good, Button
+    from random import randint
+    button_list = []
+    for o_buyer_user in User.objects.filter(user_type=User.TYPE_BUYER):
+        for o_category in Category.objects.all():
+            goods = Good.objects.filter(category=o_category)
+            o_good = goods[randint(0, len(goods)-1)]
+            ret = Button.create(o_buyer_user, o_good, randint(1, 10))
+            if ret.error != Error.OK:
+                return error_response(ret.error)
+            button_list.append(ret.body)
+
+    from Order.models import Order
+    for o_button in button_list:
+        Order.create(o_button.owner, o_button.category)
+        Order.create(o_button.owner, o_button.category)
+        Order.create(o_button.owner, o_button.category)
+    return response()
