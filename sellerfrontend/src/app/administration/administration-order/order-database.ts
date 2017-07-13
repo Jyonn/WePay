@@ -14,9 +14,15 @@ export class OrderDatabase {
     /** Stream that emits whenever the data has been modified. */
     dataChange: BehaviorSubject<Order[]> = new BehaviorSubject<Order[]>([]);
     status: string;
+    last: number = 0;
 
     constructor(private orderService: OrderService, status: string) {
         this.status = status;
+        for (let i = 0; i < 20; i++) {
+            const copiedData = this.data.slice();
+            copiedData.push(this.newOrder());
+            this.dataChange.next(copiedData);
+        }
     }
 
     get data(): Order[] {
@@ -25,7 +31,7 @@ export class OrderDatabase {
 
     flushOrdersInfo(page: number, count: number, totalNum: TotalNum) {
         if ((page + 1) * count > this.data.length) {
-            
+
             return this.orderService.getOrdersInfo(this.data.length, count, this.status).subscribe(
                 data => {
                     if (data.code == 0) {
@@ -54,7 +60,7 @@ export class OrderDatabase {
 
     deleteOrderInfo(page: number, count: number, order_id: number, totalNum: TotalNum) {
 
-        this.orderService.delteOrderInfo(order_id).subscribe(
+        this.orderService.deleteOrderInfo(order_id).subscribe(
             data => {
                 if (data.code == 0) {
                     let start = page * count;
@@ -65,8 +71,8 @@ export class OrderDatabase {
                         if (value.order_id == order_id)
                             deleteIndex = index;
                     })
-                    const copiedData = this.data.splice(page * count + deleteIndex, 1);
-                    this.dataChange.next(copiedData);
+                    this.data.splice(page * count + deleteIndex, 1);
+                    this.dataChange.next(this.data);
                     totalNum.totalNumber--;
                     this.flushOrdersInfo(page, count, totalNum);
                 }
@@ -78,13 +84,14 @@ export class OrderDatabase {
     }
 
     private newOrder(): Order {
+        this.last++;
         return new Order(
             "dd",
             "edward",
             "17816872348",
-            3,
+            this.last,
             "dsadas",
-            4
+            this.last
         )
     }
 }

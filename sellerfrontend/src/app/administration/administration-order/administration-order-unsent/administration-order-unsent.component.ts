@@ -27,7 +27,7 @@ export class AdministrationOrderUnsentComponent implements OnInit {
     this.dataSource = new OrderDataSource(this.orderDatabase, this.paginator);
     this.paginator.pageSize = 10;
     this.totalNum = {
-      totalNumber: 0
+      totalNumber: 20
     }
     this.orderDatabase.flushOrdersInfo(0, this.paginator.pageSize, this.totalNum);
   }
