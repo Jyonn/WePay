@@ -464,25 +464,21 @@ type: all / unset
 ## 订单
 
 #### 用户获取订单
-> GET /order?status=<status>&page=<page>&count=<count>
+> GET /order?status=<status>&[exist=<exist>]&[count=<count>]
 
-- hint
-```
-有买家有卖家
-```
 - request
 ```
 status: unsent / unreceived
-page: 订单页码
-count: 每页显示条数
+exist: 已存在的条目数（当为商家用户时有效，买家不需要传）
+count: 每页显示条数（当为商家用户时有效，买家不需要传）
 ```
 - response
 ```
 {
 	'code': 错误代码，默认为0（OK）
-	'msg': OK / 页码错误
+	'msg': OK / 已存在条数错误 / 每页条数错误
 	'body': {
-		is_over: 是否查看全部
+	    count: 当前时刻订单总数
 		order_list: [{
 			'order_id': 订单ID
 			'good_name': 商品名
@@ -492,6 +488,8 @@ count: 每页显示条数
 			'number': 商品数量
 			'price': 订单总价
 			'pic': 商品图片
+			'create_time': 订单创建时间
+			'deliver_time': 订单发货时间
 		}]
 	}
 }

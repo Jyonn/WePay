@@ -31,7 +31,7 @@ class Error:
     NOT_YOUR_CARD = 2024
     ERROR_ORDER_STATUS = 2023
     NOT_YOUR_GOOD = 2022
-    ERROR_PAGE = 2021
+    ERROR_EXIST = 2021
     ERROR_ORDER_CREATE = 2020
     REQUIRE_ADD_DEFAULT_CARD = 2019
     REQUIRE_COMPLETE_BUYER_INFO = 2018
@@ -92,7 +92,7 @@ class Error:
         (NOT_YOUR_CARD, '不是你的银行卡'),
         (ERROR_ORDER_STATUS, '订单状态无法变更'),
         (NOT_YOUR_GOOD, '不是你的订单'),
-        (ERROR_PAGE, '错误的订单页数'),
+        (ERROR_EXIST, '错误的已存在条数'),
         (ERROR_ORDER_CREATE, '创建订单失败'),
         (REQUIRE_ADD_DEFAULT_CARD, '需要设置默认银行卡'),
         (REQUIRE_COMPLETE_BUYER_INFO, '需要完善用户收货信息'),

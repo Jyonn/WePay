@@ -31,21 +31,37 @@ def add_order(request):
     return response(body=ret.body.pk) if ret.error == Error.OK else error_response(ret.error)
 
 
-@require_get_params(['status', 'page', 'count'])
-@require_login
-def get_order_list(request):
+@require_get_params(['status', 'exist', 'count'])
+@require_seller
+def get_seller_order_list(request):
     """
-    用户获取订单列表
+    商家获取订单列表
     """
     status = request.GET['status']
-    page = request.GET['page']
+    exist = request.GET['exist']
     count = request.GET['count']
     if status not in ['unsent', 'unreceived']:
         return error_response(Error.ERROR_STATUS)
     status = Order.STATUS_CONFIRM_ORDER_BY_SELLER if status == 'unsent' else Order.STATUS_CONFIRM_DELIVER
 
     o_user = get_user_from_session(request)
-    ret = o_user.get_order_list(status, page, count)
+    ret = o_user.get_order_list(status, exist, count)
+    return response(body=ret.body) if ret.error == Error.OK else error_response(ret.error)
+
+
+@require_get_params(['status'])
+@require_buyer
+def get_buyer_order_list(request):
+    """
+    买家获取订单列表
+    """
+    status = request.GET['status']
+    if status not in ['unsent', 'unreceived']:
+        return error_response(Error.ERROR_STATUS)
+    status = Order.STATUS_CONFIRM_ORDER_BY_SELLER if status == 'unsent' else Order.STATUS_CONFIRM_DELIVER
+
+    o_user = get_user_from_session(request)
+    ret = o_user.get_order_list(status)
     return response(body=ret.body) if ret.error == Error.OK else error_response(ret.error)
 
 

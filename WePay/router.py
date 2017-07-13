@@ -2,7 +2,7 @@ from Card.views import add_card, get_card_list, set_default_card, delete_card
 from Good.views import init_category, get_category_list, get_good_of_category, add_good, edit_good, delete_good, \
     get_good_list, \
     add_button, edit_button, delete_button, get_button_list, get_single_good
-from Order.views import add_order, get_order_list, confirm_send, confirm_receive
+from Order.views import add_order, get_seller_order_list, confirm_send, confirm_receive, get_buyer_order_list
 from User.models import User
 from User.views import send_captcha, register, login, logout, edit_address, get_address
 from base.common import get_user_from_session
@@ -115,9 +115,14 @@ def button_button_id(request, button_id):
         return error_response(Error.ERROR_METHOD)
 
 
+@require_login
 def order(request):
     if request.method == 'GET':  # 查看订单列表
-        return get_order_list(request)
+        o_user = get_user_from_session(request)
+        if o_user.user_type == User.TYPE_SELLER:
+            return get_seller_order_list(request)
+        else:
+            return get_buyer_order_list(request)
     if request.method == 'POST':  # 新增订单
         return add_order(request)
     else:
