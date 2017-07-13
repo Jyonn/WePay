@@ -261,6 +261,7 @@ class Good(models.Model):
         self.description = description
         self.pic = pic
         self.save()
+        return Ret(Error.OK)
 
     def lazy_remove(self, o_user):
         """
