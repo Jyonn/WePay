@@ -13,6 +13,7 @@ import { TotalNum } from './administration-order-unsent.component'
 export class UnsentOrderDatabase {
     /** Stream that emits whenever the data has been modified. */
     dataChange: BehaviorSubject<Order[]> = new BehaviorSubject<Order[]>([]);
+    public last = 0;
 
 
     constructor(private orderService: OrderService) {
@@ -29,9 +30,10 @@ export class UnsentOrderDatabase {
 /*
             const copiedData = this.data.slice();
             for (let i = 1; i <= count; i++) {
-                copiedData.push(this.createNewUser(page, i, count));
+                copiedData.push(this.createNewUser());
             }
             this.dataChange.next(copiedData);
+            totalNum.totalNumber += 10;
 */
             return this.orderService.getOrdersInfo(this.data.length, count, "unsent").subscribe(
                 data => {
@@ -100,14 +102,15 @@ export class UnsentOrderDatabase {
 
 
     /** Builds and returns a new User. */
-    private createNewUser(page: number, index: number, count: number): Order {
+    private createNewUser(): Order {
+        this.last++;
         return {
             good_name: "沙宣洗发露",
             real_name: "陈毅强",
-            phone: (page * count + index).toString(),
+            phone: this.last.toString(),
             address: "浙江省杭州市浙江大学玉泉校区30舍",
             number: 1,
-            order_id: page * count + index
+            order_id: this.last
         };
     }
 }

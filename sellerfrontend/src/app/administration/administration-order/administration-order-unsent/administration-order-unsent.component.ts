@@ -26,10 +26,10 @@ export class AdministrationOrderUnsentComponent implements OnInit {
     this.orderDatabase = new UnsentOrderDatabase(this.orderService);
     this.dataSource = new OrderDataSource(this.orderDatabase, this.paginator);
     this.paginator.pageSize = 10;
-    this.orderDatabase.flushOrdersInfo(0, this.paginator.pageSize, this.totalNum);
     this.totalNum = {
-      totalNumber:0
+      totalNumber:20
     }
+    this.orderDatabase.flushOrdersInfo(0, this.paginator.pageSize, this.totalNum);
   }
 
   public sent(order_id: number) {

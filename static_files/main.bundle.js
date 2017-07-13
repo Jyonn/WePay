@@ -1402,10 +1402,10 @@ var AdministrationOrderUnsentComponent = (function () {
         this.orderDatabase = new __WEBPACK_IMPORTED_MODULE_2__unsent_order_database__["a" /* UnsentOrderDatabase */](this.orderService);
         this.dataSource = new __WEBPACK_IMPORTED_MODULE_4__order_datasource__["a" /* OrderDataSource */](this.orderDatabase, this.paginator);
         this.paginator.pageSize = 10;
-        this.orderDatabase.flushOrdersInfo(0, this.paginator.pageSize, this.totalNum);
         this.totalNum = {
-            totalNumber: 0
+            totalNumber: 20
         };
+        this.orderDatabase.flushOrdersInfo(0, this.paginator.pageSize, this.totalNum);
     };
     AdministrationOrderUnsentComponent.prototype.sent = function (order_id) {
         this.orderDatabase.deleteOrderInfo(this.paginator.pageIndex, this.paginator.pageSize, order_id, this.totalNum);
@@ -1460,6 +1460,7 @@ var UnsentOrderDatabase = (function () {
         this.orderService = orderService;
         /** Stream that emits whenever the data has been modified. */
         this.dataChange = new __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__["BehaviorSubject"]([]);
+        this.last = 0;
     }
     Object.defineProperty(UnsentOrderDatabase.prototype, "data", {
         get: function () {
@@ -1475,9 +1476,10 @@ var UnsentOrderDatabase = (function () {
             /*
                         const copiedData = this.data.slice();
                         for (let i = 1; i <= count; i++) {
-                            copiedData.push(this.createNewUser(page, i, count));
+                            copiedData.push(this.createNewUser());
                         }
                         this.dataChange.next(copiedData);
+                        totalNum.totalNumber += 10;
             */
             return this.orderService.getOrdersInfo(this.data.length, count, "unsent").subscribe(function (data) {
                 if (data.code == 0) {
@@ -1529,14 +1531,15 @@ var UnsentOrderDatabase = (function () {
         });
     };
     /** Builds and returns a new User. */
-    UnsentOrderDatabase.prototype.createNewUser = function (page, index, count) {
+    UnsentOrderDatabase.prototype.createNewUser = function () {
+        this.last++;
         return {
             good_name: "沙宣洗发露",
             real_name: "陈毅强",
-            phone: (page * count + index).toString(),
+            phone: this.last.toString(),
             address: "浙江省杭州市浙江大学玉泉校区30舍",
             number: 1,
-            order_id: page * count + index
+            order_id: this.last
         };
     };
     return UnsentOrderDatabase;
