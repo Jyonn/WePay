@@ -8,7 +8,7 @@ import {
     AdministrationSellerComponent,
     AdministrationGoodEditComponent
 } from './'
-
+import {administrationOrderRoutes} from './administration-order/administration-order.routes'
 import { AuthGuard } from "app/_guards";
 export const administrationRoutes: Routes = [
     {
@@ -30,10 +30,6 @@ export const administrationRoutes: Routes = [
                 component: AdministrationGoodComponent
             },
             {
-                path: 'order',
-                component: AdministrationOrderComponent
-            },
-            {
                 path: "addSeller",
                 component: AdministrationSellerAddComponent
             },
@@ -44,7 +40,8 @@ export const administrationRoutes: Routes = [
             {
                 path: "good/:id",
                 component: AdministrationGoodEditComponent
-            }
+            },
+            ...administrationOrderRoutes
         ]
-    }
+    },
 ];
