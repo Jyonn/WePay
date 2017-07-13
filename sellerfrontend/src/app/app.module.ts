@@ -17,7 +17,8 @@ import {
   MdCheckboxModule,
   MdTableModule,
   MdPaginatorModule,
-  MdTabsModule
+  MdTabsModule,
+  MdDialogModule
 } from '@angular/material';
 import { CdkTableModule } from '@angular/cdk'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,7 +29,8 @@ import {
   SellerInfoService,
   SnackBarService,
   GoodService,
-  OrderService
+  OrderService,
+  DialogService
 } from './_services'
 import { HttpModule } from '@angular/http';
 import { EqualValidator } from "./register/directives/equal-validator.directive";
@@ -44,6 +46,7 @@ import {
   AdministrationGoodAddComponent,
   AdministrationGoodEditComponent
 } from "./administration";
+import { ConfirmDialog} from './confirm-dialog.component'
 import { AdministrationOrderUnsentComponent } from './administration/administration-order/administration-order-unsent/administration-order-unsent.component';
 import { AdministrationOrderUnreceivedComponent } from './administration/administration-order/administration-order-unreceived/administration-order-unreceived.component';
 @NgModule({
@@ -60,7 +63,11 @@ import { AdministrationOrderUnreceivedComponent } from './administration/adminis
     AdministrationGoodAddComponent,
     AdministrationGoodEditComponent,
     AdministrationOrderUnsentComponent,
-    AdministrationOrderUnreceivedComponent
+    AdministrationOrderUnreceivedComponent,
+    ConfirmDialog
+  ],
+  entryComponents :[
+    ConfirmDialog
   ],
   imports: [
     BrowserModule,
@@ -82,6 +89,7 @@ import { AdministrationOrderUnreceivedComponent } from './administration/adminis
     MdPaginatorModule,
     CdkTableModule,
     MdTabsModule,  
+    MdDialogModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [
@@ -91,7 +99,8 @@ import { AdministrationOrderUnreceivedComponent } from './administration/adminis
     SellerInfoService,
     SnackBarService,
     GoodService,
-    OrderService
+    OrderService,
+    DialogService
   ],
   bootstrap: [AppComponent]
 })

@@ -3,6 +3,7 @@ import { Good } from "app/_model";
 import { GoodService } from 'app/_services/index'
 import { SnackBarService } from 'app/_services/index';
 import { Router } from '@angular/router';
+import {DialogService} from 'app/_services';
 
 @Component({
   selector: 'app-administration-good',
@@ -14,7 +15,8 @@ export class AdministrationGoodComponent implements OnInit {
   constructor(
     private goodService: GoodService,
     private snackBarService: SnackBarService,
-    private router: Router
+    private router: Router,
+    private dialogService:DialogService
   ) { }
 
   ngOnInit() {
@@ -100,7 +102,15 @@ export class AdministrationGoodComponent implements OnInit {
     );
 
   }
-
+  public openDialog(good:Good) {
+    this.dialogService
+      .confirm('确认对话框', '你确定要删除商品吗，删除后将不可恢复？')
+      .subscribe(res => {
+        if(res == true){
+          this.deleteGood(good);
+        }
+      });
+  }
     /**
    * addCard
    */
