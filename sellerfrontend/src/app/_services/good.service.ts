@@ -59,13 +59,13 @@ export class GoodService {
             .map((response: Response) => response.json()).catch(this.handleError);
     }
 
-    editGoodInfo(good: Good) {
+    editGoodInfo(good: Good, is_modified:number) {
         this.URL = "/good/" + good.good_id;
         let goodInfo = JSON.stringify({
             name: good.name,
             price: good.price,
             store: good.store,
-            pic: good.pic,
+            pic: is_modified == 1?good.pic:"",
             description: good.description,
             gzipped: good.gzipped
         });

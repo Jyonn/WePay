@@ -1,0 +1,46 @@
+<div class="example-container mat-elevation-z8">
+
+  <md-table #table [dataSource]="dataSource">
+
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- ID Column -->
+    <ng-container cdkColumnDef="detail">
+      <md-header-cell *cdkHeaderCellDef> 商品名*数量 </md-header-cell>
+      <md-cell *cdkCellDef="let row"> {{row.good_name}}*{{row.number}} </md-cell>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container cdkColumnDef="real_name">
+      <md-header-cell *cdkHeaderCellDef> 买家姓名 </md-header-cell>
+      <md-cell *cdkCellDef="let row"> {{row.real_name}} </md-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container cdkColumnDef="phone">
+      <md-header-cell *cdkHeaderCellDef> 买家号码 </md-header-cell>
+      <md-cell *cdkCellDef="let row"> {{row.phone}} </md-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container cdkColumnDef="address">
+      <md-header-cell *cdkHeaderCellDef> 买家地址 </md-header-cell>
+      <md-cell *cdkCellDef="let row"> {{row.address}} </md-cell>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container cdkColumnDef="operation">
+      <md-header-cell *cdkHeaderCellDef> 操作</md-header-cell>
+      <md-cell *cdkCellDef="let row">
+        <button md-raised-button (click)="sent(row.order_id)" color="primary">确认发货</button>
+      </md-cell>
+    </ng-container>
+
+    <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
+    <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
+  </md-table>
+
+  <md-paginator #paginator [length]="totalNumber" [pageIndex]="0" [pageSize]="10" [pageSizeOptions]="[5]" (page)="onPageChange($event)">
+  </md-paginator>
+</div>

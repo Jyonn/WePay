@@ -13,6 +13,7 @@ import 'rxjs/add/operator/switchMap';
   styleUrls: ['./administration-good-edit.component.css']
 })
 export class AdministrationGoodEditComponent implements OnInit {
+  is_modified: number;
   public goodForm: FormGroup;
   public good: Good = new Good();
   public errorMsg: string;
@@ -25,9 +26,9 @@ export class AdministrationGoodEditComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.is_modified = 0;
     this.good.category_name = "aaa";
     this.good.description = "dddddddd";
-    this.good.gzipped = 0;
     this.good.name = "ddddddddddd";
     this.good.pic = "../../../assets/img/xifashui.jpg";
     this.good.price = 11;
@@ -39,7 +40,6 @@ export class AdministrationGoodEditComponent implements OnInit {
         if (data.code == 0) {
           this.good.category_name = data.body.category_name;
           this.good.description = data.body.description;
-          this.good.gzipped = data.body.gzipped;
           this.good.name = data.body.name;
           this.good.pic = data.body.pic;
           this.good.price = data.body.price;
@@ -97,10 +97,9 @@ export class AdministrationGoodEditComponent implements OnInit {
     this.good.name = this.goodForm.value.name;
     this.good.description = this.goodForm.value.description;
     this.good.price = this.goodForm.value.price;
-    this.good.pic = this.good.pic;
     this.good.store = this.goodForm.value.store;
-
-    this.goodService.editGoodInfo(this.good).subscribe(data => {
+    
+    this.goodService.editGoodInfo(this.good, this.is_modified).subscribe(data => {
       if (data.code > 0) {
         this.errorMsg = data.msg;
       }
@@ -123,6 +122,7 @@ export class AdministrationGoodEditComponent implements OnInit {
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();
       reader.onload = (e: any) => {
+        this.is_modified = 1;
         this.good.pic = e.target.result;
       }
       reader.readAsDataURL(event.target.files[0]);

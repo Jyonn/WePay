@@ -27,7 +27,8 @@ import {
   AuthenticationService,
   SellerInfoService,
   SnackBarService,
-  GoodService
+  GoodService,
+  OrderService
 } from './_services'
 import { HttpModule } from '@angular/http';
 import { EqualValidator } from "./register/directives/equal-validator.directive";
@@ -43,6 +44,8 @@ import {
   AdministrationGoodAddComponent,
   AdministrationGoodEditComponent
 } from "./administration";
+import { AdministrationOrderUnsentComponent } from './administration/administration-order/administration-order-unsent/administration-order-unsent.component';
+import { AdministrationOrderUnreceivedComponent } from './administration/administration-order/administration-order-unreceived/administration-order-unreceived.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,7 +58,9 @@ import {
     AdministrationOrderComponent,
     AdministrationSellerAddComponent,
     AdministrationGoodAddComponent,
-    AdministrationGoodEditComponent
+    AdministrationGoodEditComponent,
+    AdministrationOrderUnsentComponent,
+    AdministrationOrderUnreceivedComponent
   ],
   imports: [
     BrowserModule,
@@ -85,7 +90,8 @@ import {
     RegisterService,
     SellerInfoService,
     SnackBarService,
-    GoodService
+    GoodService,
+    OrderService
   ],
   bootstrap: [AppComponent]
 })

@@ -8,18 +8,17 @@
 </md-toolbar>
 <md-card color="primary" *ngFor="let good of goods" align="end">
   <md-card-header>
+    <md-card-title-group>
       <img md-card-avatar src={{good.pic}}>
-      <md-card-title>类别：{{good.category_name}}</md-card-title>
-      <md-card-subtitle>商品名：{{good.name}}</md-card-subtitle>
-  
+    </md-card-title-group>
+    <md-card-title-group>
+      <md-card-title>{{good.name}}</md-card-title>
+    </md-card-title-group>
     <md-card-title-group>
       <md-card-title>价格：{{good.price}}</md-card-title>
     </md-card-title-group>
     <md-card-title-group>
       <md-card-title>库存：{{good.store}}</md-card-title>
-    </md-card-title-group>
-    <md-card-title-group>
-      <md-card-title>详细介绍：{{good.description}}</md-card-title>
     </md-card-title-group>
   </md-card-header>
   <md-card-actions>

@@ -1,0 +1,19 @@
+.example-container {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 238px);
+  min-width: 300px;
+  margin: 25px 25px;
+}
+
+.example-header {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+  font-size: 20px;
+}
+
+.mat-table {
+  overflow: auto;
+}
