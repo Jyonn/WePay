@@ -97,7 +97,7 @@ export class AdministrationGoodEditComponent implements OnInit {
   }
 
   public editGood() {
-    this.good.good_name = this.editGoodForm.value.name;
+    this.good.good_name = this.editGoodForm.value.good_name;
     this.good.description = this.editGoodForm.value.description;
     this.good.price = this.editGoodForm.value.price;
     this.good.store = this.editGoodForm.value.store;
