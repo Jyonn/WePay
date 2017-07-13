@@ -14,15 +14,16 @@ export class OrderDatabase {
     /** Stream that emits whenever the data has been modified. */
     dataChange: BehaviorSubject<Order[]> = new BehaviorSubject<Order[]>([]);
     status: string;
-    last: number = 0;
+    //last: number = 0;
 
     constructor(private orderService: OrderService, status: string) {
         this.status = status;
+        /*
         for (let i = 0; i < 20; i++) {
             const copiedData = this.data.slice();
             copiedData.push(this.newOrder());
             this.dataChange.next(copiedData);
-        }
+        }*/
     }
 
     get data(): Order[] {
@@ -82,7 +83,7 @@ export class OrderDatabase {
             }
         );
     }
-
+/*
     private newOrder(): Order {
         this.last++;
         return new Order(
@@ -93,5 +94,5 @@ export class OrderDatabase {
             "dsadas",
             this.last
         )
-    }
+    }*/
 }
