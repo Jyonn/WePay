@@ -14,7 +14,7 @@ import 'rxjs/add/operator/switchMap';
 })
 export class AdministrationGoodEditComponent implements OnInit {
   is_modified: number;
-  public goodForm: FormGroup;
+  public editGoodForm: FormGroup;
   public good: Good = new Good();
   public errorMsg: string;
   constructor(
@@ -28,18 +28,25 @@ export class AdministrationGoodEditComponent implements OnInit {
   ngOnInit() {
     this.is_modified = 0;
 
+    this.createForm();
+
     this.route.paramMap
       .switchMap((params: ParamMap) => this.goodService.getGoodInfo(+params.get('id'))).subscribe(
       data => {
         if (data.code == 0) {
           this.good.category_name = data.body.category_name;
           this.good.description = data.body.description;
-          this.good.name = data.body.name;
+          this.good.good_name = data.body.good_name;
           this.good.pic = data.body.pic;
           this.good.price = data.body.price;
           this.good.store = data.body.store;
           this.good.good_id = data.body.good_id;
-           this.createForm();
+          this.editGoodForm.patchValue({
+            description: this.good.description,
+            good_name: this.good.good_name,
+            price: this.good.price,
+            store: this.good.store
+          });
           this.snackBarService.openSnackBar("刷新数据成功！");
         }
       },
@@ -51,11 +58,11 @@ export class AdministrationGoodEditComponent implements OnInit {
   }
 
   private createForm(): void {
-    this.goodForm = this.fb.group(
+    this.editGoodForm = this.fb.group(
       {
-        "name":
+        "good_name":
         [
-          this.good.name,
+          this.good.good_name,
           [
             Validators.minLength(1),
             Validators.maxLength(20),
@@ -90,11 +97,11 @@ export class AdministrationGoodEditComponent implements OnInit {
   }
 
   public editGood() {
-    this.good.name = this.goodForm.value.name;
-    this.good.description = this.goodForm.value.description;
-    this.good.price = this.goodForm.value.price;
-    this.good.store = this.goodForm.value.store;
-    
+    this.good.good_name = this.editGoodForm.value.name;
+    this.good.description = this.editGoodForm.value.description;
+    this.good.price = this.editGoodForm.value.price;
+    this.good.store = this.editGoodForm.value.store;
+
     this.goodService.editGoodInfo(this.good, this.is_modified).subscribe(data => {
       if (data.code > 0) {
         this.errorMsg = data.msg;

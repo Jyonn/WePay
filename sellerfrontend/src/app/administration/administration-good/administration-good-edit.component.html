@@ -3,7 +3,7 @@
 </md-toolbar>
 <md-card color="primary">
   <md-card-content>
-    <form class="form" [formGroup]="goodForm" novalidate>
+    <form class="form" [formGroup]="editGoodForm" novalidate>
       <table class="full-width" cellspacing="25">
         <tr>
           <td>
@@ -12,14 +12,14 @@
             </md-input-container>
 
             <md-input-container class="full-width">
-              <input mdInput type="text" placeholder="商品名" formControlName="name">
-              <md-error *ngIf="goodForm.controls.name.hasError('required')">
+              <input mdInput type="text" placeholder="商品名" formControlName="good_name" >
+              <md-error *ngIf="editGoodForm.controls.good_name.hasError('required')">
                 <strong>必需</strong>
               </md-error>
-              <md-error *ngIf="goodForm.controls.name.hasError('minlength')">
+              <md-error *ngIf="editGoodForm.controls.good_name.hasError('minlength')">
                 <strong>最小输入1个字符</strong>
               </md-error>
-              <md-error *ngIf="goodForm.controls.name.hasError('maxlength')">
+              <md-error *ngIf="editGoodForm.controls.good_name.hasError('maxlength')">
                 <strong>最多输入20个字符</strong>
               </md-error>
             </md-input-container>
@@ -28,20 +28,20 @@
 
             <md-input-container class="full-width">
               <input mdInput type="number" placeholder="价格" formControlName="price">
-              <md-error *ngIf="goodForm.controls.price.hasError('required')">
+              <md-error *ngIf="editGoodForm.controls.price.hasError('required')">
                 <strong>必需</strong>
               </md-error>
-              <md-error *ngIf="goodForm.controls.price.hasError('min')">
+              <md-error *ngIf="editGoodForm.controls.price.hasError('min')">
                 <strong>价格不能小于0.01元</strong>
               </md-error>
             </md-input-container>
 
             <md-input-container class="full-width">
               <input mdInput type="number" placeholder="库存" formControlName="store">
-              <md-error *ngIf="goodForm.controls.store.hasError('required')">
+              <md-error *ngIf="editGoodForm.controls.store.hasError('required')">
                 <strong>必需</strong>
               </md-error>
-              <md-error *ngIf="goodForm.controls.store.hasError('min')">
+              <md-error *ngIf="editGoodForm.controls.store.hasError('min')">
                 <strong>库存不能小于0</strong>
               </md-error>
             </md-input-container>
@@ -50,7 +50,7 @@
 
             <md-input-container class="full-width">
               <textarea minRows=1 maxRows=10 mdInput placeholder="详细介绍" formControlName="description"></textarea>
-              <md-error *ngIf="goodForm.controls.description.hasError('maxlength')">
+              <md-error *ngIf="editGoodForm.controls.description.hasError('maxlength')">
                 <strong>最多输入512个字符</strong>
               </md-error>
             </md-input-container>
@@ -63,7 +63,7 @@
             </div>
             <p *ngIf="errorMsg">{{errorMsg}}</p>
             <br>
-            <button (click)="editGood()" class="full-width" md-raised-button color="primary" type="submit" [disabled]="!goodForm.valid">添加</button>
+            <button (click)="editGood()" class="full-width" md-raised-button color="primary" type="submit" [disabled]="!editGoodForm.valid">添加</button>
             <br><br>
             <button (click)="cancel()" class="full-width" md-raised-button color="primary">取消</button>
           </td>

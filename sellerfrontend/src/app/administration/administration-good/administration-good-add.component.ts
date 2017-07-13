@@ -106,7 +106,7 @@ export class AdministrationGoodAddComponent implements OnInit {
       good_id: null,
       category_id: this.goodForm.value.category_id,
       category_name: null,
-      name: this.goodForm.value.name,
+      good_name: this.goodForm.value.good_name,
       price: this.goodForm.value.price,
       store: this.goodForm.value.store,
       pic: this.imgSrc,
