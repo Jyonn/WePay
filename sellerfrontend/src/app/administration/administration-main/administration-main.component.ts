@@ -23,7 +23,14 @@ export class AdministrationMainComponent implements OnInit {
   }
 
   public doLogout(): void {
-    this.authenticationService.logout();
-    this.router.navigateByUrl("");
+    this.authenticationService.logout().subscribe(
+      data => {
+        if (data.code == 0)
+          this.router.navigateByUrl("");
+      },
+      error => {
+        console.error(error);
+      }
+    );
   }
 }

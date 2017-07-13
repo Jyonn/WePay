@@ -32,6 +32,8 @@ export class AuthenticationService {
     }
 
     logout() {
+        console.log(this.loginURL);
+        
         // remove user from local storage to log user out
         return this.http.delete(this.loginURL)
             .map((response: Response) => {
