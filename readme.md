@@ -440,6 +440,7 @@ type: all / unset
 		'good_name': 商品名称
 		'number': 购买ID
 		'good_pic': 商品图片
+		'price': 商品单价
 	}]
 }
 ```
