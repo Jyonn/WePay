@@ -8,8 +8,8 @@ from base.error import Error
 from base.response import error_response, response
 
 
-@require_params(['user_id', 'category_id'])
 @require_json
+@require_params(['user_id', 'category_id'])
 def add_order(request):
     """
     按钮新增订单
