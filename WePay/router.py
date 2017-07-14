@@ -115,10 +115,11 @@ def button_button_id(request, button_id):
         return error_response(Error.ERROR_METHOD)
 
 
-@require_login
 def order(request):
     if request.method == 'GET':  # 查看订单列表
         o_user = get_user_from_session(request)
+        if o_user is None:
+            return error_response(Error.REQUIRE_LOGIN)
         if o_user.user_type == User.TYPE_SELLER:
             return get_seller_order_list(request)
         else:
