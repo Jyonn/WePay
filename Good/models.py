@@ -78,7 +78,7 @@ class Category(models.Model):
         button_list = ret.body
         set_category_list = []
         for button in button_list:
-            set_category_list.append(button.category_id)
+            set_category_list.append(button["category_id"])
         unset_category_list = []
         for o_category in Category.objects.all():
             if o_category.pk not in set_category_list:
