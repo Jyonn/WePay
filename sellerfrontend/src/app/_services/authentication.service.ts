@@ -15,11 +15,15 @@ export class AuthenticationService {
         this.headers = new Headers();
         this.headers.append('Content-Type', 'application/json');
         this.headers.append('Accept', 'application/json');
-        this.options = new RequestOptions({headers:this.headers});
+        this.options = new RequestOptions({ headers: this.headers });
     }
 
     login(username: string, password: string) {
-        let user = JSON.stringify({ username: username, password: password });
+        let user = JSON.stringify({
+            username: username,
+            password: password,
+            is_seller: 1
+        });
 
         return this.http.post(this.loginURL, user, this.options)
             .map((response: Response) => {
@@ -33,7 +37,7 @@ export class AuthenticationService {
 
     logout() {
         console.log(this.loginURL);
-        
+
         // remove user from local storage to log user out
         return this.http.delete(this.loginURL)
             .map((response: Response) => {
