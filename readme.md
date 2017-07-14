@@ -261,7 +261,7 @@ type: all / unset
 ```
 {
 	'category_id': 商品类别ID
-	'name': 商品名
+	'good_name': 商品名
 	'price': 商品价格
 	'store': 商品库存
 	'pic': 商品图片(->gZip)->Base64
