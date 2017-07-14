@@ -15,14 +15,14 @@
             </md-error>
 
             <md-input-container class="full-width">
-              <input mdInput type="text" placeholder="商品名" formControlName="name">
-              <md-error *ngIf="goodForm.controls.name.hasError('required')">
+              <input mdInput type="text" placeholder="商品名" formControlName="good_name">
+              <md-error *ngIf="goodForm.controls.good_name.hasError('required')">
                 <strong>必需</strong>
               </md-error>
-              <md-error *ngIf="goodForm.controls.name.hasError('minlength')">
+              <md-error *ngIf="goodForm.controls.good_name.hasError('minlength')">
                 <strong>最小输入1个字符</strong>
               </md-error>
-              <md-error *ngIf="goodForm.controls.name.hasError('maxlength')">
+              <md-error *ngIf="goodForm.controls.good_name.hasError('maxlength')">
                 <strong>最多输入20个字符</strong>
               </md-error>
             </md-input-container>

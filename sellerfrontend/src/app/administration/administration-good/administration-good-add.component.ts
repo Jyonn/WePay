@@ -65,7 +65,7 @@ export class AdministrationGoodAddComponent implements OnInit {
             Validators.required
           ]
         ],
-        "name":
+        "good_name":
         [
           "",
           [
