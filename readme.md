@@ -1,4 +1,4 @@
-# AKS系统说明书0712 v3.1
+# AKS系统说明书0714 v3.2
 
 ## 环境配置
 
@@ -64,6 +64,7 @@
 {
     'username': 用户名
     'password': 密码
+    'is_seller': 是否为商家
 }
 ```
 - response

@@ -166,7 +166,7 @@ class User(models.Model):
         return Ret(Error.OK, o)
 
     @staticmethod
-    def check_password(username, raw_pwd):
+    def check_password(username, raw_pwd, user_type):
         """
         登录
         :param username: 用户名
@@ -177,6 +177,11 @@ class User(models.Model):
             o = User.objects.get(username=username)
         except:
             return Ret(Error.NOT_FOUND_USERNAME)
+        if o.user_type != user_type:
+            if user_type == User.TYPE_BUYER:
+                return Ret(Error.REQUIRE_BUYER)
+            else:
+                return Ret(Error.REQUIRE_SELLER)
         if o.password != User.get_md5(raw_pwd):
             return Ret(Error.ERROR_PASSWORD)
         return Ret(Error.OK, o)

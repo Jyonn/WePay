@@ -57,14 +57,17 @@ def register(request):
 
 
 @require_json
-@require_params(['username', 'password'])
+@require_params(['username', 'password', 'is_seller'])
 def login(request):
     """
     登录
     """
     username = request.POST['username']
     password = request.POST['password']
-    ret = User.check_password(username, password)
+    is_seller = str(request.POST['is_seller']) == '1'
+    user_type = User.TYPE_SELLER if is_seller else User.TYPE_BUYER
+
+    ret = User.check_password(username, password, user_type)
     if ret.error == Error.OK:
         login_to_session(request, ret.body)
     return response(body=dict(
