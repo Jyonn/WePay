@@ -46,14 +46,14 @@ def get_good_of_category(request, category_id):
 
 
 @require_json
-@require_params(['category_id', 'name', 'price', 'store', 'description', 'pic', 'gzipped'])
+@require_params(['category_id', 'good_name', 'price', 'store', 'description', 'pic', 'gzipped'])
 @require_seller
 def add_good(request):
     """
     商家添加商品
     """
     category_id = request.POST['category_id']
-    name = request.POST['name']
+    name = request.POST['good_name']
     price = request.POST['price']
     store = request.POST['store']
     description = request.POST['description']
