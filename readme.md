@@ -1,4 +1,4 @@
-# AKS系统说明书0714 v3.2
+# AKS系统说明书0714 v3.3
 
 ## 环境配置
 
@@ -439,6 +439,7 @@ type: all / unset
 		'good_id': 商品ID
 		'good_name': 商品名称
 		'number': 购买ID
+		'good_pic': 商品图片
 	}]
 }
 ```

@@ -272,6 +272,7 @@ class User(models.Model):
                 good_id=button.default_good_id,
                 good_name=button.default_good.good_name,
                 number=button.buy_num,
+                good_pic=button.default_good.pic,
             ))
         return Ret(Error.OK, button_list)
 
