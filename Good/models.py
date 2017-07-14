@@ -47,7 +47,10 @@ class Category(models.Model):
 
     @staticmethod
     def init():
-        category_list = ['啤酒', '沐浴露', '洗发水']
+        category_list = [
+            '啤酒', '沐浴露', '洗发水', '纸巾', '食盐',
+            '酱油', '食用醋', '食用油', '大米', '酱料',
+            '茶叶', '开心果', '长鼻王', '瓜子', '核桃']
         for category in category_list:
             Category.create(category)
         return Ret()
@@ -78,7 +81,7 @@ class Category(models.Model):
         button_list = ret.body
         set_category_list = []
         for button in button_list:
-            set_category_list.append(button.category_id)
+            set_category_list.append(button["category_id"])
         unset_category_list = []
         for o_category in Category.objects.all():
             if o_category.pk not in set_category_list:

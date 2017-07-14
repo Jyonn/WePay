@@ -115,10 +115,11 @@ def button_button_id(request, button_id):
         return error_response(Error.ERROR_METHOD)
 
 
-@require_login
 def order(request):
     if request.method == 'GET':  # 查看订单列表
         o_user = get_user_from_session(request)
+        if o_user is None:
+            return error_response(Error.REQUIRE_LOGIN)
         if o_user.user_type == User.TYPE_SELLER:
             return get_seller_order_list(request)
         else:
@@ -141,22 +142,12 @@ def order_order_id_status(request, order_id):
         return error_response(Error.ERROR_METHOD)
 
 
-def dev(request):
-    from Good.models import Category, Good, Button
-    from random import randint
-    button_list = []
-    for o_buyer_user in User.objects.filter(user_type=User.TYPE_BUYER):
-        for o_category in Category.objects.all():
-            goods = Good.objects.filter(category=o_category)
-            o_good = goods[randint(0, len(goods)-1)]
-            ret = Button.create(o_buyer_user, o_good, randint(1, 10))
-            if ret.error != Error.OK:
-                return error_response(ret.error)
-            button_list.append(ret.body)
-
-    from Order.models import Order
-    for o_button in button_list:
-        Order.create(o_button.owner, o_button.category)
-        Order.create(o_button.owner, o_button.category)
-        Order.create(o_button.owner, o_button.category)
-    return response()
+# def dev(request):
+#     from Order.models import Order
+#     from Good.models import Button
+#     buttons = Button.objects.all()
+#     for o_button in buttons:
+#         Order.create(o_button.owner, o_button.category)
+#         Order.create(o_button.owner, o_button.category)
+#         Order.create(o_button.owner, o_button.category)
+#     return response()
