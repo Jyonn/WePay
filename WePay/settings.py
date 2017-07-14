@@ -140,6 +140,7 @@ STATICFILES_FINDERS = (
 
 SESSION_COOKIE_AGE = 60 * 60 * 24
 PIC_MAX_SIZE = 1048576 * 5  # 5M
+DATA_UPLOAD_MAX_MEMORY_SIZE = PIC_MAX_SIZE
 
 if 'Linux' == platform.system():
     MEDIA_ROOT = '/home/ubuntu/Resource/WePay'
