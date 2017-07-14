@@ -36,7 +36,11 @@ def get_good_of_category(request, category_id):
     """
     获取一个类别的所有商品
     """
-    o_category = Category.get(category_id)
+    ret = Category.get(category_id)
+    if ret.error != Error.OK:
+        return error_response(ret.error)
+
+    o_category = ret.body
     ret = o_category.get_good_list()
     return response(body=ret.body) if ret.error == Error.OK else error_response(ret.error)
 
