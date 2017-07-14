@@ -41,7 +41,7 @@ export class GoodService {
         this.URL = '/good';
         let goodInfo = JSON.stringify({
             category_id: good.category_id,
-            name: good.good_name,
+            good_name: good.good_name,
             price: good.price,
             store: good.store,
             pic: good.pic,
