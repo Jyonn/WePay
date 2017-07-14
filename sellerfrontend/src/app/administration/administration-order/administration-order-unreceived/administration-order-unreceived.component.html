@@ -5,22 +5,15 @@
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
 
-    <!-- ID Column -->
-    <ng-container cdkColumnDef="detail">
+    <ng-container cdkColumnDef="order_detail">
       <md-header-cell *cdkHeaderCellDef> 商品名*数量 </md-header-cell>
       <md-cell *cdkCellDef="let row"> {{row.good_name}}*{{row.number}} </md-cell>
     </ng-container>
 
     <!-- Progress Column -->
-    <ng-container cdkColumnDef="real_name">
-      <md-header-cell *cdkHeaderCellDef> 买家姓名 </md-header-cell>
-      <md-cell *cdkCellDef="let row"> {{row.real_name}} </md-cell>
-    </ng-container>
-
-    <!-- Name Column -->
-    <ng-container cdkColumnDef="phone">
-      <md-header-cell *cdkHeaderCellDef> 买家号码 </md-header-cell>
-      <md-cell *cdkCellDef="let row"> {{row.phone}} </md-cell>
+    <ng-container cdkColumnDef="buyer_real_name_phone">
+      <md-header-cell *cdkHeaderCellDef> 买家姓名 号码</md-header-cell>
+      <md-cell *cdkCellDef="let row"> {{row.real_name}}({{row.phone}}) </md-cell>
     </ng-container>
 
     <!-- Name Column -->

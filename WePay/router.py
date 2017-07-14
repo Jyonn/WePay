@@ -142,20 +142,10 @@ def order_order_id_status(request, order_id):
 
 
 def dev(request):
-    from Good.models import Category, Good, Button
-    from random import randint
-    button_list = []
-    for o_buyer_user in User.objects.filter(user_type=User.TYPE_BUYER):
-        for o_category in Category.objects.all():
-            goods = Good.objects.filter(category=o_category)
-            o_good = goods[randint(0, len(goods)-1)]
-            ret = Button.create(o_buyer_user, o_good, randint(1, 10))
-            if ret.error != Error.OK:
-                return error_response(ret.error)
-            button_list.append(ret.body)
-
     from Order.models import Order
-    for o_button in button_list:
+    from Good.models import Button
+    buttons = Button.objects.all()
+    for o_button in buttons:
         Order.create(o_button.owner, o_button.category)
         Order.create(o_button.owner, o_button.category)
         Order.create(o_button.owner, o_button.category)

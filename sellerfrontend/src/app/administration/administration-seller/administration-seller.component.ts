@@ -4,6 +4,8 @@ import { Card } from 'app/_model/index'
 import { MdCheckboxChange } from '@angular/material';
 import { SnackBarService } from 'app/_services/index';
 import { Router } from '@angular/router';
+import { DialogService } from 'app/_services';
+
 @Component({
   selector: 'app-administration-seller',
   templateUrl: './administration-seller.component.html',
@@ -15,11 +17,12 @@ export class AdministrationSellerComponent implements OnInit {
   constructor(
     private sellerInfoService: SellerInfoService,
     private snackBarService: SnackBarService,
-    private router:Router
+    private router: Router,
+    private dialogService: DialogService
   ) { }
 
   ngOnInit() {
-    
+
     this.cards = [
       {
         card: "1111",
@@ -37,16 +40,6 @@ export class AdministrationSellerComponent implements OnInit {
   }
 
   private getSellerInfo(): void {
-    /**
-     * {
-          'code': 错误代码，默认为0（OK）
-          'msg': OK / 不是买家用户
-          'body': [{
-            'card_id': 银行卡ID
-            'card': 银行卡号
-            'is_default': 是否默认
-	      }
-     */
     this.sellerInfoService.getSellerInfo().subscribe(
       data => {
         if (data.code == 0) {
@@ -95,17 +88,24 @@ export class AdministrationSellerComponent implements OnInit {
       this.snackBarService.openSnackBar("不能删除默认银行卡，请先修改默认银行卡！");
     }
     else {
-      this.sellerInfoService.deleteSellerInfo(card.card_id).subscribe(
-        data => {
-          if (data.code == 0) {
-            this.cards = this.cards.filter(c => c !== card);
-            this.snackBarService.openSnackBar("删除成功！");
+      this.dialogService
+        .confirm('确认对话框', '你确定要删除银行卡吗，删除后将不可恢复？')
+        .subscribe(res => {
+          if (res == true) {
+            this.sellerInfoService.deleteSellerInfo(card.card_id).subscribe(
+              data => {
+                if (data.code == 0) {
+                  this.cards = this.cards.filter(c => c !== card);
+                  this.snackBarService.openSnackBar("删除成功！");
+                }
+              },
+              error => {
+                console.error(error);
+              }
+            );
           }
-        },
-        error => {
-          console.error(error);
-        }
-      );
+        });
+
 
     }
   }

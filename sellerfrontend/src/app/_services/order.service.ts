@@ -39,7 +39,7 @@ export class OrderService {
         return Observable.throw(errMsg);
     }
 
-    public delteOrderInfo(order_id:number) {
+    public deleteOrderInfo(order_id:number) {
         this.URL = "/order/" + order_id + "/status";
         let orderInfo = JSON.stringify({
         });
