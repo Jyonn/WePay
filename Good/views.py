@@ -46,7 +46,7 @@ def get_good_of_category(request, category_id):
 
 
 @require_json
-@require_params(['category_id', 'good_ame', 'price', 'store', 'description', 'pic', 'gzipped'])
+@require_params(['category_id', 'good_name', 'price', 'store', 'description', 'pic', 'gzipped'])
 @require_seller
 def add_good(request):
     """
