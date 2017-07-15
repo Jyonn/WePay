@@ -44,16 +44,23 @@ def register(request):
         brand = request.POST['brand']
         username = request.POST['username']
         ret = User.create(username, password, User.TYPE_SELLER, brand)
+        if ret.error != Error.OK:
+            return error_response(ret.error)
+        o_user = ret.body
     else:  # 买家
         captcha = request.POST['captcha']
         phone = load_session(request, 'phone')
         if not check_captcha(request, 'phone', captcha):
             return error_response(Error.ERROR_PHONE_CAPTCHA)  # 验证码错误
         ret = User.create(phone, password, User.TYPE_BUYER)
+        if ret.error != Error.OK:
+            return error_response(ret.error)
+        o_user = ret.body
+    login_to_session(request, o_user)
     return response(body=dict(
-        user_id=ret.body.pk,
-        avatar=ret.body.get_avatar(),
-    )) if ret.error == Error.OK else error_response(ret.error)
+        user_id=o_user.pk,
+        avatar=o_user.get_avatar(),
+    ))
 
 
 @require_json
