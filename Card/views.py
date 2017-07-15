@@ -1,3 +1,5 @@
+import re
+
 from Card.models import Card
 from base.common import get_user_from_session
 from base.decorator import require_json, require_login, require_params
@@ -13,6 +15,10 @@ def add_card(request):
     用户添加银行卡
     """
     card = request.POST['card']
+    card_regex = '^[0-9]{19}$'
+    regex_ret = re.search(card_regex, card)
+    if regex_ret is None:
+        return error_response(Error.CARD_LENGTH)
     is_default = str(request.POST['is_default']) == '1'
     o_user = get_user_from_session(request)
     ret = Card.create(o_user, card, is_default)
