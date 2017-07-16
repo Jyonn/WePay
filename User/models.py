@@ -317,7 +317,7 @@ class User(models.Model):
                 address=o_order.address,
                 number=o_order.buy_num,
                 price=o_order.price,
-                pic=o_order.good.pic,
+                pic=o_order.good.get_pic(),
                 create_time=int(o_order.create_time.timestamp()),
                 deliver_time=None if o_order.deliver_time is None else int(o_order.deliver_time.timestamp())
             ))
