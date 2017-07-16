@@ -142,12 +142,12 @@ def order_order_id_status(request, order_id):
         return error_response(Error.ERROR_METHOD)
 
 
-# def dev(request):
-#     from Order.models import Order
-#     from Good.models import Button
-#     buttons = Button.objects.all()
-#     for o_button in buttons:
-#         Order.create(o_button.owner, o_button.category)
-#         Order.create(o_button.owner, o_button.category)
-#         Order.create(o_button.owner, o_button.category)
-#     return response()
+def dev(request):
+    from Order.models import Order
+    from Good.models import Button
+    buttons = Button.objects.all()
+    for o_button in buttons:
+        Order.create(o_button.owner, o_button.category)
+        Order.create(o_button.owner, o_button.category)
+        Order.create(o_button.owner, o_button.category)
+    return response()
